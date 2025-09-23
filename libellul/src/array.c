@@ -52,7 +52,19 @@ typedef struct {
 
 void   *array_new__( size_t nmemb, size_t size, int strict ) {
   /* TODO: Create new array. */
-  return NULL;
+
+  if (strict) {
+
+    array_header_t *array = malloc(sizeof(array_header_t) + (nmemb*size));
+    array->length = nmemb; array->allocd = array->length; array->strict = strict; array->size = size;
+
+    return 1 + array;
+  }
+
+    array_header_t *array = malloc(sizeof(array_header_t) + (int)ARRAY_ALLOC_GEOM*(nmemb*size));
+    array->length=nmemb; array->allocd = (int)ARRAY_ALLOC_GEOM*nmemb; array->strict = strict; array->size = size;
+  
+  return 1 + array;
 }
 
 void    array_delete__( void **array_ptr ) {

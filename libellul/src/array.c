@@ -97,20 +97,23 @@ size_t  array_resize__( void **array_ptr, size_t nmemb ) {
   header = ARRAY_HEADER( *array_ptr );
 
   /* TODO: Actually do the resize, update header and *array_ptr */
-  /*
+
   assert(nmemb >= header->length && "New size has to be equal or longer than the current number of element.");
   assert(!(header->strict) && "Impossible to resize a strict array.");
 
   if(header->allocd != nmemb){
-    if(nmemb>header->allocd){
+    if((nmemb>header->allocd) || (nmemb<=(int) (header->allocd)/1.69)){
       void *array = array_new__(nmemb, header->size, header->strict);
+      array_header_t *new_header = ARRAY_HEADER (array);
       for(int i=0; i<header->length; i+=1){
         array[i] = *array_ptr[i];
+        new_header->length += 1;
       }
-      array_header_t *new_header = ARRAY_HEADER (array);
+      array_delete__(array_ptr);
+      array_ptr = &array;
     }
   }
-  */
+  
   return header->length;
 }
 

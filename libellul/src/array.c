@@ -60,16 +60,27 @@ void   *array_new__( size_t nmemb, size_t size, int strict ) {
 
     return 1 + array;
   }
-
-    array_header_t *array = malloc(sizeof(array_header_t) + (int)(ARRAY_ALLOC_GEOM*(nmemb*size)));
-    array->length=nmemb; array->allocd = (int)(ARRAY_ALLOC_GEOM*nmemb); array->strict = strict; array->size = size;
+  
+  int alloc = ARRAY_ALLOC_MIN;
+  if((int)(ARRAY_ALLOC_GEOM*nmemb*size) > ARRAY_ALLOC_MIN){
+    alloc = (int) (ARRAY_ALLOC_GEOM*nmemb);
+  }
+  array_header_t *array = malloc(sizeof(array_header_t) + (int)(ARRAY_ALLOC_GEOM*(nmemb*size)));
+  array->length=nmemb; array->allocd = (int)(ARRAY_ALLOC_GEOM*nmemb); array->strict = strict; array->size = size;
   
   return 1 + array;
 }
 
 void    array_delete__( void **array_ptr ) {
   /* TODO: Delete array, set *array_ptr to NULL. */
-  return;
+  if(**array_ptr != NULL){
+    if (*array_ptr != NULL){
+    array_header_t *array = ARRAY_HEADER(*array_ptr);
+    free(1 + array);
+    *array_ptr = NULL;
+    free(array);
+    }
+  }
 }
 
 size_t  array_length( void *array ) {

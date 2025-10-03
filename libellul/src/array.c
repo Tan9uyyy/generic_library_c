@@ -78,9 +78,8 @@ void    array_delete__( void **array_ptr ) {
   if(array_ptr != NULL){
     if (*array_ptr != NULL){
       array_header_t *header = ARRAY_HEADER(*array_ptr);
-      free(1 + header);
-      *array_ptr = NULL;
       free(header);
+      *array_ptr = NULL;
     }
   }
 }

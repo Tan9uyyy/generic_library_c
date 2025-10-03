@@ -73,12 +73,12 @@ void   *array_new__( size_t nmemb, size_t size, int strict ) {
 
 void    array_delete__( void **array_ptr ) {
   /* TODO: Delete array, set *array_ptr to NULL. */
-  if(**array_ptr != NULL){
+  if(array_ptr != NULL){
     if (*array_ptr != NULL){
-    array_header_t *array = ARRAY_HEADER(*array_ptr);
-    free(1 + array);
-    *array_ptr = NULL;
-    free(array);
+      array_header_t *array = ARRAY_HEADER(*array_ptr);
+      free(1 + array);
+      *array_ptr = NULL;
+      free(array);
     }
   }
 }

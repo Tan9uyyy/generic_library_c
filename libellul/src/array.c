@@ -52,33 +52,35 @@ typedef struct {
 
 void   *array_new__( size_t nmemb, size_t size, int strict ) {
   /* TODO: Create new array. */
-
+  /* Tableau normal */
   if (strict) {
 
-    array_header_t *array = malloc(sizeof(array_header_t) + (nmemb*size));
-    array->length = nmemb; array->allocd = array->length; array->strict = strict; array->size = size;
+    array_header_t *header = malloc(sizeof(array_header_t) + (nmemb*size));
+    header->length = 0; header->allocd = nmemb; header->strict = strict; header->size = size;
 
-    return 1 + array;
+    return 1 + header;
   }
+
+  /* Tableau redimensionnable */
   
   int alloc = ARRAY_ALLOC_MIN;
   if((int)(ARRAY_ALLOC_GEOM*nmemb*size) > ARRAY_ALLOC_MIN){
     alloc = (int) (ARRAY_ALLOC_GEOM*nmemb);
   }
-  array_header_t *array = malloc(sizeof(array_header_t) + (int)(ARRAY_ALLOC_GEOM*(nmemb*size)));
-  array->length=nmemb; array->allocd = (int)(ARRAY_ALLOC_GEOM*nmemb); array->strict = strict; array->size = size;
+  array_header_t *header = malloc(sizeof(array_header_t) + alloc);
+  header->length=0; header->allocd = alloc; header->strict = strict; header->size = size;
   
-  return 1 + array;
+  return 1 + header;
 }
 
 void    array_delete__( void **array_ptr ) {
   /* TODO: Delete array, set *array_ptr to NULL. */
   if(array_ptr != NULL){
     if (*array_ptr != NULL){
-      array_header_t *array = ARRAY_HEADER(*array_ptr);
-      free(1 + array);
+      array_header_t *header = ARRAY_HEADER(*array_ptr);
+      free(1 + header);
       *array_ptr = NULL;
-      free(array);
+      free(header);
     }
   }
 }
@@ -96,7 +98,20 @@ size_t  array_resize__( void **array_ptr, size_t nmemb ) {
   header = ARRAY_HEADER( *array_ptr );
 
   /* TODO: Actually do the resize, update header and *array_ptr */
+  /*
+  assert(nmemb >= header->length && "New size has to be equal or longer than the current number of element.");
+  assert(!(header->strict) && "Impossible to resize a strict array.");
 
+  if(header->allocd != nmemb){
+    if(nmemb>header->allocd){
+      void *array = array_new__(nmemb, header->size, header->strict);
+      for(int i=0; i<header->length; i+=1){
+        array[i] = *array_ptr[i];
+      }
+      array_header_t *new_header = ARRAY_HEADER (array);
+    }
+  }
+  */
   return header->length;
 }
 

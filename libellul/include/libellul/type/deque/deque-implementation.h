@@ -30,7 +30,7 @@ TYPE(T, datum_t) METHOD(new) (void) {
 }
 
 int METHOD(is_empty) (TYPE(T, datum_t) deque){
-    return METHOD (new) () == deque;
+    return (deque->head == deque && deque->queue == deque);
 }
 
 datum_t METHOD(first) (TYPE(T, datum_t) deque){
@@ -42,7 +42,7 @@ datum_t METHOD(first) (TYPE(T, datum_t) deque){
 TYPE(T, datum_t) METHOD(last) (TYPE(T, datum_t) deque){
     assert( !METHOD(is_empty) (deque) && "Deque is empty !");
 
-    return deque->queue->next;
+    return deque->queue->datum;
 }
 
 TYPE(T, datum_t) METHOD(push_front) (datum_t value, TYPE(T, datum_t) deque){
@@ -69,23 +69,23 @@ TYPE(T, datum_t) METHOD(push_back) (datum_t value, TYPE(T, datum_t) deque){
     return deque;
 }
 
-datum_t METHOD(pop_front) (TYPE(T, datum_t) deque){
+TYPE(T, datum_t) METHOD(pop_front) (datum_t *value, TYPE(T, datum_t) deque){
     assert( !METHOD(is_empty) (deque) && "Deque is empty !");
 
     TYPE(link, datum_t) *head_to_pop = deque->head;
-    datum_t value = head_to_pop->datum;
+    *value = head_to_pop->datum;
 
     deque->head = head_to_pop->next;
     free(head_to_pop);
 
-    return value;
+    return deque;
 }
 
-datum_t METHOD(pop_back) (TYPE(T, datum_t) deque){
+TYPE(T, datum_t) METHOD(pop_back) (datum_t *value, TYPE(T, datum_t) deque){
     assert( !METHOD(is_empty) (deque) && "Deque is empty !");
 
     TYPE(link, datum_t) *queue_to_pop = deque->queue;
-    datum_t value = queue_to_pop->datum;
+    *value = queue_to_pop->datum;
 
     deque->queue = queue_to_pop->next;
     free(queue_to_pop);
@@ -95,11 +95,13 @@ datum_t METHOD(pop_back) (TYPE(T, datum_t) deque){
 
 TYPE(T, datum_t) METHOD(delete) (TYPE(T, datum_t) deque, void (*destructor) (datum_t)){
     while (!METHOD(is_empty) (deque)){
-        TYPE(link, datum_t) *next_head = deque->head;
-        TYPE(link, datum_t) *next_queue = deque->queue;
+        TYPE(link, datum_t) *next_head = deque->head->next;
+        TYPE(link, datum_t) *next_queue = deque->queue->next;
         if (destructor){destructor(deque->head->datum); destructor(deque->queue->datum);}
-        free(deque->head); free(deque->queue);
+        free(deque->head);
+        free(deque->queue);
         deque->head = next_head; deque->queue = next_queue;
+
     }
 
     return deque;

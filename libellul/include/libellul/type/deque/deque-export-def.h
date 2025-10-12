@@ -6,7 +6,7 @@
 #endif
 
 #define T deque
-#include "interface.h"
+#include "../../interface.h"
 
 typedef struct TYPE(link, datum_t) *TYPE(T, datum_t);
 typedef struct TYPE(link, datum_t) TYPE(, datum_t);

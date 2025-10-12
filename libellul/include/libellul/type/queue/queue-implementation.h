@@ -1,0 +1,6 @@
+#ifndef _QUEUE_IMPLEMENTATION_H__
+#define _QUEUE_IMPLEMENTATION_H__
+
+
+
+#endif

@@ -1,7 +1,7 @@
 #ifndef _INTERFACE_H__
 #define _INTERFACE_H__
 
-#include "../../generics.h"
+#include "generics.h"
 
 #ifndef T
     #error "Undefined data structure !"

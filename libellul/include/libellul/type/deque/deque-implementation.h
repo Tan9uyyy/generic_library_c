@@ -140,8 +140,8 @@ TYPE(T, datum_t) METHOD(T, delete) (TYPE(T, datum_t) deque, void (*destructor) (
     while (!METHOD(T, is_empty) (deque)){
         if (destructor){destructor(deque->prev->datum);} // If the datum needs to be freed we use the destructor given in parameters
         
-        deque = deque_int_pop_back(&storage, deque); // Use of pop_back so the deque head doesn't change
-    } free(deque);
+        deque = METHOD(T, pop_back)(&storage, deque); // Use of pop_back so the deque head doesn't change
+    }
 
     return NULL;
 }

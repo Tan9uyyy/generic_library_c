@@ -18,15 +18,6 @@ void deque_NULL( void ) {
     test_assert( 1, "Can delete NULL as a deque" );
 }
 
-int *rand_ints( size_t n ) {
-  int *vec = calloc( n, sizeof( *vec ) );
-  assert( vec );
-
-  for ( size_t i = 0 ; i < n ; i++ ) vec[ i ] = rand() % 50;
-
-  return vec;
-}
-
 void deque_tests( void ) {
     deque_int_t deque = deque_int_new();
 

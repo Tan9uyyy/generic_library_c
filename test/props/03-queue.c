@@ -83,6 +83,8 @@ void queue_test(void){
 int main (int argc, char *argv[]){
     unit_test(argc, argv);
 
+    test_suite("\n\n\n ================================================ TEST 03-queue.c =========================================================");
+
     queue_NULL();
     queue_test();
 

@@ -99,6 +99,8 @@ void deque_tests( void ) {
 int main (int argc, char *argv[]){
     unit_test(argc, argv);
 
+    test_suite("\n\n\n ================================================ TEST 02-deque.c =========================================================");
+
     deque_NULL();
     deque_tests();
 

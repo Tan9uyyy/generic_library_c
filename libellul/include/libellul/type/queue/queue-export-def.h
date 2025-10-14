@@ -22,6 +22,5 @@ void                METHOD(T, print) (TYPE(T, datum_t) queue);
 
 
 #undef T
-#undef datum_t
 
 #endif

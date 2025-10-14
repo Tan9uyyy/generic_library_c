@@ -9,21 +9,20 @@
 #include "../../interface.h"
 
 typedef struct TYPE(link, datum_t) *TYPE(T, datum_t);
-typedef struct TYPE(link, datum_t) TYPE(, datum_t);
 
-TYPE(T, datum_t)    METHOD(new) (void);
-int                 METHOD(is_empty) (TYPE(T, datum_t) deque);
-datum_t             METHOD(first) (TYPE(T, datum_t) deque);
-datum_t             METHOD(last) (TYPE(T, datum_t) deque);
-TYPE(T, datum_t)    METHOD(push_front) (datum_t value, TYPE(T, datum_t) deque);
-TYPE(T, datum_t)    METHOD(push_back) (datum_t value, TYPE(T, datum_t) deque);
-TYPE(T, datum_t)    METHOD(pop_front) (datum_t *value, TYPE(T, datum_t) deque);
-TYPE(T, datum_t)    METHOD(pop_back) (datum_t *value, TYPE(T, datum_t) deque);
-TYPE(T, datum_t)    METHOD(delete) (TYPE(T, datum_t) list, void (*destructor)(datum_t));
-void                METHOD(print) (TYPE(T, datum_t) deque);
+TYPE(T, datum_t)    METHOD(T, new) (void);
+int                 METHOD(T, is_empty) (TYPE(T, datum_t) deque);
+datum_t             METHOD(T, first) (TYPE(T, datum_t) deque);
+datum_t             METHOD(T, last) (TYPE(T, datum_t) deque);
+TYPE(T, datum_t)    METHOD(T, push_front) (datum_t value, TYPE(T, datum_t) deque);
+TYPE(T, datum_t)    METHOD(T, push_back) (datum_t value, TYPE(T, datum_t) deque);
+TYPE(T, datum_t)    METHOD(T, pop_front) (datum_t *value, TYPE(T, datum_t) deque);
+TYPE(T, datum_t)    METHOD(T, pop_back) (datum_t *value, TYPE(T, datum_t) deque);
+TYPE(T, datum_t)    METHOD(T, delete) (TYPE(T, datum_t) list, void (*destructor)(datum_t));
+void                METHOD(T, print) (TYPE(T, datum_t) deque);
 
 #undef T
-#undef datum_t
+// #undef datum_t
 // #undef TYPENAME
 // #undef TYPE
 // #undef METHOD

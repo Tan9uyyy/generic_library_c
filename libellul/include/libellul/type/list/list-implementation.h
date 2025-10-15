@@ -22,6 +22,8 @@ int METHOD(T, is_empty) (TYPE(T, datum_t) list) {return METHOD(deque, is_empty) 
 
 int METHOD(T, length) (TYPE(T, datum_t) list) {return METHOD(deque, length) (list);}
 
+datum_t METHOD(T, first) (TYPE(T, datum_t) list) {return METHOD(deque, first) (list);}
+
 TYPE(T, datum_t) METHOD(T, push) (datum_t value, TYPE(T, datum_t) list) {return METHOD(deque, push_back) (value, list);}
 
 TYPE(T, datum_t) METHOD(T, pop) (datum_t *value, TYPE(T, datum_t) list) {return METHOD(deque, pop_back) (value, list);}

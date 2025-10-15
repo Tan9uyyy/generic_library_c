@@ -8,6 +8,7 @@
     "C_Cpp.includePath": "${workspaceFolder}/libellul/include",
 	"C_Cpp.errorSquiggles": "enabledIfIncludesResolve",
 	"files.associations": {
-		"type_traits": "c"
+		"type_traits": "c",
+		"list-implementation.h": "c"
 	},
 }

@@ -53,6 +53,25 @@ datum_t METHOD(T, last) (TYPE(T, datum_t) deque){
     return deque->queue->datum;
 }
 
+datum_t METHOD(T, get)(TYPE(T, datum_t) deque, int index){
+    assert(index >= 0 && index < deque->length && "Index out of range !");
+    struct TYPE(link, datum_t) *iterator = deque->head;
+
+    for (int i = 0; i < index; i++, iterator = iterator->next);
+
+    return iterator->datum;
+}
+
+TYPE(T, datum_t) METHOD(T, set)(datum_t value, TYPE(T, datum_t) deque, int index){
+    assert(index >= 0 && index < deque->length && "Index out of range !");
+    struct TYPE(link, datum_t) *iterator = deque->head;
+
+    for (int i = 0; i < index; i++, iterator = iterator->next);
+
+    iterator->datum = value;
+    return deque;
+}
+
 /*
 * Return a pointer to the new head of the deque which datum is the one given in parameter
 */

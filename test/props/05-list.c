@@ -39,7 +39,7 @@ void list_test(void){
     test_assert(!list_int_is_empty(list), "list is not empty after push");
     test_assert( list_int_length(list) == 1, "list length is 1");
 
-    test_assert(list_int_first(list) == input, "Correct push");
+    test_assert(list_int_get(list, 0) == input, "Correct push");
 
 
     test_suite("list pop one element");
@@ -59,7 +59,7 @@ void list_test(void){
         list = list_int_push(inputs[i], list);
         list_int_print(list);
         
-        test_assert(list_int_first(list) == inputs[0], "First value is the first value pushed");
+        test_assert(list_int_get(list, i) == inputs[i], "i-eme value is the i-eme value pushed");
     }
 
     test_assert( list_int_length(list) == 7, "list length is 7");

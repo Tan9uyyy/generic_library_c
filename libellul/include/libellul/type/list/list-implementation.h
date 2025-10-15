@@ -22,7 +22,9 @@ int METHOD(T, is_empty) (TYPE(T, datum_t) list) {return METHOD(deque, is_empty) 
 
 int METHOD(T, length) (TYPE(T, datum_t) list) {return METHOD(deque, length) (list);}
 
-datum_t METHOD(T, first) (TYPE(T, datum_t) list) {return METHOD(deque, first) (list);}
+datum_t METHOD(T, get) (TYPE(T, datum_t) list, int index) {return METHOD(deque, get) (list, index);}
+
+TYPE(T, datum_t) METHOD(T, set) (datum_t value, TYPE(T, datum_t) list, int index) {return METHOD(deque, set) (value, list, index);}
 
 TYPE(T, datum_t) METHOD(T, push) (datum_t value, TYPE(T, datum_t) list) {return METHOD(deque, push_back) (value, list);}
 

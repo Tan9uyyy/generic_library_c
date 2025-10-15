@@ -9,6 +9,11 @@
 	"C_Cpp.errorSquiggles": "enabledIfIncludesResolve",
 	"files.associations": {
 		"type_traits": "c",
-		"list-implementation.h": "c"
+		"list-implementation.h": "c",
+		"array": "c",
+		"memory": "c",
+		"functional": "c",
+		"tuple": "c",
+		"utility": "c"
 	},
 }

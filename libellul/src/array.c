@@ -64,11 +64,11 @@ void   *array_new__( size_t nmemb, size_t size, int strict ) {
   /* Tableau redimensionnable */
   
   int alloc = ARRAY_ALLOC_MIN;
-  if((int)(ARRAY_ALLOC_GEOM*nmemb*size) > ARRAY_ALLOC_MIN){
+  if((int)(ARRAY_ALLOC_GEOM*nmemb) > ARRAY_ALLOC_MIN){
     alloc = (int) (ARRAY_ALLOC_GEOM*nmemb);
   }
-  array_header_t *header = malloc(sizeof(array_header_t) + alloc);
-  header->length=0; header->allocd = alloc; header->strict = strict; header->size = size;
+  array_header_t *header = malloc(sizeof(array_header_t) + alloc*size);
+  header->length=nmemb; header->allocd = alloc; header->strict = strict; header->size = size;
   
   return 1 + header;
 }
@@ -97,24 +97,23 @@ size_t  array_resize__( void **array_ptr, size_t nmemb ) {
   header = ARRAY_HEADER( *array_ptr );
 
   /* TODO: Actually do the resize, update header and *array_ptr */
-
-  assert(nmemb >= header->length && "New size has to be equal or longer than the current number of element.");
   assert(!(header->strict) && "Impossible to resize a strict array.");
 
-  if(header->allocd != nmemb){
-    if((nmemb>header->allocd) || (nmemb<=(int) (header->allocd)/1.69)){
-      void *array = array_new__(nmemb, header->size, header->strict);
-      array_header_t *new_header = ARRAY_HEADER (array);
-      for(int i=0; i<header->length; i+=1){
-        array[i] = *array_ptr[i];
-        new_header->length += 1;
-      }
-      array_delete__(array_ptr);
-      array_ptr = &array;
+  if((nmemb > header->allocd) || (nmemb <= (int)((header->allocd)/1.69))){
+    size_t new_allocd = (int) nmemb*ARRAY_ALLOC_GEOM;
+    if( new_allocd < ARRAY_ALLOC_MIN) { new_allocd = ARRAY_ALLOC_MIN; }
+    if (header->allocd != new_allocd) {
+      void *array = array_new__(new_allocd, header->size, header->strict);
+      assert( array && "allocation array_new failed !");
+      void *array_temp = *array_ptr; //on garde l'adresse de l'ancien tableau pour ne pas oublier de le delete
+      *array_ptr = memcpy(array, *array_ptr, (header->length)*(header->size));
+      array_delete(&array_temp);
+      ARRAY_HEADER(*array_ptr)->length = nmemb;
+      return ARRAY_HEADER(*array_ptr)->length;
     }
   }
-  
-  return header->length;
+  header->length = nmemb;
+  return (header->length);
 }
 
 #undef ARRAY_HEADER

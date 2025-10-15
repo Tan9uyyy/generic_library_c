@@ -69,7 +69,7 @@ int main ( int argc, char *argv[] ) {
   unit_test( argc, argv );
 
   array_NULL();
-  /* array_stack( 13 ); */
+  array_stack( 13 );
 
   exit( EXIT_SUCCESS );
 }

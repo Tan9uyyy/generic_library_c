@@ -16,6 +16,8 @@ void stack_NULL(void) {
 
     stack_int_delete(stack, NULL );
     test_assert( 1, "Can delete NULL as a stack" );
+
+    free(stack);
 }
 
 void stack_test(void){
@@ -80,6 +82,8 @@ void stack_test(void){
     stack = stack_int_delete(stack, NULL);
 
     test_assert(stack_int_is_empty(stack), "stack is empty after deleted");
+
+    free(stack);
 }
 
 int main (int argc, char *argv[]){

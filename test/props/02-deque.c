@@ -14,8 +14,10 @@ void deque_NULL( void ) {
 
     test_assert( deque_int_is_empty( deque ), "NULL is an empty deque" );
 
-    deque_int_delete( deque, NULL ); free(deque);
+    deque_int_delete( deque, NULL );
     test_assert( 1, "Can delete NULL as a deque" );
+
+    free(deque);
 }
 
 void deque_tests( void ) {
@@ -74,7 +76,7 @@ void deque_tests( void ) {
 
     while(!deque_int_is_empty(deque)){
         deque = deque_int_pop_back(&value, deque);
-        deque_int_print(deque); printf("%d\n", value);
+        deque_int_print(deque);
         test_assert( value, "Pop back is correct");
     };
 
@@ -94,6 +96,7 @@ void deque_tests( void ) {
     test_assert(deque_int_is_empty(deque), "Deque is empty after delete");
 
     free(values);
+    free(deque);
 }
 
 int main (int argc, char *argv[]){

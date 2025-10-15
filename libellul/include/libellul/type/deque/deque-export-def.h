@@ -8,7 +8,7 @@
 #define T deque
 #include "../../interface.h"
 
-typedef struct TYPE(link, datum_t) *TYPE(T, datum_t);
+typedef struct TYPE(sentinel, datum_t) *TYPE(T, datum_t);
 
 TYPE(T, datum_t)    METHOD(T, new) (void);
 int                 METHOD(T, is_empty) (TYPE(T, datum_t) deque);

@@ -16,6 +16,8 @@ void queue_NULL(void) {
 
     queue_int_delete( queue, NULL );
     test_assert( 1, "Can delete NULL as a queue" );
+
+    free(queue);
 }
 
 void queue_test(void){
@@ -78,6 +80,8 @@ void queue_test(void){
     queue = queue_int_delete(queue, NULL);
 
     test_assert(queue_int_is_empty(queue), "Queue is empty after deleted");
+
+    free(queue);
 }
 
 int main (int argc, char *argv[]){

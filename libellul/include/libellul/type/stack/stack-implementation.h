@@ -20,6 +20,8 @@ TYPE(T, datum_t) METHOD(T, new) (void) {return METHOD(deque, new) ();}
 
 int METHOD(T, is_empty) (TYPE(T, datum_t) stack) {return METHOD(deque, is_empty) (stack);}
 
+int METHOD(T, length) (TYPE(T, datum_t) stack) {return METHOD(deque, length) (stack);}
+
 datum_t METHOD(T, first) (TYPE(T, datum_t) stack) {return METHOD(deque, first) (stack);}
 
 TYPE(T, datum_t) METHOD(T, push) (datum_t value, TYPE(T, datum_t) stack) {return METHOD(deque, push_front) (value, stack);}

@@ -14,6 +14,7 @@ typedef TYPE(deque, datum_t) TYPE(T, datum_t);
 
 TYPE(T, datum_t)    METHOD(T, new) (void);
 int                 METHOD(T, is_empty) (TYPE(T, datum_t) queue);
+int                 METHOD(T, length) (TYPE(T, datum_t) queue);
 datum_t             METHOD(T, first) (TYPE(T, datum_t) queue);
 TYPE(T, datum_t)    METHOD(T, push) (datum_t value, TYPE(T, datum_t) queue);
 TYPE(T, datum_t)    METHOD(T, pop) (datum_t *value, TYPE(T, datum_t) queue);

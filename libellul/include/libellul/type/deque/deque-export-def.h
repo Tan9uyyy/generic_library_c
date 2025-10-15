@@ -12,6 +12,7 @@ typedef struct TYPE(sentinel, datum_t) *TYPE(T, datum_t);
 
 TYPE(T, datum_t)    METHOD(T, new) (void);
 int                 METHOD(T, is_empty) (TYPE(T, datum_t) deque);
+int                 METHOD(T, length) (TYPE(T, datum_t) deque);
 datum_t             METHOD(T, first) (TYPE(T, datum_t) deque);
 datum_t             METHOD(T, last) (TYPE(T, datum_t) deque);
 TYPE(T, datum_t)    METHOD(T, push_front) (datum_t value, TYPE(T, datum_t) deque);

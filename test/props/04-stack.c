@@ -11,6 +11,7 @@ void stack_NULL(void) {
     stack_int_t stack = stack_int_new();
 
     test_assert( stack_int_is_empty( stack ), "NULL is an empty stack" );
+    test_assert( stack_int_length(stack) == 0, "NULL length is 0");
 
     stack_int_print(stack);
 
@@ -36,6 +37,7 @@ void stack_test(void){
     stack_int_print(stack);
 
     test_assert(!stack_int_is_empty(stack), "stack is not empty after push");
+    test_assert( stack_int_length(stack) == 1, "Stack length is 1");
 
     test_assert(stack_int_first(stack) == input, "Correct push");
 
@@ -59,6 +61,8 @@ void stack_test(void){
         
         test_assert(stack_int_first(stack) == inputs[i], "First value is the last value pushed");
     }
+
+    test_assert( stack_int_length(stack) == 7, "Stack length is 7");
 
 
     test_suite("stack pop multiple elements");

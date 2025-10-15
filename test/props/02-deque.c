@@ -13,6 +13,7 @@ void deque_NULL( void ) {
     test_suite( "NULL as a deque" );
 
     test_assert( deque_int_is_empty( deque ), "NULL is an empty deque" );
+    test_assert( deque_int_length(deque) == 0, "NULL length is 0");
 
     deque_int_delete( deque, NULL );
     test_assert( 1, "Can delete NULL as a deque" );
@@ -34,12 +35,14 @@ void deque_tests( void ) {
     deque_int_print(deque);
 
     test_assert( !deque_int_is_empty(deque), "Deque is not empty");
+    test_assert( deque_int_length(deque) == 1, "Deque length is 1");
     test_assert( values[0] == deque_int_first(deque), "Deque head is correct");
 
     for (int i = 1; i < 4; i++) deque = deque_int_push_front(values[i], deque);
     deque_int_print(deque);
     
     test_assert( !deque_int_is_empty(deque), "Push front multiple values");
+    test_assert( deque_int_length(deque) == 4, "Deque length is 4");
 
     test_suite("Push back in deque");
 
@@ -47,12 +50,14 @@ void deque_tests( void ) {
     deque_int_print(deque);
 
     test_assert( !deque_int_is_empty(deque), "Deque is still not empty");
+    test_assert( deque_int_length(deque) == 5, "Deque length is 5");
     test_assert( values[4] == deque_int_last(deque), "Deque queue is correct");
 
     for (int i = 5; i < 7; i++) deque = deque_int_push_back(values[i], deque);
     deque_int_print(deque);
 
     test_assert( !deque_int_is_empty(deque), "Push back multiple values");
+    test_assert( deque_int_length(deque) == 7, "Deque length is 7");
 
     test_suite("Pop front in deque");
 

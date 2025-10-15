@@ -20,6 +20,8 @@ TYPE(T, datum_t) METHOD(T, new) (void) {return METHOD(deque, new) ();}
 
 int METHOD(T, is_empty) (TYPE(T, datum_t) queue) {return METHOD(deque, is_empty) (queue);}
 
+int METHOD(T, length) (TYPE(T, datum_t) queue) {return METHOD(deque, length) (queue);}
+
 datum_t METHOD(T, first) (TYPE(T, datum_t) queue) {return METHOD(deque, first) (queue);}
 
 TYPE(T, datum_t) METHOD(T, push) (datum_t value, TYPE(T, datum_t) queue) {return METHOD(deque, push_back) (value, queue);}

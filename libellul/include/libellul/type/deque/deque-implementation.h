@@ -39,6 +39,8 @@ TYPE(T, datum_t) METHOD(T, new) (void) {
 
 int METHOD(T, is_empty) (TYPE(T, datum_t) deque){return deque->length == 0;}
 
+int METHOD(T, length) (TYPE(T, datum_t) deque){return deque->length;}
+
 datum_t METHOD(T, first) (TYPE(T, datum_t) deque){
     assert( !METHOD(T, is_empty) (deque) && "Deque is empty !");
 

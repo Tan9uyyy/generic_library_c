@@ -11,6 +11,7 @@ void queue_NULL(void) {
     queue_int_t queue = queue_int_new();
 
     test_assert( queue_int_is_empty( queue ), "NULL is an empty queue" );
+    test_assert( queue_int_length(queue) == 0, "NULL length is 0");
 
     queue_int_print(queue);
 
@@ -36,6 +37,7 @@ void queue_test(void){
     queue_int_print(queue);
 
     test_assert(!queue_int_is_empty(queue), "Queue is not empty after push");
+    test_assert( queue_int_length(queue) == 1, "Queue length is 1");
 
     test_assert(queue_int_first(queue) == input, "Correct push");
 
@@ -59,6 +61,8 @@ void queue_test(void){
         
         test_assert(queue_int_first(queue) == inputs[0], "First value is the first value pushed");
     }
+
+    test_assert( queue_int_length(queue) == 7, "Queue length is 7");
 
 
     test_suite("Queue pop multiple elements");

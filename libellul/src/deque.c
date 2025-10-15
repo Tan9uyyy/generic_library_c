@@ -3,3 +3,5 @@
 #define datum_t int
 #include <../include/libellul/type/deque/deque-implementation.h>
 
+#define datum_t double
+#include <../include/libellul/type/deque/deque-implementation.h>

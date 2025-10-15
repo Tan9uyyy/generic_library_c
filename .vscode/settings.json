@@ -7,4 +7,7 @@
 	"C_Cpp.intelliSenseEngine": "default",
     "C_Cpp.includePath": "${workspaceFolder}/libellul/include",
 	"C_Cpp.errorSquiggles": "enabledIfIncludesResolve",
+	"files.associations": {
+		"type_traits": "c"
+	},
 }

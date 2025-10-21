@@ -60,12 +60,6 @@ TYPE(T, datum_t) METHOD(T, push) (TYPE(T, datum_t) tree, datum_t value, int (*co
     return tree;
 }
 
-TYPE(T, datum_t) METHOD(T, pop_small) (TYPE(T, datum_t) tree, datum_t *value){
-    assert(!METHOD(T, is_empty) (tree) && "Tree is empty !");
-
-    return METHOD(T, pop_small_rec(tree, value));
-}
-
 static inline TYPE(T, datum_t) METHOD(T, pop_small_rec) (TYPE(T, datum_t) tree, datum_t *value){
     if (METHOD(T, is_empty) (tree->ls)){
         *value = METHOD(T, root);
@@ -80,7 +74,7 @@ static inline TYPE(T, datum_t) METHOD(T, pop_small_rec) (TYPE(T, datum_t) tree, 
     return tree;
 }
 
-TYPE(T, datum_t) METHOD(T, pop_big) (TYPE(T, datum_t) tree, datum_t *value){
+TYPE(T, datum_t) METHOD(T, pop_small) (TYPE(T, datum_t) tree, datum_t *value){
     assert(!METHOD(T, is_empty) (tree) && "Tree is empty !");
 
     return METHOD(T, pop_small_rec(tree, value));
@@ -100,6 +94,12 @@ static inline TYPE(T, datum_t) METHOD(T, pop_big_rec) (TYPE(T, datum_t) tree, da
     return tree;
 }
 
+TYPE(T, datum_t) METHOD(T, pop_big) (TYPE(T, datum_t) tree, datum_t *value){
+    assert(!METHOD(T, is_empty) (tree) && "Tree is empty !");
+
+    return METHOD(T, pop_small_rec(tree, value));
+}
+
 int METHOD(T, contains) (TYPE(T, datum_t) tree, datum_t value, int (*comparator)(datum_t, datum_t)){
     if (METHOD(T, is_empty) (tree)){return 0;}
 
@@ -110,8 +110,8 @@ int METHOD(T, contains) (TYPE(T, datum_t) tree, datum_t value, int (*comparator)
     return METHOD(T, contains) (tree->ls, value, *comparator);
 }
 
-void METHOD(T, delete) (TYPE(T, datum_t) tree, void (*destructor)(datum_t)){
-    assert(!METHOD(T, is_empty) (tree) && "Tree is empty");
+TYPE(T, datum_t) METHOD(T, delete) (TYPE(T, datum_t) tree, void (*destructor)(datum_t)){
+    if (METHOD(T, is_empty) (tree)){return NULL;}
 
     if (tree->ls){METHOD(T, delete) (tree->ls, *destructor);}
 
@@ -123,12 +123,6 @@ void METHOD(T, delete) (TYPE(T, datum_t) tree, void (*destructor)(datum_t)){
     return NULL;
 }
 
-void METHOD(T, print) (TYPE(T, datum_t) tree, void (*printer)(datum_t)){
-    printf("{");
-    if (!METHOD(T, is_empty) (tree))METHOD(T, print_rec) (tree, *printer);
-    printf("}");
-}
-
 void METHOD(T, print_rec) (TYPE(T, datum_t) tree, void (*printer)(datum_t)){
     if (METHOD(T, left)){METHOD(T, print_rec) (tree->ls, *printer);}
 
@@ -136,6 +130,12 @@ void METHOD(T, print_rec) (TYPE(T, datum_t) tree, void (*printer)(datum_t)){
     printf(" ");
 
     if (METHOD(T, right)){METHOD(T, print_rec) (tree->rs, *printer);}
+}
+
+void METHOD(T, print) (TYPE(T, datum_t) tree, void (*printer)(datum_t)){
+    printf("{");
+    if (!METHOD(T, is_empty) (tree))METHOD(T, print_rec) (tree, *printer);
+    printf("}");
 }
 
 

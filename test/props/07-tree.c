@@ -18,7 +18,7 @@ void tree_NULL( void ) {
 
     test_assert( tree_int_is_empty( tree ), "NULL is an empty tree" );
 
-    deque_int_delete( tree, NULL );
+    tree_int_delete( tree, NULL );
     test_assert( 1, "Can delete NULL as a deque" );
 
     free(tree);

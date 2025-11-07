@@ -5,7 +5,7 @@
     #error "Undefined datum type !"
 #endif
 
-#define T tree
+#define T binary_tree
 #include "../../interface.h"
 
 #include <stdlib.h>
@@ -22,47 +22,33 @@ TYPE(T, datum_t) METHOD(T, new) (void){return NULL;}
 
 int METHOD(T, is_empty) (TYPE(T, datum_t) tree){return NULL == tree;}
 
-datum_t METHOD(T, root) (TYPE(T, datum_t) tree){
-    assert(!METHOD(T, is_empty) (tree) && "Tree is empty");
-
-    return tree->value;
-}
-
-TYPE(T, datum_t) METHOD(T, left) (TYPE(T, datum_t) tree){
-    assert(!METHOD(T, is_empty) (tree) && "Tree is empty");
-
-    return tree->ls;
-}
-
-TYPE(T, datum_t) METHOD(T, right) (TYPE(T, datum_t) tree){
-    assert(!METHOD(T, is_empty) (tree) && "Tree is empty");
-    
-    return tree->rs;
-}
-
-TYPE(T, datum_t) METHOD(T, push) (TYPE(T, datum_t) tree, datum_t value, int (*comparator) (datum_t, datum_t)){
-    assert(METHOD(T, contains) (tree, value, *comparator) && "Element in tree !");
-
+TYPE(T, datum_t) METHOD(T, rec_push) (TYPE(T, datum_t) tree, datum_t value, int (*comparator) (datum_t, datum_t)){
     if (METHOD(T, is_empty) (tree)){
-        TYPE(T, datum_t) new_node = malloc(sizeof(new_node));
+        struct TYPE(node, datum_t) *new_node = malloc(sizeof(*new_node));
         assert(new_node && "Allocation failed !");
 
         new_node->value = value; new_node->ls = NULL; new_node->rs = NULL;
         return new_node;
     }
 
-    if (comparator(value, METHOD(T, root)) > 0){
-        tree->rs = METHOD(T, push) (tree->rs, value, *comparator);
+    if (comparator(value, tree->value) > 0){
+        tree->rs = METHOD(T, rec_push) (tree->rs, value, *comparator);
         return tree;
     }
 
-    tree->ls = METHOD(T, push) (tree->ls, value, *comparator);
+    tree->ls = METHOD(T, rec_push) (tree->ls, value, *comparator);
     return tree;
+}
+
+TYPE(T, datum_t) METHOD(T, push) (TYPE(T, datum_t) tree, datum_t value, int (*comparator) (datum_t, datum_t)){
+    assert(!(METHOD(T, contains) (tree, value, *comparator)) && "Element in tree !");
+
+    return METHOD(T, rec_push) (tree, value, comparator);
 }
 
 static inline TYPE(T, datum_t) METHOD(T, pop_small_rec) (TYPE(T, datum_t) tree, datum_t *value){
     if (METHOD(T, is_empty) (tree->ls)){
-        *value = METHOD(T, root);
+        *value = tree->value;
 
         TYPE(T, datum_t) new_root = tree->rs;
         free(tree);
@@ -82,7 +68,7 @@ TYPE(T, datum_t) METHOD(T, pop_small) (TYPE(T, datum_t) tree, datum_t *value){
 
 static inline TYPE(T, datum_t) METHOD(T, pop_big_rec) (TYPE(T, datum_t) tree, datum_t *value){
     if (METHOD(T, is_empty) (tree->rs)){
-        *value = METHOD(T, root);
+        *value = tree->value;
 
         TYPE(T, datum_t) new_root = tree->ls;
         free(tree);
@@ -90,22 +76,22 @@ static inline TYPE(T, datum_t) METHOD(T, pop_big_rec) (TYPE(T, datum_t) tree, da
         return new_root;
     }
 
-    tree->rs = METHOD(T, pop_small_rec) (tree->rs, value);
+    tree->rs = METHOD(T, pop_big_rec) (tree->rs, value);
     return tree;
 }
 
 TYPE(T, datum_t) METHOD(T, pop_big) (TYPE(T, datum_t) tree, datum_t *value){
     assert(!METHOD(T, is_empty) (tree) && "Tree is empty !");
 
-    return METHOD(T, pop_small_rec(tree, value));
+    return METHOD(T, pop_big_rec(tree, value));
 }
 
 int METHOD(T, contains) (TYPE(T, datum_t) tree, datum_t value, int (*comparator)(datum_t, datum_t)){
     if (METHOD(T, is_empty) (tree)){return 0;}
 
-    if (comparator(value, METHOD(T, root)) == 0){return 1;}
+    if (comparator(value, tree->value) == 0){return 1;}
 
-    if (comparator(value, METHOD(T, root) > 0)){return METHOD(T, contains) (tree->rs, value, *comparator);}
+    if (comparator(value, tree->value) > 0){return METHOD(T, contains) (tree->rs, value, *comparator);}
 
     return METHOD(T, contains) (tree->ls, value, *comparator);
 }
@@ -117,19 +103,18 @@ TYPE(T, datum_t) METHOD(T, delete) (TYPE(T, datum_t) tree, void (*destructor)(da
 
     if (tree->rs){METHOD(T, delete) (tree->rs, *destructor);}
 
-    if (destructor){destructor(METHOD(T, root) (tree));}
+    if (destructor){destructor(tree->value);}
     free(tree);
 
     return NULL;
 }
 
 void METHOD(T, print_rec) (TYPE(T, datum_t) tree, void (*printer)(datum_t)){
-    if (METHOD(T, left)){METHOD(T, print_rec) (tree->ls, *printer);}
+    if (!METHOD(T, is_empty) (tree->ls)){METHOD(T, print_rec) (tree->ls, *printer); printf(" ");}
 
-    printer(METHOD(T, root));
-    printf(" ");
+    printer(tree->value);
 
-    if (METHOD(T, right)){METHOD(T, print_rec) (tree->rs, *printer);}
+    if (!METHOD(T, is_empty) (tree->rs)){printf(" "); METHOD(T, print_rec) (tree->rs, *printer);}
 }
 
 void METHOD(T, print) (TYPE(T, datum_t) tree, void (*printer)(datum_t)){
@@ -142,6 +127,6 @@ void METHOD(T, print) (TYPE(T, datum_t) tree, void (*printer)(datum_t)){
 
 
 
-
+#undef T
 
 #endif

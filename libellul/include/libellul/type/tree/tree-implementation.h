@@ -41,8 +41,6 @@ TYPE(T, datum_t) METHOD(T, rec_push) (TYPE(T, datum_t) tree, datum_t value, int 
 }
 
 TYPE(T, datum_t) METHOD(T, push) (TYPE(T, datum_t) tree, datum_t value, int (*comparator) (datum_t, datum_t)){
-    assert(!(METHOD(T, contains) (tree, value, *comparator)) && "Element in tree !");
-
     return METHOD(T, rec_push) (tree, value, comparator);
 }
 

@@ -16,7 +16,7 @@ typedef struct TYPE(node, datum_t){
     struct TYPE(node, datum_t) *ls;
     struct TYPE(node, datum_t) *rs;
     datum_t value;
-};
+} TYPE(node, datum_t);
 
 TYPE(T, datum_t) METHOD(T, new) (void){return NULL;}
 

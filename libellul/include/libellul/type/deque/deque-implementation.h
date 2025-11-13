@@ -18,13 +18,13 @@ typedef struct TYPE(link, datum_t){
     struct TYPE(link, datum_t) *next;
     struct TYPE(link, datum_t) *prev;
     datum_t                     datum;
-};
+} TYPE(link, datum_t);
 
 typedef struct TYPE(sentinel, datum_t){
     struct TYPE(link, datum_t) *head;
     struct TYPE(link, datum_t) *queue;
     int                         length;
-};
+} TYPE(sentinel, datum_t);
 
 
 

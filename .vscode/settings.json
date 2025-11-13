@@ -14,6 +14,8 @@
 		"memory": "c",
 		"functional": "c",
 		"tuple": "c",
-		"utility": "c"
+		"utility": "c",
+		"treap-implementation.h": "c",
+		"treap.h": "c"
 	},
 }

@@ -27,7 +27,9 @@ TYPE(T, datum_t) METHOD(T, rec_push) (TYPE(T, datum_t) tree, datum_t value, int 
         struct TYPE(node, datum_t) *new_node = malloc(sizeof(*new_node));
         assert(new_node && "Allocation failed !");
 
-        new_node->value = value; new_node->ls = NULL; new_node->rs = NULL;
+        new_node->value = value;
+        new_node->ls = NULL; new_node->rs = NULL;
+
         return new_node;
     }
 
@@ -108,16 +110,16 @@ TYPE(T, datum_t) METHOD(T, delete) (TYPE(T, datum_t) tree, void (*destructor)(da
 }
 
 void METHOD(T, print_rec) (TYPE(T, datum_t) tree, void (*printer)(datum_t)){
-    if (!METHOD(T, is_empty) (tree->ls)){METHOD(T, print_rec) (tree->ls, *printer); printf(" ");}
+    if (!METHOD(T, is_empty) (tree->ls)){METHOD(T, print_rec) (tree->ls, printer); printf(" ");}
 
     printer(tree->value);
 
-    if (!METHOD(T, is_empty) (tree->rs)){printf(" "); METHOD(T, print_rec) (tree->rs, *printer);}
+    if (!METHOD(T, is_empty) (tree->rs)){printf(" "); METHOD(T, print_rec) (tree->rs, printer);}
 }
 
 void METHOD(T, print) (TYPE(T, datum_t) tree, void (*printer)(datum_t)){
     printf("{");
-    if (!METHOD(T, is_empty) (tree))METHOD(T, print_rec) (tree, *printer);
+    if (!METHOD(T, is_empty) (tree))METHOD(T, print_rec) (tree, printer);
     printf("}");
 }
 

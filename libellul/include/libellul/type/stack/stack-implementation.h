@@ -16,21 +16,21 @@
 
 typedef TYPE(deque, datum_t) TYPE(T, datum_t);
 
-TYPE(T, datum_t) METHOD(T, new) (void) {return METHOD(deque, new) ();}
+TYPE(T, datum_t) METHOD(T, datum_t, new) (void) {return METHOD(deque, datum_t, new) ();}
 
-int METHOD(T, is_empty) (TYPE(T, datum_t) stack) {return METHOD(deque, is_empty) (stack);}
+int METHOD(T, datum_t, is_empty) (TYPE(T, datum_t) stack) {return METHOD(deque, datum_t, is_empty) (stack);}
 
-int METHOD(T, length) (TYPE(T, datum_t) stack) {return METHOD(deque, length) (stack);}
+int METHOD(T, datum_t, length) (TYPE(T, datum_t) stack) {return METHOD(deque, datum_t, length) (stack);}
 
-datum_t METHOD(T, first) (TYPE(T, datum_t) stack) {return METHOD(deque, first) (stack);}
+datum_t METHOD(T, datum_t, first) (TYPE(T, datum_t) stack) {return METHOD(deque, datum_t, first) (stack);}
 
-TYPE(T, datum_t) METHOD(T, push) (datum_t value, TYPE(T, datum_t) stack) {return METHOD(deque, push_front) (value, stack);}
+TYPE(T, datum_t) METHOD(T, datum_t, push) (datum_t value, TYPE(T, datum_t) stack) {return METHOD(deque, datum_t, push_front) (value, stack);}
 
-TYPE(T, datum_t) METHOD(T, pop) (datum_t *value, TYPE(T, datum_t) stack) {return METHOD(deque, pop_front) (value, stack);}
+TYPE(T, datum_t) METHOD(T, datum_t, pop) (datum_t *value, TYPE(T, datum_t) stack) {return METHOD(deque, datum_t, pop_front) (value, stack);}
 
-TYPE(T, datum_t) METHOD(T, delete) (TYPE(T, datum_t) stack, void (*destructor) (datum_t)){return METHOD(deque, delete) (stack, destructor);}
+TYPE(T, datum_t) METHOD(T, datum_t, delete) (TYPE(T, datum_t) stack, void (*destructor) (datum_t)){return METHOD(deque, datum_t, delete) (stack, destructor);}
 
-void METHOD(T, print) (TYPE(T, datum_t) stack){METHOD(deque, print) (stack);}
+void METHOD(T, datum_t, print) (TYPE(T, datum_t) stack){METHOD(deque, datum_t, print) (stack);}
 
 
 #undef T

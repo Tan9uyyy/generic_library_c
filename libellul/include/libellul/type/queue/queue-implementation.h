@@ -16,21 +16,21 @@
 
 typedef TYPE(deque, datum_t) TYPE(T, datum_t);
 
-TYPE(T, datum_t) METHOD(T, new) (void) {return METHOD(deque, new) ();}
+TYPE(T, datum_t) METHOD(T, datum_t, new) (void) {return METHOD(deque, datum_t, new) ();}
 
-int METHOD(T, is_empty) (TYPE(T, datum_t) queue) {return METHOD(deque, is_empty) (queue);}
+int METHOD(T, datum_t, is_empty) (TYPE(T, datum_t) queue) {return METHOD(deque, datum_t, is_empty) (queue);}
 
-int METHOD(T, length) (TYPE(T, datum_t) queue) {return METHOD(deque, length) (queue);}
+int METHOD(T, datum_t, length) (TYPE(T, datum_t) queue) {return METHOD(deque, datum_t, length) (queue);}
 
-datum_t METHOD(T, first) (TYPE(T, datum_t) queue) {return METHOD(deque, first) (queue);}
+datum_t METHOD(T, datum_t, first) (TYPE(T, datum_t) queue) {return METHOD(deque, datum_t, first) (queue);}
 
-TYPE(T, datum_t) METHOD(T, push) (datum_t value, TYPE(T, datum_t) queue) {return METHOD(deque, push_back) (value, queue);}
+TYPE(T, datum_t) METHOD(T, datum_t, push) (datum_t value, TYPE(T, datum_t) queue) {return METHOD(deque, datum_t, push_back) (value, queue);}
 
-TYPE(T, datum_t) METHOD(T, pop) (datum_t *value, TYPE(T, datum_t) queue) {return METHOD(deque, pop_front) (value, queue);}
+TYPE(T, datum_t) METHOD(T, datum_t, pop) (datum_t *value, TYPE(T, datum_t) queue) {return METHOD(deque, datum_t, pop_front) (value, queue);}
 
-TYPE(T, datum_t) METHOD(T, delete) (TYPE(T, datum_t) queue, void (*destructor) (datum_t)){return METHOD(deque, delete) (queue, destructor);}
+TYPE(T, datum_t) METHOD(T, datum_t, delete) (TYPE(T, datum_t) queue, void (*destructor) (datum_t)){return METHOD(deque, datum_t, delete) (queue, destructor);}
 
-void METHOD(T, print) (TYPE(T, datum_t) queue){METHOD(deque, print) (queue);}
+void METHOD(T, datum_t, print) (TYPE(T, datum_t) queue){METHOD(deque, datum_t, print) (queue);}
 
 
 #undef T

@@ -19,12 +19,12 @@ typedef struct TYPE(node, datum_t){
     int priority;
 } TYPE(node, datum_t);
 
-TYPE(T, datum_t) METHOD(T, new) (void){return NULL;}
+TYPE(T, datum_t) METHOD(T, datum_t, new) (void){return NULL;}
 
-int METHOD(T, is_empty) (TYPE(T, datum_t) treap){return NULL == treap;}
+int METHOD(T, datum_t, is_empty) (TYPE(T, datum_t) treap){return NULL == treap;}
 
-TYPE(T, datum_t) METHOD(T, rec_push) (TYPE(T, datum_t) treap, datum_t value, int priority, int (*comparator)(datum_t, datum_t)){
-    if (METHOD(T, is_empty) (treap)){
+TYPE(T, datum_t) METHOD(T, datum_t, rec_push) (TYPE(T, datum_t) treap, datum_t value, int priority, int (*comparator)(datum_t, datum_t)){
+    if (METHOD(T, datum_t, is_empty) (treap)){
         struct TYPE(node, datum_t) *new_node = malloc(sizeof(*new_node));
         assert(new_node && "Allocation failed !");
 
@@ -37,43 +37,43 @@ TYPE(T, datum_t) METHOD(T, rec_push) (TYPE(T, datum_t) treap, datum_t value, int
     // Use of priority_func to randomized the consequences of collisions to balance the tree
     if (0 == comparator(value, treap->value)){
         if (priority > treap->priority){
-            treap->rs = METHOD(T, rec_push) (treap->rs, value, priority, comparator);
+            treap->rs = METHOD(T, datum_t, rec_push) (treap->rs, value, priority, comparator);
             return treap;
         }
 
-        treap->ls = METHOD(T, rec_push) (treap->ls, value, priority, comparator);
+        treap->ls = METHOD(T, datum_t, rec_push) (treap->ls, value, priority, comparator);
         return treap;
     }
 
     if (comparator(value, treap->value) > 0){
-        treap->rs = METHOD(T, rec_push) (treap->rs, value, priority, comparator);
+        treap->rs = METHOD(T, datum_t, rec_push) (treap->rs, value, priority, comparator);
         return treap;
     }
 
-    treap->ls = METHOD(T, rec_push) (treap->ls, value, priority, comparator);
+    treap->ls = METHOD(T, datum_t, rec_push) (treap->ls, value, priority, comparator);
     return treap;
 }
 
-TYPE(T, datum_t) METHOD(T, push) (TYPE(T, datum_t) treap, datum_t value, int (*comparator)(datum_t, datum_t), int (*priority_func)(datum_t)){
-    return METHOD(T, rec_push) (treap, value, priority_func(value), comparator);
+TYPE(T, datum_t) METHOD(T, datum_t, push) (TYPE(T, datum_t) treap, datum_t value, int (*comparator)(datum_t, datum_t), int (*priority_func)(datum_t)){
+    return METHOD(T, datum_t, rec_push) (treap, value, priority_func(value), comparator);
 }
 
-datum_t METHOD(T, max) (TYPE(T, datum_t) treap){
-    assert(!METHOD(T, is_empty) (treap) && "Treap is empty !");
+datum_t METHOD(T, datum_t, max) (TYPE(T, datum_t) treap){
+    assert(!METHOD(T, datum_t, is_empty) (treap) && "Treap is empty !");
 
-    if (METHOD(T, is_empty) (treap->rs)){return treap->value;}
-    return METHOD(T, max) (treap->rs);
+    if (METHOD(T, datum_t, is_empty) (treap->rs)){return treap->value;}
+    return METHOD(T, datum_t, max) (treap->rs);
 }
 
-datum_t METHOD(T, min) (TYPE(T, datum_t) treap){
-    assert(!METHOD(T, is_empty) (treap) && "Treap is empty !");
+datum_t METHOD(T, datum_t, min) (TYPE(T, datum_t) treap){
+    assert(!METHOD(T, datum_t, is_empty) (treap) && "Treap is empty !");
 
-    if (METHOD(T, is_empty) (treap->ls)){return treap->value;}
-    return METHOD(T, min) (treap->ls);
+    if (METHOD(T, datum_t, is_empty) (treap->ls)){return treap->value;}
+    return METHOD(T, datum_t, min) (treap->ls);
 }
 
-TYPE(T, datum_t) METHOD(T, pop_small_rec) (TYPE(T, datum_t) treap, datum_t *value){
-    if (METHOD(T, is_empty) (treap->ls)){
+TYPE(T, datum_t) METHOD(T, datum_t, pop_small_rec) (TYPE(T, datum_t) treap, datum_t *value){
+    if (METHOD(T, datum_t, is_empty) (treap->ls)){
         *value = treap->value;
 
         TYPE(T, datum_t) new_root = treap->rs;
@@ -82,18 +82,18 @@ TYPE(T, datum_t) METHOD(T, pop_small_rec) (TYPE(T, datum_t) treap, datum_t *valu
         return new_root;
     }
 
-    treap->ls = METHOD(T, pop_small_rec) (treap->ls, value);
+    treap->ls = METHOD(T, datum_t, pop_small_rec) (treap->ls, value);
     return treap;
 }
 
-TYPE(T, datum_t) METHOD(T, pop_small) (TYPE(T, datum_t) treap, datum_t *value){
-    assert(!METHOD(T, is_empty) (treap) && "Treap is empty !");
+TYPE(T, datum_t) METHOD(T, datum_t, pop_small) (TYPE(T, datum_t) treap, datum_t *value){
+    assert(!METHOD(T, datum_t, is_empty) (treap) && "Treap is empty !");
 
-    return METHOD(T, pop_small_rec) (treap, value);
+    return METHOD(T, datum_t, pop_small_rec) (treap, value);
 }
 
-TYPE(T, datum_t) METHOD(T, pop_big_rec) (TYPE(T, datum_t) treap, datum_t *value){
-    if (METHOD(T, is_empty) (treap->rs)){
+TYPE(T, datum_t) METHOD(T, datum_t, pop_big_rec) (TYPE(T, datum_t) treap, datum_t *value){
+    if (METHOD(T, datum_t, is_empty) (treap->rs)){
         *value = treap->value;
 
         TYPE(T, datum_t) new_root = treap->ls;
@@ -102,32 +102,32 @@ TYPE(T, datum_t) METHOD(T, pop_big_rec) (TYPE(T, datum_t) treap, datum_t *value)
         return new_root;
     }
 
-    treap->rs = METHOD(T, pop_big_rec) (treap->rs, value);
+    treap->rs = METHOD(T, datum_t, pop_big_rec) (treap->rs, value);
     return treap;
 }
 
-TYPE(T, datum_t) METHOD(T, pop_big) (TYPE(T, datum_t) treap, datum_t *value){
-    assert(!METHOD(T, is_empty) (treap) && "Treap is empty !");
+TYPE(T, datum_t) METHOD(T, datum_t, pop_big) (TYPE(T, datum_t) treap, datum_t *value){
+    assert(!METHOD(T, datum_t, is_empty) (treap) && "Treap is empty !");
 
-    return METHOD(T, pop_big_rec) (treap, value);
+    return METHOD(T, datum_t, pop_big_rec) (treap, value);
 }
 
-int METHOD(T, contains) (TYPE(T, datum_t) treap, datum_t value, int (*comparator)(datum_t, datum_t)){
-    if (METHOD(T, is_empty) (treap)){return 0;}
+int METHOD(T, datum_t, contains) (TYPE(T, datum_t) treap, datum_t value, int (*comparator)(datum_t, datum_t)){
+    if (METHOD(T, datum_t, is_empty) (treap)){return 0;}
 
     if (0 == comparator(value, treap->value)){return 1;}
 
-    if (comparator(value, treap->value) > 0){return METHOD(T, contains) (treap->rs, value, comparator);}
+    if (comparator(value, treap->value) > 0){return METHOD(T, datum_t, contains) (treap->rs, value, comparator);}
 
-    return METHOD(T, contains) (treap->ls, value, comparator);
+    return METHOD(T, datum_t, contains) (treap->ls, value, comparator);
 }
 
-TYPE(T, datum_t) METHOD(T, delete) (TYPE(T, datum_t) treap, void (*destructor)(datum_t)){
-    if (METHOD(T, is_empty) (treap)){return NULL;}
+TYPE(T, datum_t) METHOD(T, datum_t, delete) (TYPE(T, datum_t) treap, void (*destructor)(datum_t)){
+    if (METHOD(T, datum_t, is_empty) (treap)){return NULL;}
 
-    if (!METHOD(T, is_empty) (treap->ls)){METHOD(T, delete) (treap->ls, destructor);}
+    if (!METHOD(T, datum_t, is_empty) (treap->ls)){METHOD(T, datum_t, delete) (treap->ls, destructor);}
 
-    if (!METHOD(T, is_empty) (treap->rs)){METHOD(T, delete) (treap->rs, destructor);}
+    if (!METHOD(T, datum_t, is_empty) (treap->rs)){METHOD(T, datum_t, delete) (treap->rs, destructor);}
 
     if (destructor){destructor(treap->value);}
     free(treap);
@@ -135,17 +135,17 @@ TYPE(T, datum_t) METHOD(T, delete) (TYPE(T, datum_t) treap, void (*destructor)(d
     return NULL;
 }
 
-void METHOD(T, print_rec) (TYPE(T, datum_t) treap, void (*printer)(datum_t)){
-    if (!METHOD(T, is_empty) (treap->ls)){METHOD(T, print_rec) (treap->ls, printer); printf(" ");}
+void METHOD(T, datum_t, print_rec) (TYPE(T, datum_t) treap, void (*printer)(datum_t)){
+    if (!METHOD(T, datum_t, is_empty) (treap->ls)){METHOD(T, datum_t, print_rec) (treap->ls, printer); printf(" ");}
 
     printer(treap->value);
 
-    if (!METHOD(T, is_empty) (treap->rs)){printf(" "); METHOD(T, print_rec) (treap->rs, printer);}
+    if (!METHOD(T, datum_t, is_empty) (treap->rs)){printf(" "); METHOD(T, datum_t, print_rec) (treap->rs, printer);}
 }
 
-void METHOD(T, print) (TYPE(T, datum_t) treap, void (*printer)(datum_t)){
+void METHOD(T, datum_t, print) (TYPE(T, datum_t) treap, void (*printer)(datum_t)){
     printf("{");
-    if (!METHOD(T, is_empty) (treap)){METHOD(T, print_rec) (treap, printer);}
+    if (!METHOD(T, datum_t, is_empty) (treap)){METHOD(T, datum_t, print_rec) (treap, printer);}
     printf("}");
 }
 

@@ -18,6 +18,8 @@
 		"treap-implementation.h": "c",
 		"treap.h": "c",
 		"tree-export-def.h": "c",
-		"treeset-export-def.h": "c"
+		"treeset-export-def.h": "c",
+		"libellul.h": "c",
+		"limits": "c"
 	},
 }

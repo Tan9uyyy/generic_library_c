@@ -9,7 +9,7 @@ void printer(int value){printf("%d", value);}
 
 int comparator(int v1, int v2){return v1 - v2;}
 
-int priority_func(int i){return rand() % 100 * i;}
+int priority_func(int i){return i;}
 
 void treap_NULL( void ) {
     treap_int_t treap = treap_int_new();

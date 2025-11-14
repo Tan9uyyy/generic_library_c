@@ -16,73 +16,77 @@
 
 typedef TYPE(treap, datum_t) TYPE(T, datum_t);
 
-TYPE(T, datum_t) METHOD(T, new)(){return METHOD(treap, new)();}
+TYPE(T, datum_t) METHOD(T, datum_t, new)(){return NULL;}
 
-int METHOD(T, is_empty)(TYPE(T, datum_t) treeset){return METHOD(treap, is_empty)(treeset);}
+int METHOD(T, datum_t, is_empty)(TYPE(T, datum_t) treeset){return NULL == treeset;}
 
-int METHOD(T, contains)(TYPE(T, datum_t) treeset, datum_t value, int (*comparator)(datum_t, datum_t)){return METHOD(treap, contains)(treeset, value, comparator);}
+int METHOD(T, datum_t, contains)(TYPE(T, datum_t) treeset, datum_t value, int (*comparator)(datum_t, datum_t)){
+    if (NULL == treeset){return 0;}
+    
+    return METHOD(treap, datum_t, contains)(treeset, value, comparator);
+}
 
-TYPE(T, datum_t) METHOD(T, add)(TYPE(T, datum_t) treeset, datum_t value, int (*comparator)(datum_t, datum_t), int (*priority_func)(datum_t)){
-    if (!METHOD(T, contains)(treeset, value, comparator)){
-        return METHOD(treap, push)(treeset, value, comparator, priority_func);
+TYPE(T, datum_t) METHOD(T, datum_t, add)(TYPE(T, datum_t) treeset, datum_t value, int (*comparator)(datum_t, datum_t), int (*priority_func)(datum_t)){
+    if (!METHOD(T, datum_t, contains)(treeset, value, comparator)){
+        return METHOD(treap, datum_t, push)(treeset, value, comparator, priority_func);
     }
 
     return treeset;
 }
 
-datum_t METHOD(T, upper_bound)(TYPE(T, datum_t) treeset){return METHOD(treap, max)(treeset);}
+datum_t METHOD(T, datum_t, upper_bound)(TYPE(T, datum_t) treeset){return METHOD(treap, datum_t, max)(treeset);}
 
-datum_t METHOD(T, lower_bound)(TYPE(T, datum_t) treeset){return METHOD(treap, min)(treeset);}
+datum_t METHOD(T, datum_t, lower_bound)(TYPE(T, datum_t) treeset){return METHOD(treap, datum_t, min)(treeset);}
 
-TYPE(T, datum_t) METHOD(T, remove_max)(TYPE(T, datum_t) treeset){datum_t buffer = 0; return METHOD(treap, pop_big) (treeset, &buffer);}
+TYPE(T, datum_t) METHOD(T, datum_t, remove_max)(TYPE(T, datum_t) treeset){datum_t buffer = 0; return METHOD(treap, datum_t, pop_big) (treeset, &buffer);}
 
-TYPE(T, datum_t) METHOD(T, remove_min)(TYPE(T, datum_t) treeset){datum_t buffer = 0; return METHOD(treap, pop_small) (treeset, &buffer);}
+TYPE(T, datum_t) METHOD(T, datum_t, remove_min)(TYPE(T, datum_t) treeset){datum_t buffer = 0; return METHOD(treap, datum_t, pop_small) (treeset, &buffer);}
 
-TYPE(T, datum_t) METHOD(T, reunion)(TYPE(T, datum_t) treeset1, TYPE(T, datum_t) treeset2, int (*comparator)(datum_t, datum_t), int (*priority_func)(datum_t)){
+TYPE(T, datum_t) METHOD(T, datum_t, reunion)(TYPE(T, datum_t) *treeset1, TYPE(T, datum_t) *treeset2, int (*comparator)(datum_t, datum_t), int (*priority_func)(datum_t)){
     datum_t value;
-    TYPE(T, datum_t) new_treeset1;
-    TYPE(T, datum_t) new_treeset2;
-    TYPE(T, datum_t) res_treeset;
+    TYPE(T, datum_t) new_treeset1 = METHOD(T, datum_t, new)();
+    TYPE(T, datum_t) new_treeset2 = METHOD(T, datum_t, new)();
+    TYPE(T, datum_t) res_treeset = METHOD(T, datum_t, new)();
 
-    while (!METHOD(T, is_empty)(treeset1)){
-        treeset1 = METHOD(treap, pop_small) (treeset1, &value);
-        new_treeset1 = METHOD(T, add) (treeset1, value, comparator, priority_func);
+    while (!METHOD(T, datum_t, is_empty)(*treeset1)){
+        *treeset1 = METHOD(treap, datum_t, pop_small) (*treeset1, &value);
+        new_treeset1 = METHOD(T, datum_t, add) (new_treeset1, value, comparator, priority_func);
 
-        res_treeset = METHOD(T, add) (res_treeset, value, comparator, priority_func);
+        res_treeset = METHOD(T, datum_t, add) (res_treeset, value, comparator, priority_func);
     }
 
-    while (!METHOD(T, is_empty)(treeset2)){
-        treeset2 = METHOD(treap, pop_big) (treeset2, &value);
-        new_treeset2 = METHOD(T, add) (treeset2, value, comparator, priority_func);
+    while (!METHOD(T, datum_t, is_empty)(*treeset2)){
+        *treeset2 = METHOD(treap, datum_t, pop_big) (*treeset2, &value);
+        new_treeset2 = METHOD(T, datum_t, add) (new_treeset2, value, comparator, priority_func);
 
-        res_treeset = METHOD(T, add) (res_treeset, value, comparator, priority_func);
+        res_treeset = METHOD(T, datum_t, add) (res_treeset, value, comparator, priority_func);
     }
 
-    treeset1 = new_treeset1; treeset2 = new_treeset2;
+    *treeset1 = new_treeset1; *treeset2 = new_treeset2;
     return res_treeset;
 }
 
-TYPE(T, datum_t) METHOD(T, inter)(TYPE(T, datum_t) treeset1, TYPE(T, datum_t) treeset2, int (*comparator)(datum_t, datum_t), int (*priority_func)(datum_t)){
+TYPE(T, datum_t) METHOD(T, datum_t, inter)(TYPE(T, datum_t) *treeset1, TYPE(T, datum_t) *treeset2, int (*comparator)(datum_t, datum_t), int (*priority_func)(datum_t)){
     datum_t value;
-    TYPE(T, datum_t) new_treeset2;
-    TYPE(T, datum_t) res_treeset;
+    TYPE(T, datum_t) new_treeset2 = METHOD(T, datum_t, new)();
+    TYPE(T, datum_t) res_treeset = METHOD(T, datum_t, new)();
 
-    while (!METHOD(T, is_empty)(treeset2)){
-        treeset2 = METHOD(treap, pop_small) (treeset2, &value);
-        new_treeset2 = METHOD(T, add) (treeset1, value, comparator, priority_func);
+    while (!METHOD(T, datum_t, is_empty)(*treeset2)){
+        *treeset2 = METHOD(treap, datum_t, pop_small) (*treeset2, &value);
+        new_treeset2 = METHOD(T, datum_t, add) (new_treeset2, value, comparator, priority_func);
 
-        if (METHOD(T, contains)(treeset1, value, comparator)){
-            res_treeset = METHOD(T, add) (res_treeset, value, comparator, priority_func);
+        if (METHOD(T, datum_t, contains)(*treeset1, value, comparator)){
+            res_treeset = METHOD(T, datum_t, add) (res_treeset, value, comparator, priority_func);
         }
     }
 
-    treeset2 = new_treeset2;
+    *treeset2 = new_treeset2;
     return res_treeset;
 }
 
-TYPE(T, datum_t) METHOD(T, delete)(TYPE(T, datum_t) treeset, void (*destructor)(datum_t)){return METHOD(treap, delete)(treeset, destructor);}
+TYPE(T, datum_t) METHOD(T, datum_t, delete)(TYPE(T, datum_t) treeset, void (*destructor)(datum_t)){return METHOD(treap, datum_t, delete)(treeset, destructor);}
 
-void METHOD(T, print)(TYPE(T, datum_t) treeset, void (*printer)(datum_t)){METHOD(treap, print) (treeset, printer);}
+void METHOD(T, datum_t, print)(TYPE(T, datum_t) treeset, void (*printer)(datum_t)){METHOD(treap, datum_t, print) (treeset, printer);}
 
 
 

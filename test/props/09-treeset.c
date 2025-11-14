@@ -105,6 +105,11 @@ void treeset_tests(){
     treeset_union = treeset_int_delete(treeset_union, NULL);
     treeset_inter = treeset_int_delete(treeset_inter, NULL);
 
+    test_assert(treeset_int_is_empty(treeset1), "treeset1 deleted");
+    test_assert(treeset_int_is_empty(treeset2), "treeset1 deleted");
+    test_assert(treeset_int_is_empty(treeset_union), "treeset_union deleted");
+    test_assert(treeset_int_is_empty(treeset_inter), "treeset_inter deleted");
+
     free(treeset1); free(treeset2); free(treeset_union); free(treeset_inter);
 }
 

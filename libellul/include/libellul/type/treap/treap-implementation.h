@@ -58,6 +58,20 @@ TYPE(T, datum_t) METHOD(T, push) (TYPE(T, datum_t) treap, datum_t value, int (*c
     return METHOD(T, rec_push) (treap, value, priority_func(value), comparator);
 }
 
+datum_t METHOD(T, max) (TYPE(T, datum_t) treap){
+    assert(!METHOD(T, is_empty) (treap) && "Treap is empty !");
+
+    if (METHOD(T, is_empty) (treap->rs)){return treap->value;}
+    return METHOD(T, max) (treap->rs);
+}
+
+datum_t METHOD(T, min) (TYPE(T, datum_t) treap){
+    assert(!METHOD(T, is_empty) (treap) && "Treap is empty !");
+
+    if (METHOD(T, is_empty) (treap->ls)){return treap->value;}
+    return METHOD(T, min) (treap->ls);
+}
+
 TYPE(T, datum_t) METHOD(T, pop_small_rec) (TYPE(T, datum_t) treap, datum_t *value){
     if (METHOD(T, is_empty) (treap->ls)){
         *value = treap->value;

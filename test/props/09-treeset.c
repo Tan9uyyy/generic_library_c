@@ -91,10 +91,12 @@ void treeset_tests(){
     printf("Treeset_inter : "); treeset_int_print(treeset_inter, printer); printf("\n");
 
     printf("Union bounds : %d, %d\n", treeset_int_lower_bound(treeset_union), treeset_int_upper_bound(treeset_union));
+    printf("Expected bounds : %d, %d\n", values1[1], values2[3]);
     printf("Intersect bounds : %d, %d\n", treeset_int_lower_bound(treeset_inter), treeset_int_upper_bound(treeset_inter));
+    printf("Expected bounds : %d, %d\n", values1[3], values2[1]);
 
     test_assert(treeset_int_lower_bound(treeset_union) == values1[1] && treeset_int_upper_bound(treeset_union) == values2[3], "Treesets union is correct");
-    test_assert(treeset_int_lower_bound(treeset_inter) == values1[3] && treeset_int_upper_bound(treeset_union) == values2[1], "Treesets intersection is correct");
+    test_assert(treeset_int_lower_bound(treeset_inter) == values1[3] && treeset_int_upper_bound(treeset_inter) == values2[1], "Treesets intersection is correct");
 
     test_suite("Full treeset delete");
 

@@ -1,12 +1,13 @@
 #ifndef _QUEUE_EXPORT_DEF_H__
 #define _QUEUE_EXPORT_DEF_H__
 
-#include "../deque.h"
-#include "../../interface.h"
 
 #ifndef datum_t
     #error "Undefined datum type !"
 #endif
+
+#include "../deque.h"
+#include "../../interface.h"
 
 #define T queue
 

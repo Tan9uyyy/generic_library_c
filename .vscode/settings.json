@@ -20,6 +20,7 @@
 		"tree-export-def.h": "c",
 		"treeset-export-def.h": "c",
 		"libellul.h": "c",
-		"limits": "c"
+		"limits": "c",
+		"interface.h": "c"
 	},
 }

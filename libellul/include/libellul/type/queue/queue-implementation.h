@@ -1,6 +1,7 @@
 #ifndef _QUEUE_IMPLEMENTATION_H__
 #define _QUEUE_IMPLEMENTATION_H__
 
+
 #ifndef datum_t
     #error "Undefined datum type !"
 #endif

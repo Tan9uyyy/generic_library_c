@@ -11,8 +11,12 @@ void   *array_new__( size_t nmemb, size_t size, int strict );
 void    array_delete__( void **array_ptr );
 #define array_delete( array_ptr ) array_delete__( (void**)(array_ptr) )
 
+/* Retourne le nombre d'éléments dans le tableau */
 size_t  array_length( void *array );
 #define array_is_empty( array ) ( 0 == array_length( array ) )
+
+/* Retourne la taille réelle du tableau alloué */
+size_t array_size( void *array );
 
 size_t  array_resize__( void **array_ptr, size_t nmemb );
 #define array_resize( array_ptr, nmemb ) array_resize__( (void**)(array_ptr), nmemb )

@@ -88,6 +88,10 @@ size_t  array_length( void *array ) {
   return array ? ARRAY_HEADER( array )->length : 0;
 }
 
+size_t array_size( void *array ) {
+  return array ? ARRAY_HEADER( array )->size : 0;
+}
+
 
 size_t  array_resize__( void **array_ptr, size_t nmemb ) {
   array_header_t *header;

@@ -20,6 +20,7 @@ TYPE(T, datum_t)
 METHOD(T, datum_t, set)(datum_t value, TYPE(T, datum_t) list, int index);
 TYPE(T, datum_t) METHOD(T, datum_t, push)(datum_t value, TYPE(T, datum_t) list);
 TYPE(T, datum_t) METHOD(T, datum_t, pop)(datum_t *value, TYPE(T, datum_t) list);
+TYPE(T, datum_t) METHOD(T, datum_t, remove)(datum_t *value, TYPE(T, datum_t) list);
 TYPE(T, datum_t)
 METHOD(T, datum_t, delete)(TYPE(T, datum_t) list, void (*destructor)(datum_t));
 int METHOD(T, datum_t, contains)(TYPE(T, datum_t) list, datum_t value,

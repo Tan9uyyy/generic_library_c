@@ -33,6 +33,7 @@
 		"b-tree-implementation.h": "c",
 		"stack.h": "c",
 		"assert.h": "c",
-		"deque": "c"
+		"deque": "c",
+		"treeset-implementation.h": "c"
 	},
 }

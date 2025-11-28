@@ -1,10 +1,12 @@
 #ifndef _DEQUE_H__
 #define _DEQUE_H__
 
-#define datum_t int
-#include "deque/deque-export-def.h"
+#ifdef deque_datum_t
+    #include "deque/deque-export-def.h"
+    #undef deque_datum_t
+#endif
 
-// #define datum_t double
-// #include "deque/deque-export-def.h"
+#define deque_datum_t int
+#include "deque/deque-export-def.h"
 
 #endif

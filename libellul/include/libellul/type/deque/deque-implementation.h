@@ -246,7 +246,8 @@ TYPE(T, datum_t)    METHOD(T, datum_t, remove)(datum_t value, TYPE(T, datum_t) d
     // Searching for the element to remove
     do {
       if (comparator(iterator->datum, value)) {
-        TYPE(deque, datum_t) sentinelle = {iterator, previous, 2};
+        TYPE(deque, datum_t) sentinelle = METHOD(T, datum_t, new);
+        sentinelle->head = iterator; sentinelle->queue = previous; sentinelle->length = 2;
         previous->next = METHOD(T, datum_t, pop_front)(&storage, sentinelle, destructor)->head; // Removing the value
       }
       previous = iterator;

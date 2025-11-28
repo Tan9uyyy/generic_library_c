@@ -31,6 +31,8 @@
 		"stack-export-def.h": "c",
 		"treap-export-def.h": "c",
 		"b-tree-implementation.h": "c",
-		"stack.h": "c"
+		"stack.h": "c",
+		"assert.h": "c",
+		"deque": "c"
 	},
 }

@@ -1,12 +1,13 @@
 #ifndef _DEQUE_EXPORT_DEF_H__
 #define _DEQUE_EXPORT_DEF_H__
 
+#include "../../interface.h"
+
 #ifndef datum_t
-#error "Undefined datum type !"
+    #error "Undefined datum type !"
 #endif
 
 #define T deque
-#include "../../interface.h"
 
 typedef struct TYPE(sentinel, datum_t) *TYPE(T, datum_t);
 
@@ -27,9 +28,5 @@ TYPE(T, datum_t)    METHOD(T, datum_t, delete)(TYPE(T, datum_t) deque, void (*de
 void                METHOD(T, datum_t, print)(TYPE(T, datum_t) deque);
 
 #undef T
-// #undef datum_t
-// #undef TYPENAME
-// #undef TYPE
-// #undef METHOD
 
 #endif

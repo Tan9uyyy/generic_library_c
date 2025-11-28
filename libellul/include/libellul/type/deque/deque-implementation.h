@@ -1,16 +1,13 @@
 #ifndef DEQUE_IMPLEMENTATION_H__
 #define DEQUE_IMPLEMENTATION_H__
 
-#ifndef datum_t
-#error "Undefined datum type !"
-#endif
-
-#define T deque
-#include "../../interface.h"
-
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "deque-export-def.h"
+
+#define T deque
 
 typedef struct TYPE(link, datum_t) {
   struct TYPE(link, datum_t) * next;
@@ -230,30 +227,29 @@ int METHOD(T, datum_t, contains)(TYPE(T, datum_t) deque, datum_t obj, int (*comp
 
 TYPE(T, datum_t)    METHOD(T, datum_t, remove)(datum_t value, TYPE(T, datum_t) deque, int (*comparator)(datum_t, datum_t), void (*destructor)(datum_t)) {
   datum_t storage;
+
+  // Deque empty
   if (METHOD(T, datum_t, is_empty)(deque)) return NULL;
   
   // Only one element
-  if (deque->length == 1) {
-    if(comparator(deque->head->datum, value)) {
-      return METHOD(T, datum_t, pop_back)(&storage, deque, destructor);
-    }
-  }
-  // Multiple elements
-  else {
-    TYPE(link, datum_t) *iterator = deque->head;
-    TYPE(link, datum_t) *previous = deque->queue;
+  if (1 == deque->length && comparator(deque->head->datum, value)){return METHOD(T, datum_t, pop_back)(&storage, deque, destructor);}
 
-    // Searching for the element to remove
-    do {
-      if (comparator(iterator->datum, value)) {
-        TYPE(deque, datum_t) sentinelle = METHOD(T, datum_t, new);
-        sentinelle->head = iterator; sentinelle->queue = previous; sentinelle->length = 2;
-        previous->next = METHOD(T, datum_t, pop_front)(&storage, sentinelle, destructor)->head; // Removing the value
-      }
-      previous = iterator;
-      iterator = iterator->next;
-    } while (iterator != deque->head);
-  }
+  // Multiple elements
+  TYPE(link, datum_t) *iterator = deque->head->next;
+
+  while(0 != comparator(iterator->datum, value) && iterator != deque->head){iterator = iterator->next;}
+
+  if (value != iterator->datum) {return NULL;} // Value not in deque
+  if (iterator == deque->head)  {return METHOD(T, datum_t, pop_front) (&storage, deque, destructor);} // Value at front
+  if (iterator == deque->queue) {return METHOD(T, datum_t, pop_back)  (&storage, deque, destructor);} // Value at back
+
+  TYPE(link, datum_t) *deque_head = deque->head; // If value is neither at the front nor the back
+  TYPE(link, datum_t) *deque_queue = deque->queue;
+  deque->head = iterator; deque->queue = iterator->prev;
+
+  deque = METHOD(T, datum_t, pop_front)(&storage, deque, destructor);
+  deque->head = deque_head; deque->queue = deque_queue;
+
   return deque;
 }
 

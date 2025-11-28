@@ -72,7 +72,7 @@ void deque_tests(void) {
 
   int value = 0;
   while (!deque_int_is_empty(deque)) {
-    deque = deque_int_pop_front(&value, deque);
+    deque = deque_int_pop_front(&value, deque, NULL);
     deque_int_print(deque);
     test_assert(value, "Pop front is correct");
   };
@@ -89,7 +89,7 @@ void deque_tests(void) {
   deque_int_print(deque);
 
   while (!deque_int_is_empty(deque)) {
-    deque = deque_int_pop_back(&value, deque);
+    deque = deque_int_pop_back(&value, deque, NULL);
     deque_int_print(deque);
     test_assert(value, "Pop back is correct");
   };

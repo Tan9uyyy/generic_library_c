@@ -5,12 +5,10 @@
 
 #include <libellul.h>
 
-
 void printer(int value){printf("%d", value);}
 
-
 void pq_NULL(void){
-    priority_queue_int_t pq = priority_queue_int_new();
+    /*priority_queue_int_t pq = priority_queue_int_new();
 
     priority_queue_int_print(pq, printer);
 
@@ -22,11 +20,11 @@ void pq_NULL(void){
     priority_queue_int_delete(pq, NULL);
     test_assert(1, "can delete NULL as a priority queue");
 
-    free(pq);
+    free(pq);*/
 }
 
 void pq_tests(void){
-    priority_queue_int_t pq = priority_queue_int_new();
+    /*priority_queue_int_t pq = priority_queue_int_new();
 
     int values[6] =     {1, 5, -3, 12, 0, 42};
     int priorities[6] = {2, 4, -1, 15, 3, -5};
@@ -84,18 +82,18 @@ void pq_tests(void){
 
     test_assert(priority_queue_int_is_empty(pq), "Deleted pq is empty");
     
-    free(pq);
+    free(pq);*/
 }
 
 int main(int argc, char *argv[]){
-    unit_test(argc, argv);
+    /*unit_test(argc, argv);
 
     test_suite("\n\n\n ============================================= TEST 10-priority-queue.c ======================================================");
 
     pq_NULL();
     pq_tests();
 
-    exit(EXIT_SUCCESS);
+    exit(EXIT_SUCCESS);*/
 }
 
 

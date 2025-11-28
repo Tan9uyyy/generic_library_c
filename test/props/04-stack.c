@@ -44,7 +44,7 @@ void stack_test(void){
 
     test_suite("stack pop one element");
 
-    stack = stack_int_pop(&output, stack);
+    stack = stack_int_pop(&output, stack, NULL);
 
     stack_int_print(stack);
 
@@ -68,7 +68,7 @@ void stack_test(void){
     test_suite("stack pop multiple elements");
 
     for (int i = 0; i < 7; i++){
-        stack = stack_int_pop(&outputs[i], stack);
+        stack = stack_int_pop(&outputs[i], stack, NULL);
         stack_int_print(stack);
         
         test_assert(outputs[i] == inputs[6 - i], "Popped value is correct");

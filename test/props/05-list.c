@@ -44,7 +44,7 @@ void list_test(void) {
 
   test_suite("list pop one element");
 
-  list = list_int_pop(&output, list);
+  list = list_int_pop(&output, list, NULL);
 
   list_int_print(list);
 
@@ -67,7 +67,7 @@ void list_test(void) {
   test_suite("list pop multiple elements");
 
   for (int i = 0; i < 7; i++) {
-    list = list_int_pop(&outputs[i], list);
+    list = list_int_pop(&outputs[i], list, NULL);
     list_int_print(list);
 
     test_assert(outputs[i] == inputs[6 - i], "Popped value is correct");

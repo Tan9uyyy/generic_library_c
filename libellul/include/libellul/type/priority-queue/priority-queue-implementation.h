@@ -69,13 +69,16 @@ TYPE(T, datum_t) METHOD(T, datum_t, push)(datum_t value, int priority, TYPE(T, d
 
     if (priority > pq->head->priority){pq->head = new_elem;}
     pq->length++;
+
+    return pq;
 }
 
-TYPE(T, datum_t) METHOD(T, datum_t, pop)(datum_t *value, TYPE(T, datum_t) pq){
+TYPE(T, datum_t) METHOD(T, datum_t, pop)(datum_t *value, TYPE(T, datum_t) pq, void (*destructor)(datum_t)){
     assert(!METHOD(T, datum_t, is_empty) (pq) && "Priority queue is empty !");
 
     if (1 == pq->length){
         *value = pq->head->datum;
+        if (destructor){destructor(pq->head->datum);}
         free(pq->head);
         pq->head = NULL;
         pq->length--;
@@ -88,8 +91,32 @@ TYPE(T, datum_t) METHOD(T, datum_t, pop)(datum_t *value, TYPE(T, datum_t) pq){
     to_rem->prev->next = to_rem->next;
     to_rem->next->prev = to_rem->prev;
     pq->head = to_rem->next;
+    if (destructor){destructor(to_rem->datum);}
     free(to_rem);
     pq->length--;
+
+    return pq;
+}
+
+TYPE(T, datum_t) METHOD(T, datum_t, delete)(TYPE(T, datum_t) pq, void (*destructor)(datum_t)){
+  datum_t storage = 0;
+  while (!METHOD(T, datum_t, is_empty) (pq)){pq = METHOD(T, datum_t, pop)(&storage, pq, destructor);}
+
+  return pq;
+}
+
+void METHOD(T, datum_t, print)(TYPE(T, datum_t) pq, void (*printer)(datum_t)){
+  printf("{");
+
+  TYPE(p_link, datum_t) *elem = pq->head;
+  for (int i = 0; i < pq->length; i++){
+    printf(" (");
+    printer(elem->datum);
+    printf(", %d)", elem->priority);
+    elem = elem->next;
+  }
+
+  printf("}\n");
 }
 
 

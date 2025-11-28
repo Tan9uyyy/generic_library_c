@@ -1,7 +1,7 @@
-#include <libellul/type/tree.h>
+#include <libellul/type/b-tree.h>
 
-#define datum_t int
-#include <libellul/type/tree/tree-implementation.h>
+#define b_tree_datum_t int
+#include <libellul/type/b-tree/b-tree-implementation.h>
 
 #include <libellul.h>
 

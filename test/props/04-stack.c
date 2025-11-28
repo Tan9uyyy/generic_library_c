@@ -1,6 +1,6 @@
 #include <libellul/type/stack.h>
 
-#define datum_t int
+#define stack_datum_t int
 #include <libellul/type/stack/stack-implementation.h>
 
 #include <libellul.h>

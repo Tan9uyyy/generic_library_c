@@ -1,26 +1,26 @@
 #ifndef _TREAP_EXPORT_DEF_H__
 #define _TREAP_EXPORT_DEF_H__
 
-#ifndef datum_t
+#ifndef treap_datum_t
     #error "Undefined datum type !"
 #endif
 
 #define T treap
 #include "../../interface.h"
 
-typedef struct TYPE(node, datum_t) *TYPE(T, datum_t);
-typedef struct TYPE(node, datum_t) *TYPE(treap, datum_t);
+typedef struct TYPE(node, treap_datum_t) *TYPE(T, treap_datum_t);
+typedef struct TYPE(node, treap_datum_t) *TYPE(treap, treap_datum_t);
 
-TYPE(T, datum_t)    METHOD(T, datum_t, new) (void);
-int                 METHOD(T, datum_t, is_empty) (TYPE(T, datum_t) treap);
-TYPE(T, datum_t)    METHOD(T, datum_t, push) (TYPE(T, datum_t) treap, datum_t value, int (*comparator)(datum_t, datum_t), int (*priority_func)(datum_t));
-datum_t             METHOD(T, datum_t, min) (TYPE(T, datum_t) treap);
-datum_t             METHOD(T, datum_t, max) (TYPE(T, datum_t) treap);
-TYPE(T, datum_t)    METHOD(T, datum_t, pop_small) (TYPE(T, datum_t) treap, datum_t *value);
-TYPE(T, datum_t)    METHOD(T, datum_t, pop_big) (TYPE(T, datum_t) treap, datum_t *value);
-int                 METHOD(T, datum_t, contains) (TYPE(T, datum_t) treap, datum_t value, int (*comparator)(datum_t, datum_t));
-TYPE(T, datum_t)    METHOD(T, datum_t, delete) (TYPE(T, datum_t) treap, void (*destructor)(datum_t));
-void                METHOD(T, datum_t, print) (TYPE(T, datum_t) treap, void (*printer)(datum_t));
+TYPE(T, treap_datum_t)    METHOD(T, treap_datum_t, new) (void);
+int                 METHOD(T, treap_datum_t, is_empty) (TYPE(T, treap_datum_t) treap);
+TYPE(T, treap_datum_t)    METHOD(T, treap_datum_t, push) (TYPE(T, treap_datum_t) treap, treap_datum_t value, int (*comparator)(treap_datum_t, treap_datum_t), int (*priority_func)(treap_datum_t));
+treap_datum_t             METHOD(T, treap_datum_t, min) (TYPE(T, treap_datum_t) treap);
+treap_datum_t             METHOD(T, treap_datum_t, max) (TYPE(T, treap_datum_t) treap);
+TYPE(T, treap_datum_t)    METHOD(T, treap_datum_t, pop_small) (TYPE(T, treap_datum_t) treap, treap_datum_t *value);
+TYPE(T, treap_datum_t)    METHOD(T, treap_datum_t, pop_big) (TYPE(T, treap_datum_t) treap, treap_datum_t *value);
+int                 METHOD(T, treap_datum_t, contains) (TYPE(T, treap_datum_t) treap, treap_datum_t value, int (*comparator)(treap_datum_t, treap_datum_t));
+TYPE(T, treap_datum_t)    METHOD(T, treap_datum_t, delete) (TYPE(T, treap_datum_t) treap, void (*destructor)(treap_datum_t));
+void                METHOD(T, treap_datum_t, print) (TYPE(T, treap_datum_t) treap, void (*printer)(treap_datum_t));
 
 
 #undef T

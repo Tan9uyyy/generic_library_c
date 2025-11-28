@@ -2,7 +2,7 @@
 #define _LIST_IMPLEMENTATION_H__
 
 #include "list-export-def.h"
-#ifndef datum_t
+#ifndef list_datum_t
 #error "Undefined datum type !"
 #endif
 
@@ -15,55 +15,55 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef TYPE(deque, datum_t) TYPE(T, datum_t);
+typedef TYPE(deque, list_datum_t) TYPE(T, list_datum_t);
 
-TYPE(T, datum_t) METHOD(T, datum_t, new)(void) {
-  return METHOD(deque, datum_t, new)();
+TYPE(T, list_datum_t) METHOD(T, list_datum_t, new)(void) {
+  return METHOD(deque, list_datum_t, new)();
 }
 
-int METHOD(T, datum_t, is_empty)(TYPE(T, datum_t) list) {
-  return METHOD(deque, datum_t, is_empty)(list);
+int METHOD(T, list_datum_t, is_empty)(TYPE(T, list_datum_t) list) {
+  return METHOD(deque, list_datum_t, is_empty)(list);
 }
 
-int METHOD(T, datum_t, length)(TYPE(T, datum_t) list) {
-  return METHOD(deque, datum_t, length)(list);
+int METHOD(T, list_datum_t, length)(TYPE(T, list_datum_t) list) {
+  return METHOD(deque, list_datum_t, length)(list);
 }
 
-datum_t METHOD(T, datum_t, get)(TYPE(T, datum_t) list, int index) {
-  return METHOD(deque, datum_t, get)(list, index);
+list_datum_t METHOD(T, list_datum_t, get)(TYPE(T, list_datum_t) list, int index) {
+  return METHOD(deque, list_datum_t, get)(list, index);
 }
 
-TYPE(T, datum_t)
-METHOD(T, datum_t, set)(datum_t value, TYPE(T, datum_t) list, int index) {
-  return METHOD(deque, datum_t, set)(value, list, index);
+TYPE(T, list_datum_t)
+METHOD(T, list_datum_t, set)(list_datum_t value, TYPE(T, list_datum_t) list, int index) {
+  return METHOD(deque, list_datum_t, set)(value, list, index);
 }
 
-TYPE(T, datum_t)
-METHOD(T, datum_t, push)(datum_t value, TYPE(T, datum_t) list) {
-  return METHOD(deque, datum_t, push_back)(value, list);
+TYPE(T, list_datum_t)
+METHOD(T, list_datum_t, push)(list_datum_t value, TYPE(T, list_datum_t) list) {
+  return METHOD(deque, list_datum_t, push_back)(value, list);
 }
 
-TYPE(T, datum_t)
-METHOD(T, datum_t, pop)(datum_t *value, TYPE(T, datum_t) list) {
-  return METHOD(deque, datum_t, pop_back)(value, list);
+TYPE(T, list_datum_t)
+METHOD(T, list_datum_t, pop)(list_datum_t *value, TYPE(T, list_datum_t) list) {
+  return METHOD(deque, list_datum_t, pop_back)(value, list);
 }
 
-TYPE(T, datum_t) METHOD(T, datum_t, remove)(datum_t *value, TYPE(T, datum_t) list, int (*comparator)(datum_t val1, datum_t val2)) {
-  return METHOD(deque, datum_t, remove)(value, list, comparator);
+TYPE(T, list_datum_t) METHOD(T, list_datum_t, remove)(list_datum_t *value, TYPE(T, list_datum_t) list, int (*comparator)(list_datum_t val1, list_datum_t val2)) {
+  return METHOD(deque, list_datum_t, remove)(value, list, comparator);
 }
 
-TYPE(T, datum_t)
-METHOD(T, datum_t, delete)(TYPE(T, datum_t) list, void (*destructor)(datum_t)) {
-  return METHOD(deque, datum_t, delete)(list, destructor);
+TYPE(T, list_datum_t)
+METHOD(T, list_datum_t, delete)(TYPE(T, list_datum_t) list, void (*destructor)(list_datum_t)) {
+  return METHOD(deque, list_datum_t, delete)(list, destructor);
 }
 
-int METHOD(T, datum_t, contains)(TYPE(T, datum_t) list, datum_t value,
-                                 int (*comparator)(datum_t, datum_t)) {
-  return METHOD(deque, datum_t, contains)(list, value, comparator);
+int METHOD(T, list_datum_t, contains)(TYPE(T, list_datum_t) list, list_datum_t value,
+                                 int (*comparator)(list_datum_t, list_datum_t)) {
+  return METHOD(deque, list_datum_t, contains)(list, value, comparator);
 }
 
-void METHOD(T, datum_t, print)(TYPE(T, datum_t) list) {
-  METHOD(deque, datum_t, print)(list);
+void METHOD(T, list_datum_t, print)(TYPE(T, list_datum_t) list) {
+  METHOD(deque, list_datum_t, print)(list);
 }
 
 #undef T

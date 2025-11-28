@@ -4,26 +4,26 @@
 #include "../treap.h"
 #include "../../interface.h"
 
-#ifndef datum_t
+#ifndef treeset_datum_t
     #error "Undefined datum type !"
 #endif
 
 #define T treeset
 
-typedef TYPE(treap, datum_t) TYPE(T, datum_t);
+typedef TYPE(treap, treeset_datum_t) TYPE(T, treeset_datum_t);
 
-TYPE(T, datum_t)    METHOD(T, datum_t, new) (void);
-int                 METHOD(T, datum_t, is_empty) (TYPE(T, datum_t) treeset);
-TYPE(T, datum_t)    METHOD(T, datum_t, add) (TYPE(T, datum_t) treeset, datum_t value, int (*comparator)(datum_t, datum_t), int (*priority_func)(datum_t));
-datum_t             METHOD(T, datum_t, upper_bound) (TYPE(T, datum_t) treeset);
-datum_t             METHOD(T, datum_t, lower_bound) (TYPE(T, datum_t) treeset);
-TYPE(T, datum_t)    METHOD(T, datum_t, remove_max) (TYPE(T, datum_t) treeset);
-TYPE(T, datum_t)    METHOD(T, datum_t, remove_min) (TYPE(T, datum_t) treeset);
-int                 METHOD(T, datum_t, contains) (TYPE(T, datum_t) treeset, datum_t value, int (*comparator)(datum_t, datum_t));
-TYPE(T, datum_t)    METHOD(T, datum_t, reunion) (TYPE(T, datum_t) *treeset_1, TYPE(T, datum_t) *treeset_2, int (*comparator)(datum_t, datum_t), int (*priority_func)(datum_t));
-TYPE(T, datum_t)    METHOD(T, datum_t, inter) (TYPE(T, datum_t) *treeset_1, TYPE(T, datum_t) *treeset_2, int (*comparator)(datum_t, datum_t), int (*priority_func)(datum_t));
-TYPE(T, datum_t)    METHOD(T, datum_t, delete) (TYPE(T, datum_t) treeset, void (*destructor)(datum_t));
-void                METHOD(T, datum_t, print) (TYPE(T, datum_t) treeset, void (*printer)(datum_t));
+TYPE(T, treeset_datum_t)    METHOD(T, treeset_datum_t, new) (void);
+int                 METHOD(T, treeset_datum_t, is_empty) (TYPE(T, treeset_datum_t) treeset);
+TYPE(T, treeset_datum_t)    METHOD(T, treeset_datum_t, add) (TYPE(T, treeset_datum_t) treeset, treeset_datum_t value, int (*comparator)(treeset_datum_t, treeset_datum_t), int (*priority_func)(treeset_datum_t));
+treeset_datum_t             METHOD(T, treeset_datum_t, upper_bound) (TYPE(T, treeset_datum_t) treeset);
+treeset_datum_t             METHOD(T, treeset_datum_t, lower_bound) (TYPE(T, treeset_datum_t) treeset);
+TYPE(T, treeset_datum_t)    METHOD(T, treeset_datum_t, remove_max) (TYPE(T, treeset_datum_t) treeset);
+TYPE(T, treeset_datum_t)    METHOD(T, treeset_datum_t, remove_min) (TYPE(T, treeset_datum_t) treeset);
+int                 METHOD(T, treeset_datum_t, contains) (TYPE(T, treeset_datum_t) treeset, treeset_datum_t value, int (*comparator)(treeset_datum_t, treeset_datum_t));
+TYPE(T, treeset_datum_t)    METHOD(T, treeset_datum_t, reunion) (TYPE(T, treeset_datum_t) *treeset_1, TYPE(T, treeset_datum_t) *treeset_2, int (*comparator)(treeset_datum_t, treeset_datum_t), int (*priority_func)(treeset_datum_t));
+TYPE(T, treeset_datum_t)    METHOD(T, treeset_datum_t, inter) (TYPE(T, treeset_datum_t) *treeset_1, TYPE(T, treeset_datum_t) *treeset_2, int (*comparator)(treeset_datum_t, treeset_datum_t), int (*priority_func)(treeset_datum_t));
+TYPE(T, treeset_datum_t)    METHOD(T, treeset_datum_t, delete) (TYPE(T, treeset_datum_t) treeset, void (*destructor)(treeset_datum_t));
+void                METHOD(T, treeset_datum_t, print) (TYPE(T, treeset_datum_t) treeset, void (*printer)(treeset_datum_t));
 
 
 #undef T

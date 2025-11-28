@@ -1,6 +1,6 @@
 #include <libellul/type/list.h>
 
-#define datum_t int
+#define list_datum_t int
 #include <libellul/type/list/list-implementation.h>
 
 #include <libellul.h>

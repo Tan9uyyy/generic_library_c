@@ -21,6 +21,9 @@
 		"treeset-export-def.h": "c",
 		"libellul.h": "c",
 		"limits": "c",
-		"interface.h": "c"
+		"interface.h": "c",
+		"priority-queue-implementation.h": "c",
+		"string_view": "c",
+		"treeset.h": "c"
 	},
 }

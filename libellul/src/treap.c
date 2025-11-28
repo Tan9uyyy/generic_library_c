@@ -1,4 +1,4 @@
 #include <../include/libellul/type/treap.h>
 
-#define datum_t int
+#define treap_datum_t int
 #include <../include/libellul/type/treap/treap-implementation.h>

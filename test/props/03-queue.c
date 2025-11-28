@@ -1,6 +1,6 @@
 #include <libellul/type/queue.h>
 
-#define datum_t int
+#define queue_datum_t int
 #include <libellul/type/queue/queue-implementation.h>
 
 #include <libellul.h>

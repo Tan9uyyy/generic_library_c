@@ -2,7 +2,7 @@
 #define _QUEUE_IMPLEMENTATION_H__
 
 
-#ifndef datum_t
+#ifndef queue_datum_t
     #error "Undefined datum type !"
 #endif
 
@@ -15,23 +15,23 @@
 #include <assert.h>
 #include <stdio.h>
 
-typedef TYPE(deque, datum_t) TYPE(T, datum_t);
+typedef TYPE(deque, queue_datum_t) TYPE(T, queue_datum_t);
 
-TYPE(T, datum_t) METHOD(T, datum_t, new) (void) {return METHOD(deque, datum_t, new) ();}
+TYPE(T, queue_datum_t) METHOD(T, queue_datum_t, new) (void) {return METHOD(deque, queue_datum_t, new) ();}
 
-int METHOD(T, datum_t, is_empty) (TYPE(T, datum_t) queue) {return METHOD(deque, datum_t, is_empty) (queue);}
+int METHOD(T, queue_datum_t, is_empty) (TYPE(T, queue_datum_t) queue) {return METHOD(deque, queue_datum_t, is_empty) (queue);}
 
-int METHOD(T, datum_t, length) (TYPE(T, datum_t) queue) {return METHOD(deque, datum_t, length) (queue);}
+int METHOD(T, queue_datum_t, length) (TYPE(T, queue_datum_t) queue) {return METHOD(deque, queue_datum_t, length) (queue);}
 
-datum_t METHOD(T, datum_t, first) (TYPE(T, datum_t) queue) {return METHOD(deque, datum_t, first) (queue);}
+queue_datum_t METHOD(T, queue_datum_t, first) (TYPE(T, queue_datum_t) queue) {return METHOD(deque, queue_datum_t, first) (queue);}
 
-TYPE(T, datum_t) METHOD(T, datum_t, push) (datum_t value, TYPE(T, datum_t) queue) {return METHOD(deque, datum_t, push_back) (value, queue);}
+TYPE(T, queue_datum_t) METHOD(T, queue_datum_t, push) (queue_datum_t value, TYPE(T, queue_datum_t) queue) {return METHOD(deque, queue_datum_t, push_back) (value, queue);}
 
-TYPE(T, datum_t) METHOD(T, datum_t, pop) (datum_t *value, TYPE(T, datum_t) queue) {return METHOD(deque, datum_t, pop_front) (value, queue);}
+TYPE(T, queue_datum_t) METHOD(T, queue_datum_t, pop) (queue_datum_t *value, TYPE(T, queue_datum_t) queue) {return METHOD(deque, queue_datum_t, pop_front) (value, queue);}
 
-TYPE(T, datum_t) METHOD(T, datum_t, delete) (TYPE(T, datum_t) queue, void (*destructor) (datum_t)){return METHOD(deque, datum_t, delete) (queue, destructor);}
+TYPE(T, queue_datum_t) METHOD(T, queue_datum_t, delete) (TYPE(T, queue_datum_t) queue, void (*destructor) (queue_datum_t)){return METHOD(deque, queue_datum_t, delete) (queue, destructor);}
 
-void METHOD(T, datum_t, print) (TYPE(T, datum_t) queue){METHOD(deque, datum_t, print) (queue);}
+void METHOD(T, queue_datum_t, print) (TYPE(T, queue_datum_t) queue){METHOD(deque, queue_datum_t, print) (queue);}
 
 
 #undef T

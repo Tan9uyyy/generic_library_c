@@ -5,6 +5,7 @@
 // #error "Undefined datum_t type!"
 // #endif
 
+#define list_datum_t int
 #include "list/list-export-def.h"
 
 

@@ -1,6 +1,6 @@
 #include <libellul/type/treeset.h>
 
-#define datum_t int
+#define treeset_datum_t int
 #include <libellul/type/treeset/treeset-implementation.h>
 
 #include <libellul.h>
@@ -29,6 +29,8 @@ void treeset_NULL( void ) {
 
     free(treeset);
 }
+
+
 
 void treeset_tests(){
     treeset_int_t treeset1 = treeset_int_new();
@@ -112,17 +114,6 @@ void treeset_tests(){
 
     free(treeset1); free(treeset2); free(treeset_union); free(treeset_inter);
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -4,28 +4,28 @@
 #include "../../interface.h"
 #include "../deque.h"
 
-#ifndef datum_t
+#ifndef list_datum_t
 #error "Undefined datum type !"
 #endif
 
 #define T list
 
-typedef TYPE(deque, datum_t) TYPE(T, datum_t);
+typedef TYPE(deque, list_datum_t) TYPE(T, list_datum_t);
 
-TYPE(T, datum_t) METHOD(T, datum_t, new)(void);
-int METHOD(T, datum_t, is_empty)(TYPE(T, datum_t) list);
-int METHOD(T, datum_t, length)(TYPE(T, datum_t) list);
-datum_t METHOD(T, datum_t, get)(TYPE(T, datum_t) list, int index);
-TYPE(T, datum_t)
-METHOD(T, datum_t, set)(datum_t value, TYPE(T, datum_t) list, int index);
-TYPE(T, datum_t) METHOD(T, datum_t, push)(datum_t value, TYPE(T, datum_t) list);
-TYPE(T, datum_t) METHOD(T, datum_t, pop)(datum_t *value, TYPE(T, datum_t) list);
-TYPE(T, datum_t) METHOD(T, datum_t, remove)(datum_t *value, TYPE(T, datum_t) list, int (*comparator)(datum_t val1, datum_t val2));
-TYPE(T, datum_t)
-METHOD(T, datum_t, delete)(TYPE(T, datum_t) list, void (*destructor)(datum_t));
-int METHOD(T, datum_t, contains)(TYPE(T, datum_t) list, datum_t value,
-                                 int (*comparator)(datum_t val1, datum_t val2));
-void METHOD(T, datum_t, print)(TYPE(T, datum_t) list);
+TYPE(T, list_datum_t) METHOD(T, list_datum_t, new)(void);
+int METHOD(T, list_datum_t, is_empty)(TYPE(T, list_datum_t) list);
+int METHOD(T, list_datum_t, length)(TYPE(T, list_datum_t) list);
+list_datum_t METHOD(T, list_datum_t, get)(TYPE(T, list_datum_t) list, int index);
+TYPE(T, list_datum_t)
+METHOD(T, list_datum_t, set)(list_datum_t value, TYPE(T, list_datum_t) list, int index);
+TYPE(T, list_datum_t) METHOD(T, list_datum_t, push)(list_datum_t value, TYPE(T, list_datum_t) list);
+TYPE(T, list_datum_t) METHOD(T, list_datum_t, pop)(list_datum_t *value, TYPE(T, list_datum_t) list);
+TYPE(T, list_datum_t) METHOD(T, list_datum_t, remove)(list_datum_t *value, TYPE(T, list_datum_t) list, int (*comparator)(list_datum_t val1, list_datum_t val2));
+TYPE(T, list_datum_t)
+METHOD(T, list_datum_t, delete)(TYPE(T, list_datum_t) list, void (*destructor)(list_datum_t));
+int METHOD(T, list_datum_t, contains)(TYPE(T, list_datum_t) list, list_datum_t value,
+                                 int (*comparator)(list_datum_t val1, list_datum_t val2));
+void METHOD(T, list_datum_t, print)(TYPE(T, list_datum_t) list);
 
 #undef T
 

@@ -2,11 +2,14 @@
 #define _LIST_EXPORT_DEF_H__
 
 #include "../../interface.h"
-#include "../deque.h"
 
 #ifndef list_datum_t
-#error "Undefined datum type !"
+    #error "Undefined datum type !"
 #endif
+
+#define deque_datum_t list_datum_t
+#include "../deque.h"
+#undef deque_datum_t
 
 #define T list
 

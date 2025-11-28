@@ -1,6 +1,6 @@
 #include <libellul/type/deque.h>
 
-#define datum_t int
+#define deque_datum_t int
 #include <libellul/type/deque/deque-implementation.h>
 
 #include <libellul.h>

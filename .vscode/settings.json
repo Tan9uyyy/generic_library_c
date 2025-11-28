@@ -34,6 +34,7 @@
 		"stack.h": "c",
 		"assert.h": "c",
 		"deque": "c",
-		"treeset-implementation.h": "c"
+		"treeset-implementation.h": "c",
+		"deque-implementation.h": "c"
 	},
 }

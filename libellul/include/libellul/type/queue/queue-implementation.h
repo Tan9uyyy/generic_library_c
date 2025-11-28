@@ -1,20 +1,13 @@
 #ifndef _QUEUE_IMPLEMENTATION_H__
 #define _QUEUE_IMPLEMENTATION_H__
 
-#include "../../interface.h"
 #include <stdlib.h>
 #include <assert.h>
 #include <stdio.h>
 
-#ifndef queue_datum_t
-    #error "Undefined datum type !"
-#endif
+#include "queue-export-def.h"
 
 #define T queue
-
-#define deque_datum_t queue_datum_t
-#include "../deque.h"
-#undef deque_datum_t
 
 typedef TYPE(deque, queue_datum_t) TYPE(T, queue_datum_t);
 

@@ -1,14 +1,11 @@
 #ifndef _B_TREE_IMPLEMENTATION_H__
 #define _B_TREE_IMPLEMENTATION_H__
 
-#include "../../interface.h"
 #include <stdlib.h>
 #include <assert.h>
 #include <stdio.h>
 
-#ifndef b_tree_datum_t
-    #error "Undefined datum type !"
-#endif
+#include "b-tree-export-def.h"
 
 #define T binary_tree
 

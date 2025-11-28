@@ -48,8 +48,8 @@ METHOD(T, datum_t, pop)(datum_t *value, TYPE(T, datum_t) list) {
   return METHOD(deque, datum_t, pop_back)(value, list);
 }
 
-TYPE(T, datum_t) METHOD(T, datum_t, remove)(datum_t *value, TYPE(T, datum_t) list) {
-  return METHOD(deque, datum_t, remove)(value, list);
+TYPE(T, datum_t) METHOD(T, datum_t, remove)(datum_t *value, TYPE(T, datum_t) list, int (*comparator)(datum_t val1, datum_t val2)) {
+  return METHOD(deque, datum_t, remove)(value, list, comparator);
 }
 
 TYPE(T, datum_t)

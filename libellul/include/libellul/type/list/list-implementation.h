@@ -43,13 +43,12 @@ METHOD(T, list_datum_t, push)(list_datum_t value, TYPE(T, list_datum_t) list) {
   return METHOD(deque, list_datum_t, push_back)(value, list);
 }
 
-TYPE(T, list_datum_t)
-METHOD(T, list_datum_t, pop)(list_datum_t *value, TYPE(T, list_datum_t) list) {
-  return METHOD(deque, list_datum_t, pop_back)(value, list);
+TYPE(T, list_datum_t) METHOD(T, list_datum_t, pop)(list_datum_t *value, TYPE(T, list_datum_t) list, void (*destructor)(list_datum_t)) {
+  return METHOD(deque, list_datum_t, pop_back)(value, list, destructor);
 }
 
-TYPE(T, list_datum_t) METHOD(T, list_datum_t, remove)(list_datum_t *value, TYPE(T, list_datum_t) list, int (*comparator)(list_datum_t val1, list_datum_t val2)) {
-  return METHOD(deque, list_datum_t, remove)(value, list, comparator);
+TYPE(T, list_datum_t) METHOD(T, list_datum_t, remove)(list_datum_t value, TYPE(T, list_datum_t) list, int (*comparator)(list_datum_t val1, list_datum_t val2), void (*destructor)(list_datum_t)) {
+  return METHOD(deque, list_datum_t, remove)(value, list, comparator, destructor);
 }
 
 TYPE(T, list_datum_t)
@@ -57,8 +56,7 @@ METHOD(T, list_datum_t, delete)(TYPE(T, list_datum_t) list, void (*destructor)(l
   return METHOD(deque, list_datum_t, delete)(list, destructor);
 }
 
-int METHOD(T, list_datum_t, contains)(TYPE(T, list_datum_t) list, list_datum_t value,
-                                 int (*comparator)(list_datum_t, list_datum_t)) {
+int METHOD(T, list_datum_t, contains)(TYPE(T, list_datum_t) list, list_datum_t value, int (*comparator)(list_datum_t, list_datum_t)) {
   return METHOD(deque, list_datum_t, contains)(list, value, comparator);
 }
 

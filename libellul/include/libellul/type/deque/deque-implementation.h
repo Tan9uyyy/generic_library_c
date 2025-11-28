@@ -145,12 +145,13 @@ TYPE(T, datum_t) METHOD(T, datum_t, push_back)(datum_t value, TYPE(T, datum_t) d
  * The current head is freed and its value is stored inside the pointer given in
  * parameters
  */
-TYPE(T, datum_t) METHOD(T, datum_t, pop_front)(datum_t *value, TYPE(T, datum_t) deque) {
+TYPE(T, datum_t) METHOD(T, datum_t, pop_front)(datum_t *value, TYPE(T, datum_t) deque, void (*destructor)(datum_t)) {
   assert(!METHOD(T, datum_t, is_empty)(deque) && "Deque is empty !");
 
   // Only one element
   if (deque->length == 1) {
     *value = METHOD(T, datum_t, first)(deque);
+    if(destructor) destructor(deque->head->datum);
     free(deque->head);
     deque->head = NULL;
     deque->queue = NULL;
@@ -162,6 +163,7 @@ TYPE(T, datum_t) METHOD(T, datum_t, pop_front)(datum_t *value, TYPE(T, datum_t) 
   // Multiple elements
   TYPE(link, datum_t) *new_head = deque->head->next;
   *value = METHOD(T, datum_t, first)(deque);
+  if(destructor) destructor(deque->head->datum);
 
   new_head->prev = deque->queue;
   deque->queue->next = new_head;
@@ -177,12 +179,13 @@ TYPE(T, datum_t) METHOD(T, datum_t, pop_front)(datum_t *value, TYPE(T, datum_t) 
  * queue, The current queue is freed and its value is stored inside the pointer
  * given in parameters
  */
-TYPE(T, datum_t) METHOD(T, datum_t, pop_back)(datum_t *value, TYPE(T, datum_t) deque) {
+TYPE(T, datum_t) METHOD(T, datum_t, pop_back)(datum_t *value, TYPE(T, datum_t) deque, void (*destructor)(datum_t)) {
   assert(!METHOD(T, datum_t, is_empty)(deque) && "Deque is empty !");
 
   // Only one element
   if (deque->length == 1) {
     *value = METHOD(T, datum_t, last)(deque);
+    if(destructor) destructor(deque->queue->datum);
     free(deque->queue);
     deque->head = NULL;
     deque->queue = NULL;
@@ -194,33 +197,13 @@ TYPE(T, datum_t) METHOD(T, datum_t, pop_back)(datum_t *value, TYPE(T, datum_t) d
   // Multiple elements
   TYPE(link, datum_t) *new_queue = deque->queue->prev;
   *value = METHOD(T, datum_t, last)(deque);
+  if(destructor) destructor(deque->queue->datum);
 
   new_queue->next = deque->head;
   deque->head->prev = new_queue;
   free(deque->queue);
   deque->queue = new_queue;
   deque->length--;
-
-  return deque;
-}
-
-/*
- * Return a null pointer after freeing all the elements inside the deque
- * If the datum needs to be freed you need to give a destructor in parameter to
- * dodge leaks like in the matrix
- */
-TYPE(T, datum_t) METHOD(T, datum_t, delete)(TYPE(T, datum_t) deque,
-                           void (*destructor)(datum_t)) {
-  datum_t storage;
-  while (!METHOD(T, datum_t, is_empty)(deque)) {
-    if (destructor) {
-      destructor(METHOD(T, datum_t, first)(deque));
-    } // If the datum needs to be freed we use the destructor given in
-      // parameters
-
-    deque = METHOD(T, datum_t, pop_front)(
-        &storage, deque); // Use of pop_back so the deque head doesn't change
-  }
 
   return deque;
 }
@@ -243,6 +226,47 @@ int METHOD(T, datum_t, contains)(TYPE(T, datum_t) deque, datum_t obj, int (*comp
   } while (iterator != deque->head);
 
   return 0;
+}
+
+TYPE(T, datum_t)    METHOD(T, datum_t, remove)(datum_t value, TYPE(T, datum_t) deque, int (*comparator)(datum_t, datum_t), void (*destructor)(datum_t)) {
+  datum_t storage;
+  if (METHOD(T, datum_t, is_empty)(deque)) return NULL;
+  
+  // Only one element
+  if (deque->length == 1) {
+    if(comparator(deque->head->datum, value)) {
+      return METHOD(T, datum_t, pop_back)(&storage, deque, destructor);
+    }
+  }
+  // Multiple elements
+  else {
+    TYPE(link, datum_t) *iterator = deque->head;
+    TYPE(link, datum_t) *previous = deque->queue;
+
+    // Searching for the element to remove
+    do {
+      if (comparator(iterator->datum, value)) {
+        return METHOD(T, datum_t, pop_front)(&storage, deque, destructor); // Removing the value)
+      }
+      previous = iterator;
+      iterator = iterator->next;
+    } while (iterator != deque->head);
+  }
+  return deque;
+}
+
+
+/*
+ * Return a null pointer after freeing all the elements inside the deque
+ * If the datum needs to be freed you need to give a destructor in parameter to
+ * dodge leaks like in the matrix
+ */
+TYPE(T, datum_t) METHOD(T, datum_t, delete)(TYPE(T, datum_t) deque, void (*destructor)(datum_t)) {
+  datum_t storage;
+  while (!METHOD(T, datum_t, is_empty)(deque)) {
+      deque = METHOD(T, datum_t, pop_back)(&storage, deque, destructor); // Use of pop_back so the deque head doesn't change
+  }
+  return deque;
 }
 
 /*

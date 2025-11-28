@@ -1,12 +1,15 @@
 #ifndef _TREESET_EXPORT_DEF_H__
 #define _TREESET_EXPORT_DEF_H__
 
-#include "../treap.h"
 #include "../../interface.h"
 
 #ifndef treeset_datum_t
     #error "Undefined datum type !"
 #endif
+
+#define treap_datum_t treeset_datum_t
+#include "../treap.h"
+#undef treap_datum_t
 
 #define T treeset
 

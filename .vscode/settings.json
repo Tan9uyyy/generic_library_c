@@ -24,6 +24,13 @@
 		"interface.h": "c",
 		"priority-queue-implementation.h": "c",
 		"string_view": "c",
-		"treeset.h": "c"
+		"treeset.h": "c",
+		"deque.h": "c",
+		"b-tree-export-def.h": "c",
+		"queue-export-def.h": "c",
+		"stack-export-def.h": "c",
+		"treap-export-def.h": "c",
+		"b-tree-implementation.h": "c",
+		"stack.h": "c"
 	},
 }

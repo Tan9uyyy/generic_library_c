@@ -1,16 +1,16 @@
-#ifndef _TREE_IMPLEMENTATION_H__
-#define _TREE_IMPLEMENTATION_H__
+#ifndef _B_TREE_IMPLEMENTATION_H__
+#define _B_TREE_IMPLEMENTATION_H__
+
+#include "../../interface.h"
+#include <stdlib.h>
+#include <assert.h>
+#include <stdio.h>
 
 #ifndef b_tree_datum_t
     #error "Undefined datum type !"
 #endif
 
 #define T binary_tree
-#include "../../interface.h"
-
-#include <stdlib.h>
-#include <assert.h>
-#include <stdio.h>
 
 typedef struct TYPE(node, b_tree_datum_t){
     struct TYPE(node, b_tree_datum_t) *ls;
@@ -20,10 +20,10 @@ typedef struct TYPE(node, b_tree_datum_t){
 
 TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, new) (void){return NULL;}
 
-int METHOD(T, b_tree_datum_t, is_empty) (TYPE(T, b_tree_datum_t) tree){return NULL == tree;}
+int METHOD(T, b_tree_datum_t, is_empty) (TYPE(T, b_tree_datum_t) b_tree){return NULL == b_tree;}
 
-TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, rec_push) (TYPE(T, b_tree_datum_t) tree, b_tree_datum_t value, int (*comparator) (b_tree_datum_t, b_tree_datum_t)){
-    if (METHOD(T, b_tree_datum_t, is_empty) (tree)){
+TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, rec_push) (TYPE(T, b_tree_datum_t) b_tree, b_tree_datum_t value, int (*comparator) (b_tree_datum_t, b_tree_datum_t)){
+    if (METHOD(T, b_tree_datum_t, is_empty) (b_tree)){
         struct TYPE(node, b_tree_datum_t) *new_node = malloc(sizeof(*new_node));
         assert(new_node && "Allocation failed !");
 
@@ -33,93 +33,93 @@ TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, rec_push) (TYPE(T, b_tree_datu
         return new_node;
     }
 
-    if (comparator(value, tree->value) > 0){
-        tree->rs = METHOD(T, b_tree_datum_t, rec_push) (tree->rs, value, *comparator);
-        return tree;
+    if (comparator(value, b_tree->value) > 0){
+        b_tree->rs = METHOD(T, b_tree_datum_t, rec_push) (b_tree->rs, value, *comparator);
+        return b_tree;
     }
 
-    tree->ls = METHOD(T, b_tree_datum_t, rec_push) (tree->ls, value, *comparator);
-    return tree;
+    b_tree->ls = METHOD(T, b_tree_datum_t, rec_push) (b_tree->ls, value, *comparator);
+    return b_tree;
 }
 
-TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, push) (TYPE(T, b_tree_datum_t) tree, b_tree_datum_t value, int (*comparator) (b_tree_datum_t, b_tree_datum_t)){
-    return METHOD(T, b_tree_datum_t, rec_push) (tree, value, comparator);
+TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, push) (TYPE(T, b_tree_datum_t) b_tree, b_tree_datum_t value, int (*comparator) (b_tree_datum_t, b_tree_datum_t)){
+    return METHOD(T, b_tree_datum_t, rec_push) (b_tree, value, comparator);
 }
 
-static inline TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, pop_small_rec) (TYPE(T, b_tree_datum_t) tree, b_tree_datum_t *value){
-    if (METHOD(T, b_tree_datum_t, is_empty) (tree->ls)){
-        *value = tree->value;
+static inline TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, pop_small_rec) (TYPE(T, b_tree_datum_t) b_tree, b_tree_datum_t *value){
+    if (METHOD(T, b_tree_datum_t, is_empty) (b_tree->ls)){
+        *value = b_tree->value;
 
-        TYPE(T, b_tree_datum_t) new_root = tree->rs;
-        free(tree);
+        TYPE(T, b_tree_datum_t) new_root = b_tree->rs;
+        free(b_tree);
 
         return new_root;
     }
 
-    tree->ls = METHOD(T, b_tree_datum_t, pop_small_rec) (tree->ls, value);
-    return tree;
+    b_tree->ls = METHOD(T, b_tree_datum_t, pop_small_rec) (b_tree->ls, value);
+    return b_tree;
 }
 
-TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, pop_small) (TYPE(T, b_tree_datum_t) tree, b_tree_datum_t *value){
-    assert(!METHOD(T, b_tree_datum_t, is_empty) (tree) && "Tree is empty !");
+TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, pop_small) (TYPE(T, b_tree_datum_t) b_tree, b_tree_datum_t *value){
+    assert(!METHOD(T, b_tree_datum_t, is_empty) (b_tree) && "b_Tree is empty !");
 
-    return METHOD(T, b_tree_datum_t, pop_small_rec(tree, value));
+    return METHOD(T, b_tree_datum_t, pop_small_rec(b_tree, value));
 }
 
-static inline TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, pop_big_rec) (TYPE(T, b_tree_datum_t) tree, b_tree_datum_t *value){
-    if (METHOD(T, b_tree_datum_t, is_empty) (tree->rs)){
-        *value = tree->value;
+static inline TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, pop_big_rec) (TYPE(T, b_tree_datum_t) b_tree, b_tree_datum_t *value){
+    if (METHOD(T, b_tree_datum_t, is_empty) (b_tree->rs)){
+        *value = b_tree->value;
 
-        TYPE(T, b_tree_datum_t) new_root = tree->ls;
-        free(tree);
+        TYPE(T, b_tree_datum_t) new_root = b_tree->ls;
+        free(b_tree);
 
         return new_root;
     }
 
-    tree->rs = METHOD(T, b_tree_datum_t, pop_big_rec) (tree->rs, value);
-    return tree;
+    b_tree->rs = METHOD(T, b_tree_datum_t, pop_big_rec) (b_tree->rs, value);
+    return b_tree;
 }
 
-TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, pop_big) (TYPE(T, b_tree_datum_t) tree, b_tree_datum_t *value){
-    assert(!METHOD(T, b_tree_datum_t, is_empty) (tree) && "Tree is empty !");
+TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, pop_big) (TYPE(T, b_tree_datum_t) b_tree, b_tree_datum_t *value){
+    assert(!METHOD(T, b_tree_datum_t, is_empty) (b_tree) && "b_Tree is empty !");
 
-    return METHOD(T, b_tree_datum_t, pop_big_rec(tree, value));
+    return METHOD(T, b_tree_datum_t, pop_big_rec(b_tree, value));
 }
 
-int METHOD(T, b_tree_datum_t, contains) (TYPE(T, b_tree_datum_t) tree, b_tree_datum_t value, int (*comparator)(b_tree_datum_t, b_tree_datum_t)){
-    if (METHOD(T, b_tree_datum_t, is_empty) (tree)){return 0;}
+int METHOD(T, b_tree_datum_t, contains) (TYPE(T, b_tree_datum_t) b_tree, b_tree_datum_t value, int (*comparator)(b_tree_datum_t, b_tree_datum_t)){
+    if (METHOD(T, b_tree_datum_t, is_empty) (b_tree)){return 0;}
 
-    if (comparator(value, tree->value) == 0){return 1;}
+    if (comparator(value, b_tree->value) == 0){return 1;}
 
-    if (comparator(value, tree->value) > 0){return METHOD(T, b_tree_datum_t, contains) (tree->rs, value, *comparator);}
+    if (comparator(value, b_tree->value) > 0){return METHOD(T, b_tree_datum_t, contains) (b_tree->rs, value, *comparator);}
 
-    return METHOD(T, b_tree_datum_t, contains) (tree->ls, value, *comparator);
+    return METHOD(T, b_tree_datum_t, contains) (b_tree->ls, value, *comparator);
 }
 
-TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, delete) (TYPE(T, b_tree_datum_t) tree, void (*destructor)(b_tree_datum_t)){
-    if (METHOD(T, b_tree_datum_t, is_empty) (tree)){return NULL;}
+TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, delete) (TYPE(T, b_tree_datum_t) b_tree, void (*destructor)(b_tree_datum_t)){
+    if (METHOD(T, b_tree_datum_t, is_empty) (b_tree)){return NULL;}
 
-    if (tree->ls){METHOD(T, b_tree_datum_t, delete) (tree->ls, *destructor);}
+    if (b_tree->ls){METHOD(T, b_tree_datum_t, delete) (b_tree->ls, *destructor);}
 
-    if (tree->rs){METHOD(T, b_tree_datum_t, delete) (tree->rs, *destructor);}
+    if (b_tree->rs){METHOD(T, b_tree_datum_t, delete) (b_tree->rs, *destructor);}
 
-    if (destructor){destructor(tree->value);}
-    free(tree);
+    if (destructor){destructor(b_tree->value);}
+    free(b_tree);
 
     return NULL;
 }
 
-void METHOD(T, b_tree_datum_t, print_rec) (TYPE(T, b_tree_datum_t) tree, void (*printer)(b_tree_datum_t)){
-    if (!METHOD(T, b_tree_datum_t, is_empty) (tree->ls)){METHOD(T, b_tree_datum_t, print_rec) (tree->ls, printer); printf(" ");}
+void METHOD(T, b_tree_datum_t, print_rec) (TYPE(T, b_tree_datum_t) b_tree, void (*printer)(b_tree_datum_t)){
+    if (!METHOD(T, b_tree_datum_t, is_empty) (b_tree->ls)){METHOD(T, b_tree_datum_t, print_rec) (b_tree->ls, printer); printf(" ");}
 
-    printer(tree->value);
+    printer(b_tree->value);
 
-    if (!METHOD(T, b_tree_datum_t, is_empty) (tree->rs)){printf(" "); METHOD(T, b_tree_datum_t, print_rec) (tree->rs, printer);}
+    if (!METHOD(T, b_tree_datum_t, is_empty) (b_tree->rs)){printf(" "); METHOD(T, b_tree_datum_t, print_rec) (b_tree->rs, printer);}
 }
 
-void METHOD(T, b_tree_datum_t, print) (TYPE(T, b_tree_datum_t) tree, void (*printer)(b_tree_datum_t)){
+void METHOD(T, b_tree_datum_t, print) (TYPE(T, b_tree_datum_t) b_tree, void (*printer)(b_tree_datum_t)){
     printf("{");
-    if (!METHOD(T, b_tree_datum_t, is_empty) (tree))METHOD(T, b_tree_datum_t, print_rec) (tree, printer);
+    if (!METHOD(T, b_tree_datum_t, is_empty) (b_tree))METHOD(T, b_tree_datum_t, print_rec) (b_tree, printer);
     printf("}");
 }
 

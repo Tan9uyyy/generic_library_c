@@ -1,18 +1,20 @@
 #ifndef _TREESET_IMPLEMENTATION_H__
 #define _TREESET_IMPLEMENTATION_H__
 
-#include "../treap.h"
 #include "../../interface.h"
+#include <stdlib.h>
+#include <assert.h>
+#include <stdio.h>
 
 #ifndef treeset_datum_t
     #error "Undefined datum type !"
 #endif
 
-#define T treeset
+#define treap_datum_t treeset_datum_t
+#include "../treap.h"
+#undef treap_datum_t
 
-#include <stdlib.h>
-#include <assert.h>
-#include <stdio.h>
+#define T treeset
 
 typedef TYPE(treap, treeset_datum_t) TYPE(T, treeset_datum_t);
 

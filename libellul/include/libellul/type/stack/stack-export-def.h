@@ -1,12 +1,15 @@
 #ifndef _STACK_EXPORT_DEF_H__
 #define _STACK_EXPORT_DEF_H__
 
-#include "../deque.h"
 #include "../../interface.h"
 
 #ifndef stack_datum_t
     #error "Undefined datum type !"
 #endif
+
+#define deque_datum_t stack_datum_t
+#include "../deque.h"
+#undef deque_datum_t
 
 #define T stack
 

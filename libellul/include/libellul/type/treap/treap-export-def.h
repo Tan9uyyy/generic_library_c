@@ -1,12 +1,13 @@
 #ifndef _TREAP_EXPORT_DEF_H__
 #define _TREAP_EXPORT_DEF_H__
 
+#include "../../interface.h"
+
 #ifndef treap_datum_t
     #error "Undefined datum type !"
 #endif
 
 #define T treap
-#include "../../interface.h"
 
 typedef struct TYPE(node, treap_datum_t) *TYPE(T, treap_datum_t);
 typedef struct TYPE(node, treap_datum_t) *TYPE(treap, treap_datum_t);

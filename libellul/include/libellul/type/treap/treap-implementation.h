@@ -1,16 +1,16 @@
 #ifndef _TREAP_IMPLEMENTATION_H__
 #define _TREAP_IMPLEMENTATION_H__
 
+#include "../../interface.h"
+#include <stdlib.h>
+#include <assert.h>
+#include <stdio.h>
+
 #ifndef treap_datum_t
     #error "Undefined datum type !"
 #endif
 
 #define T treap
-#include "../../interface.h"
-
-#include <stdlib.h>
-#include <assert.h>
-#include <stdio.h>
 
 typedef struct TYPE(node, treap_datum_t){
     struct TYPE(node, treap_datum_t) *ls;

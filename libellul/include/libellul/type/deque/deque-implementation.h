@@ -232,14 +232,14 @@ TYPE(T, deque_datum_t)    METHOD(T, deque_datum_t, remove)(deque_datum_t value, 
   if (METHOD(T, deque_datum_t, is_empty)(deque)) return NULL;
   
   // Only one element
-  if (1 == deque->length && comparator(deque->head->datum, value)){return METHOD(T, deque_datum_t, pop_back)(&storage, deque, destructor);}
+  if ((1 == deque->length) && comparator(deque->head->datum, value)){return METHOD(T, deque_datum_t, pop_back)(&storage, deque, destructor);}
 
   // Multiple elements
   TYPE(link, deque_datum_t) *iterator = deque->head->next;
 
-  while(0 != comparator(iterator->datum, value) && iterator != deque->head){iterator = iterator->next;}
+  while(!comparator(iterator->datum, value) && iterator != deque->head){iterator = iterator->next;}
 
-  if (value != iterator->datum) {return NULL;} // Value not in deque
+  if (!comparator(iterator->datum, value)) {return deque;} // Value not in deque
   if (iterator == deque->head)  {return METHOD(T, deque_datum_t, pop_front) (&storage, deque, destructor);} // Value at front
   if (iterator == deque->queue) {return METHOD(T, deque_datum_t, pop_back)  (&storage, deque, destructor);} // Value at back
 

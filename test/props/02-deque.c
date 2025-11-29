@@ -76,7 +76,7 @@ void deque_tests(void) {
     deque = deque_int_pop_front(&value, deque, destructor);
     deque_int_print(deque);
     test_assert(value, "Pop front is correct");
-  };
+  }
 
   test_suite("Pop back in deque");
 
@@ -93,7 +93,7 @@ void deque_tests(void) {
     deque = deque_int_pop_back(&value, deque, destructor);
     deque_int_print(deque);
     test_assert(value, "Pop back is correct");
-  };
+  }
 
   test_assert(deque_int_is_empty(deque), "Deque is empty after fully poped");
 
@@ -103,8 +103,23 @@ void deque_tests(void) {
   deque_int_print(deque);
 
   test_assert(deque_int_contains(deque, 0, comparator), "Deque contient 0.");
-  test_assert(!deque_int_contains(deque, 1, comparator),
-              "Deque ne contient pas 1.");
+  test_assert(!deque_int_contains(deque, 1, comparator), "Deque ne contient pas 1.");
+
+  test_suite("Deque remove");
+
+  deque = deque_int_push_front(2, deque);
+  deque = deque_int_push_front(3, deque);
+  deque_int_print(deque);
+
+  test_assert(deque_int_remove(1, deque, comparator, destructor), "Deque supprime 1 qui n'existe pas dans la liste (ne fait rien).");
+  deque_int_print(deque);
+  test_assert(deque_int_remove(2, deque, comparator, destructor), "Deque supprime 2.");
+  deque_int_print(deque);
+  test_assert(deque_int_remove(3, deque, comparator, destructor), "Deque supprime 3.");
+  deque_int_print(deque);
+  test_assert(deque_int_remove(0, deque, comparator, destructor), "Deque supprime 0.");
+  deque_int_print(deque);
+  test_assert(deque_int_is_empty(deque), "Deque est vide après suppressions.");
 
   test_suite("Deque delete");
 

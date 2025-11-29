@@ -5,6 +5,8 @@
 
 #include <libellul.h>
 
+void printer(int val){printf("%d", val);}
+
 void queue_NULL(void) {
     test_suite( "NULL as a queue" );
 
@@ -13,7 +15,7 @@ void queue_NULL(void) {
     test_assert( queue_int_is_empty( queue ), "NULL is an empty queue" );
     test_assert( queue_int_length(queue) == 0, "NULL length is 0");
 
-    queue_int_print(queue);
+    queue_int_print(queue, printer);
 
     queue_int_delete( queue, NULL );
     test_assert( 1, "Can delete NULL as a queue" );
@@ -34,7 +36,7 @@ void queue_test(void){
 
     queue = queue_int_push(input, queue);
 
-    queue_int_print(queue);
+    queue_int_print(queue, printer);
 
     test_assert(!queue_int_is_empty(queue), "Queue is not empty after push");
     test_assert( queue_int_length(queue) == 1, "Queue length is 1");
@@ -46,7 +48,7 @@ void queue_test(void){
 
     queue = queue_int_pop(&output, queue, NULL);
 
-    queue_int_print(queue);
+    queue_int_print(queue, printer);
 
     test_assert(output == input, "Correct pop");
 
@@ -57,7 +59,7 @@ void queue_test(void){
 
     for (int i = 0; i < 7; i++){
         queue = queue_int_push(inputs[i], queue);
-        queue_int_print(queue);
+        queue_int_print(queue, printer);
         
         test_assert(queue_int_first(queue) == inputs[0], "First value is the first value pushed");
     }
@@ -69,7 +71,7 @@ void queue_test(void){
 
     for (int i = 0; i < 7; i++){
         queue = queue_int_pop(&outputs[i], queue, NULL);
-        queue_int_print(queue);
+        queue_int_print(queue, printer);
         
         test_assert(outputs[i] == inputs[i], "Popped value is correct");
     }

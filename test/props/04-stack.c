@@ -5,6 +5,8 @@
 
 #include <libellul.h>
 
+void printer(int val){printf("%d", val);}
+
 void stack_NULL(void) {
     test_suite( "NULL as a stack" );
 
@@ -13,7 +15,7 @@ void stack_NULL(void) {
     test_assert( stack_int_is_empty( stack ), "NULL is an empty stack" );
     test_assert( stack_int_length(stack) == 0, "NULL length is 0");
 
-    stack_int_print(stack);
+    stack_int_print(stack, printer);
 
     stack_int_delete(stack, NULL );
     test_assert( 1, "Can delete NULL as a stack" );
@@ -34,7 +36,7 @@ void stack_test(void){
 
     stack = stack_int_push(input, stack);
 
-    stack_int_print(stack);
+    stack_int_print(stack, printer);
 
     test_assert(!stack_int_is_empty(stack), "stack is not empty after push");
     test_assert( stack_int_length(stack) == 1, "Stack length is 1");
@@ -46,7 +48,7 @@ void stack_test(void){
 
     stack = stack_int_pop(&output, stack, NULL);
 
-    stack_int_print(stack);
+    stack_int_print(stack, printer);
 
     test_assert(output == input, "Correct pop");
 
@@ -57,7 +59,7 @@ void stack_test(void){
 
     for (int i = 0; i < 7; i++){
         stack = stack_int_push(inputs[i], stack);
-        stack_int_print(stack);
+        stack_int_print(stack, printer);
         
         test_assert(stack_int_first(stack) == inputs[i], "First value is the last value pushed");
     }
@@ -69,7 +71,7 @@ void stack_test(void){
 
     for (int i = 0; i < 7; i++){
         stack = stack_int_pop(&outputs[i], stack, NULL);
-        stack_int_print(stack);
+        stack_int_print(stack, printer);
         
         test_assert(outputs[i] == inputs[6 - i], "Popped value is correct");
     }
@@ -81,7 +83,7 @@ void stack_test(void){
 
     for (int i = 0; i < 7; i++){stack = stack_int_push(inputs[i], stack);}
 
-    stack_int_print(stack);
+    stack_int_print(stack, printer);
 
     stack = stack_int_delete(stack, NULL);
 

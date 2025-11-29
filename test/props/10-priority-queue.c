@@ -1,6 +1,6 @@
 #include <libellul/type/priority-queue.h>
 
-#define datum_t int
+#define pq_datum_t int
 #include <libellul/type/priority-queue/priority-queue-implementation.h>
 
 #include <libellul.h>

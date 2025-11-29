@@ -6,7 +6,9 @@
 #include <libellul.h>
 
 #define destructor NULL
+
 int comparator(int val1, int val2) { return val1 == val2; }
+void printer(int val){printf("%d", val);}
 
 void list_NULL(void) {
   test_suite("NULL as a list");
@@ -16,7 +18,7 @@ void list_NULL(void) {
   test_assert(list_int_is_empty(list), "NULL is an empty list");
   test_assert(list_int_length(list) == 0, "NULL length is 0");
 
-  list_int_print(list);
+  list_int_print(list, printer);
 
   list_int_delete(list, destructor);
   test_assert(1, "Can delete NULL as a list");
@@ -36,7 +38,7 @@ void list_test(void) {
 
   list = list_int_push(input, list);
 
-  list_int_print(list);
+  list_int_print(list, printer);
 
   test_assert(!list_int_is_empty(list), "list is not empty after push");
   test_assert(list_int_length(list) == 1, "list length is 1");
@@ -47,7 +49,7 @@ void list_test(void) {
 
   list = list_int_pop(&output, list, destructor);
 
-  list_int_print(list);
+  list_int_print(list, printer);
 
   test_assert(output == input, "Correct pop");
 
@@ -57,7 +59,7 @@ void list_test(void) {
 
   for (int i = 0; i < 7; i++) {
     list = list_int_push(inputs[i], list);
-    list_int_print(list);
+    list_int_print(list, printer);
 
     test_assert(list_int_get(list, i) == inputs[i],
                 "i-eme value is the i-eme value pushed");
@@ -69,7 +71,7 @@ void list_test(void) {
 
   for (int i = 0; i < 7; i++) {
     list = list_int_pop(&outputs[i], list, destructor);
-    list_int_print(list);
+    list_int_print(list, printer);
 
     test_assert(outputs[i] == inputs[6 - i], "Popped value is correct");
   }
@@ -79,7 +81,7 @@ void list_test(void) {
   test_suite("list contains");
 
   list = list_int_push(0, list);
-  list_int_print(list);
+  list_int_print(list, printer);
 
   test_assert(list_int_contains(list, 0, comparator), "list contient 0.");
   test_assert(!list_int_contains(list, 1, comparator), "list ne contient pas 1.");
@@ -89,15 +91,15 @@ void list_test(void) {
   list = list_int_push(2, list);
   list = list_int_push(3, list);
   
-  list_int_print(list);
+  list_int_print(list, printer);
   test_assert(list_int_remove(1, list, comparator, destructor), "supprime 1 qui n'existe pas dans la liste (ne fait rien).");
-  list_int_print(list);
+  list_int_print(list, printer);
   test_assert(list_int_remove(2, list, comparator, destructor), "supprime 2.");
-  list_int_print(list);
+  list_int_print(list, printer);
   test_assert(list_int_remove(3, list, comparator, destructor), "supprime 3.");
-  list_int_print(list);
+  list_int_print(list, printer);
   test_assert(list_int_remove(0, list, comparator, destructor), "supprime 0.");
-  list_int_print(list);
+  list_int_print(list, printer);
   test_assert(list_int_is_empty(list), "list est vide après suppressions.");
 
   test_suite("list delete");
@@ -106,7 +108,7 @@ void list_test(void) {
     list = list_int_push(inputs[i], list);
   }
 
-  list_int_print(list);
+  list_int_print(list, printer);
 
   list = list_int_delete(list, destructor);
 

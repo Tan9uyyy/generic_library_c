@@ -7,11 +7,12 @@
 
 #define destructor NULL
 int comparator(int val1, int val2) { return val1 == val2; }
+void printer(int val){printf("%d", val);}
 
 void deque_NULL(void) {
   deque_int_t deque = deque_int_new();
 
-  deque_int_print(deque);
+  deque_int_print(deque, printer);
 
   test_suite("NULL as a deque");
 
@@ -40,7 +41,7 @@ void deque_tests(void) {
 
   deque = deque_int_push_front(values[0], deque);
 
-  deque_int_print(deque);
+  deque_int_print(deque, printer);
 
   test_assert(!deque_int_is_empty(deque), "Deque is not empty");
   test_assert(deque_int_length(deque) == 1, "Deque length is 1");
@@ -48,7 +49,7 @@ void deque_tests(void) {
 
   for (int i = 1; i < 4; i++)
     deque = deque_int_push_front(values[i], deque);
-  deque_int_print(deque);
+  deque_int_print(deque, printer);
 
   test_assert(!deque_int_is_empty(deque), "Push front multiple values");
   test_assert(deque_int_length(deque) == 4, "Deque length is 4");
@@ -56,7 +57,7 @@ void deque_tests(void) {
   test_suite("Push back in deque");
 
   deque = deque_int_push_back(values[4], deque);
-  deque_int_print(deque);
+  deque_int_print(deque, printer);
 
   test_assert(!deque_int_is_empty(deque), "Deque is still not empty");
   test_assert(deque_int_length(deque) == 5, "Deque length is 5");
@@ -64,7 +65,7 @@ void deque_tests(void) {
 
   for (int i = 5; i < 7; i++)
     deque = deque_int_push_back(values[i], deque);
-  deque_int_print(deque);
+  deque_int_print(deque, printer);
 
   test_assert(!deque_int_is_empty(deque), "Push back multiple values");
   test_assert(deque_int_length(deque) == 7, "Deque length is 7");
@@ -74,7 +75,7 @@ void deque_tests(void) {
   int value = 0;
   while (!deque_int_is_empty(deque)) {
     deque = deque_int_pop_front(&value, deque, destructor);
-    deque_int_print(deque);
+    deque_int_print(deque, printer);
     test_assert(value, "Pop front is correct");
   }
 
@@ -87,11 +88,11 @@ void deque_tests(void) {
   deque = deque_int_push_front(values[4], deque);
   deque = deque_int_push_front(values[5], deque);
   deque = deque_int_push_front(values[6], deque);
-  deque_int_print(deque);
+  deque_int_print(deque, printer);
 
   while (!deque_int_is_empty(deque)) {
     deque = deque_int_pop_back(&value, deque, destructor);
-    deque_int_print(deque);
+    deque_int_print(deque, printer);
     test_assert(value, "Pop back is correct");
   }
 
@@ -100,7 +101,7 @@ void deque_tests(void) {
   test_suite("Deque contains");
 
   deque = deque_int_push_front(0, deque);
-  deque_int_print(deque);
+  deque_int_print(deque, printer);
 
   test_assert(deque_int_contains(deque, 0, comparator), "Deque contient 0.");
   test_assert(!deque_int_contains(deque, 1, comparator), "Deque ne contient pas 1.");
@@ -109,16 +110,16 @@ void deque_tests(void) {
 
   deque = deque_int_push_front(2, deque);
   deque = deque_int_push_front(3, deque);
-  deque_int_print(deque);
+  deque_int_print(deque, printer);
 
   test_assert(deque_int_remove(1, deque, comparator, destructor), "supprime 1 qui n'existe pas dans la liste (ne fait rien).");
-  deque_int_print(deque);
+  deque_int_print(deque, printer);
   test_assert(deque_int_remove(2, deque, comparator, destructor), "supprime 2.");
-  deque_int_print(deque);
+  deque_int_print(deque, printer);
   test_assert(deque_int_remove(3, deque, comparator, destructor), "supprime 3.");
-  deque_int_print(deque);
+  deque_int_print(deque, printer);
   test_assert(deque_int_remove(0, deque, comparator, destructor), "supprime 0.");
-  deque_int_print(deque);
+  deque_int_print(deque, printer);
   test_assert(deque_int_is_empty(deque), "Deque est vide après suppressions.");
 
   test_suite("Deque delete");

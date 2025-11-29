@@ -5,6 +5,7 @@
 
 #include <libellul.h>
 
+#define destructor NULL
 int comparator(int val1, int val2) { return val1 == val2; }
 
 void deque_NULL(void) {
@@ -17,7 +18,7 @@ void deque_NULL(void) {
   test_assert(deque_int_is_empty(deque), "NULL is an empty deque");
   test_assert(deque_int_length(deque) == 0, "NULL length is 0");
 
-  deque_int_delete(deque, NULL);
+  deque_int_delete(deque, destructor);
   test_assert(1, "Can delete NULL as a deque");
 
   free(deque);
@@ -72,7 +73,7 @@ void deque_tests(void) {
 
   int value = 0;
   while (!deque_int_is_empty(deque)) {
-    deque = deque_int_pop_front(&value, deque, NULL);
+    deque = deque_int_pop_front(&value, deque, destructor);
     deque_int_print(deque);
     test_assert(value, "Pop front is correct");
   };
@@ -89,7 +90,7 @@ void deque_tests(void) {
   deque_int_print(deque);
 
   while (!deque_int_is_empty(deque)) {
-    deque = deque_int_pop_back(&value, deque, NULL);
+    deque = deque_int_pop_back(&value, deque, destructor);
     deque_int_print(deque);
     test_assert(value, "Pop back is correct");
   };
@@ -115,7 +116,7 @@ void deque_tests(void) {
   deque = deque_int_push_front(values[5], deque);
   deque = deque_int_push_front(values[6], deque);
 
-  deque = deque_int_delete(deque, NULL);
+  deque = deque_int_delete(deque, destructor);
   test_assert(deque_int_is_empty(deque), "Deque is empty after delete");
 
   free(values);

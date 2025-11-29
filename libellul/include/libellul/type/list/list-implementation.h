@@ -60,8 +60,8 @@ int METHOD(T, list_datum_t, contains)(TYPE(T, list_datum_t) list, list_datum_t v
   return METHOD(deque, list_datum_t, contains)(list, value, comparator);
 }
 
-void METHOD(T, list_datum_t, print)(TYPE(T, list_datum_t) list) {
-  METHOD(deque, list_datum_t, print)(list);
+void METHOD(T, list_datum_t, print)(TYPE(T, list_datum_t) list, void (*printer) (list_datum_t)) {
+  METHOD(deque, list_datum_t, print)(list, printer);
 }
 
 #undef T

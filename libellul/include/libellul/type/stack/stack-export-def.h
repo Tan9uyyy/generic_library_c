@@ -22,7 +22,7 @@ stack_datum_t             METHOD(T, stack_datum_t, first) (TYPE(T, stack_datum_t
 TYPE(T, stack_datum_t)    METHOD(T, stack_datum_t, push) (stack_datum_t value, TYPE(T, stack_datum_t) stack);
 TYPE(T, stack_datum_t)    METHOD(T, stack_datum_t, pop) (stack_datum_t *value, TYPE(T, stack_datum_t) stack, void (*destructor) (stack_datum_t));
 TYPE(T, stack_datum_t)    METHOD(T, stack_datum_t, delete) (TYPE(T, stack_datum_t) stack, void (*destructor) (stack_datum_t));
-void                METHOD(T, stack_datum_t, print) (TYPE(T, stack_datum_t) stack);
+void                METHOD(T, stack_datum_t, print) (TYPE(T, stack_datum_t) stack, void (*printer) (stack_datum_t));
 
 
 #undef T

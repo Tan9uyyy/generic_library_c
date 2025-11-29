@@ -26,7 +26,7 @@ TYPE(T, deque_datum_t)  METHOD(T, deque_datum_t, rotate)(int nb_rot, TYPE(T, deq
 int                     METHOD(T, deque_datum_t, contains)(TYPE(T, deque_datum_t) deque, deque_datum_t value, int (*comparator)(deque_datum_t, deque_datum_t));
 TYPE(T, deque_datum_t)  METHOD(T, deque_datum_t, remove)(deque_datum_t value, TYPE(T, deque_datum_t) deque, int (*comparator)(deque_datum_t, deque_datum_t), void (*destructor)(deque_datum_t));
 TYPE(T, deque_datum_t)  METHOD(T, deque_datum_t, delete)(TYPE(T, deque_datum_t) deque, void (*destructor)(deque_datum_t));
-void                    METHOD(T, deque_datum_t, print)(TYPE(T, deque_datum_t) deque);
+void                    METHOD(T, deque_datum_t, print)(TYPE(T, deque_datum_t) deque, void (*printer) (deque_datum_t));
 
 #undef T
 

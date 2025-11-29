@@ -5,6 +5,10 @@
 #include <assert.h>
 #include <stdio.h>
 
+#ifndef queue_datum_t
+    #error "Undefined datum type !"
+#endif
+
 #include "queue-export-def.h"
 
 #define T queue
@@ -25,7 +29,7 @@ TYPE(T, queue_datum_t) METHOD(T, queue_datum_t, pop) (queue_datum_t *value, TYPE
 
 TYPE(T, queue_datum_t) METHOD(T, queue_datum_t, delete) (TYPE(T, queue_datum_t) queue, void (*destructor) (queue_datum_t)){return METHOD(deque, queue_datum_t, delete) (queue, destructor);}
 
-void METHOD(T, queue_datum_t, print) (TYPE(T, queue_datum_t) queue){METHOD(deque, queue_datum_t, print) (queue);}
+void METHOD(T, queue_datum_t, print) (TYPE(T, queue_datum_t) queue, void (*printer)(queue_datum_t)){METHOD(deque, queue_datum_t, print) (queue, printer);}
 
 
 #undef T

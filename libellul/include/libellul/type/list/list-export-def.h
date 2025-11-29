@@ -25,7 +25,7 @@ TYPE(T, list_datum_t)   METHOD(T, list_datum_t, pop)(list_datum_t *value, TYPE(T
 int                     METHOD(T, list_datum_t, contains)(TYPE(T, list_datum_t) list, list_datum_t value, int (*comparator)(list_datum_t val1, list_datum_t val2));
 TYPE(T, list_datum_t)   METHOD(T, list_datum_t, remove)(list_datum_t value, TYPE(T, list_datum_t) list, int (*comparator)(list_datum_t val1, list_datum_t val2), void (*destructor)(list_datum_t));
 TYPE(T, list_datum_t)   METHOD(T, list_datum_t, delete)(TYPE(T, list_datum_t) list, void (*destructor)(list_datum_t));
-void                    METHOD(T, list_datum_t, print)(TYPE(T, list_datum_t) list);
+void                    METHOD(T, list_datum_t, print)(TYPE(T, list_datum_t) list, void (*printer) (list_datum_t));
 
 #undef T
 

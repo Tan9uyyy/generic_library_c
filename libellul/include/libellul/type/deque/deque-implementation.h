@@ -280,7 +280,7 @@ TYPE(T, deque_datum_t) METHOD(T, deque_datum_t, delete)(TYPE(T, deque_datum_t) d
 /*
  * Print the deque like this { datum1 datum2 datum3 ...}
  */
-void METHOD(T, deque_datum_t, print)(TYPE(T, deque_datum_t) deque) {
+void METHOD(T, deque_datum_t, print)(TYPE(T, deque_datum_t) deque, void (*printer) (deque_datum_t)) {
   printf("{ ");
   if (METHOD(T, deque_datum_t, is_empty)(deque)) {
     printf("}\n");
@@ -290,7 +290,7 @@ void METHOD(T, deque_datum_t, print)(TYPE(T, deque_datum_t) deque) {
   struct TYPE(link, deque_datum_t) *iterator = deque->head;
 
   do {
-    printf("%d ", iterator->datum);
+    printer(iterator->datum);
     iterator = iterator->next;
   } while (iterator != deque->head);
 

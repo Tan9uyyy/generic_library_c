@@ -111,13 +111,13 @@ void deque_tests(void) {
   deque = deque_int_push_front(3, deque);
   deque_int_print(deque);
 
-  test_assert(deque_int_remove(1, deque, comparator, destructor), "Deque supprime 1 qui n'existe pas dans la liste (ne fait rien).");
+  test_assert(deque_int_remove(1, deque, comparator, destructor), "supprime 1 qui n'existe pas dans la liste (ne fait rien).");
   deque_int_print(deque);
-  test_assert(deque_int_remove(2, deque, comparator, destructor), "Deque supprime 2.");
+  test_assert(deque_int_remove(2, deque, comparator, destructor), "supprime 2.");
   deque_int_print(deque);
-  test_assert(deque_int_remove(3, deque, comparator, destructor), "Deque supprime 3.");
+  test_assert(deque_int_remove(3, deque, comparator, destructor), "supprime 3.");
   deque_int_print(deque);
-  test_assert(deque_int_remove(0, deque, comparator, destructor), "Deque supprime 0.");
+  test_assert(deque_int_remove(0, deque, comparator, destructor), "supprime 0.");
   deque_int_print(deque);
   test_assert(deque_int_is_empty(deque), "Deque est vide après suppressions.");
 

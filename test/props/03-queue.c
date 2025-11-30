@@ -46,7 +46,7 @@ void queue_test(void){
 
     test_suite("Queue pop one element");
 
-    queue = queue_int_pop(&output, queue, NULL);
+    queue = queue_int_pop(&output, queue);
 
     queue_int_print(queue, printer);
 
@@ -70,7 +70,7 @@ void queue_test(void){
     test_suite("Queue pop multiple elements");
 
     for (int i = 0; i < 7; i++){
-        queue = queue_int_pop(&outputs[i], queue, NULL);
+        queue = queue_int_pop(&outputs[i], queue);
         queue_int_print(queue, printer);
         
         test_assert(outputs[i] == inputs[i], "Popped value is correct");

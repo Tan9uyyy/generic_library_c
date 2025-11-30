@@ -47,7 +47,7 @@ void list_test(void) {
 
   test_suite("list pop one element");
 
-  list = list_int_pop(&output, list, destructor);
+  list = list_int_pop(&output, list);
 
   list_int_print(list, printer);
 
@@ -70,7 +70,7 @@ void list_test(void) {
   test_suite("list pop multiple elements");
 
   for (int i = 0; i < 7; i++) {
-    list = list_int_pop(&outputs[i], list, destructor);
+    list = list_int_pop(&outputs[i], list);
     list_int_print(list, printer);
 
     test_assert(outputs[i] == inputs[6 - i], "Popped value is correct");
@@ -92,13 +92,13 @@ void list_test(void) {
   list = list_int_push(3, list);
   
   list_int_print(list, printer);
-  test_assert(list_int_remove(1, list, comparator, destructor), "supprime 1 qui n'existe pas dans la liste (ne fait rien).");
+  test_assert(list_int_remove(1, list, comparator), "supprime 1 qui n'existe pas dans la liste (ne fait rien).");
   list_int_print(list, printer);
-  test_assert(list_int_remove(2, list, comparator, destructor), "supprime 2.");
+  test_assert(list_int_remove(2, list, comparator), "supprime 2.");
   list_int_print(list, printer);
-  test_assert(list_int_remove(3, list, comparator, destructor), "supprime 3.");
+  test_assert(list_int_remove(3, list, comparator), "supprime 3.");
   list_int_print(list, printer);
-  test_assert(list_int_remove(0, list, comparator, destructor), "supprime 0.");
+  test_assert(list_int_remove(0, list, comparator), "supprime 0.");
   list_int_print(list, printer);
   test_assert(list_int_is_empty(list), "list est vide après suppressions.");
 

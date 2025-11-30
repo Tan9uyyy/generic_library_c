@@ -35,6 +35,11 @@
 		"assert.h": "c",
 		"deque": "c",
 		"treeset-implementation.h": "c",
-		"deque-implementation.h": "c"
+		"deque-implementation.h": "c",
+		"optional": "c",
+		"system_error": "c",
+		"list": "c",
+		"string": "c",
+		"vector": "c"
 	},
 }

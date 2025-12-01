@@ -48,6 +48,7 @@ void pq_tests(void){
     int results[6] = {0, 0, 0, 0, 0, 0};
     pq = pq_int_pop(&results[0], pq, destructor);
     pq_int_print(pq, printer);
+    printf("result = %d, expected = %d\n", results[0], values[0]);
 
     test_assert(pq_int_is_empty(pq), "pq is empty after pop the only element");
     test_assert(results[0] == values[0], "the pop element is correct");
@@ -65,15 +66,14 @@ void pq_tests(void){
 
     test_suite("Remove multiple elements");
 
-    for (int i = 5; i >= 0; i--){
-        pq_int_pop(&results[i], pq, destructor);
-        pq_int_print(pq, printer);
-    }
-
     int test = 1;
     for (int i = 0; i < 6; i++){
+        pq_int_pop(&results[i], pq, destructor);
+        pq_int_print(pq, printer);
+        printf("result = %d, expected = %d\n", results[i], corrects[i]);
         if (results[i] != corrects[i]){test = 0;}
     }
+
     test_assert(test, "All values are correctly popped");
     test_assert(pq_int_is_empty(pq), "pq is empty after fully popped");
 

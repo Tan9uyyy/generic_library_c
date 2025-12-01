@@ -34,28 +34,52 @@ int METHOD(T, pq_datum_t, length)(TYPE(T, pq_datum_t) pq){return METHOD(deque, p
 pq_datum_t METHOD(T, pq_datum_t, peek)(TYPE(T, pq_datum_t) pq){return METHOD(deque, pq_datum, first)(pq).value;}
 
 TYPE(T, pq_datum_t) METHOD(T, pq_datum_t, push)(pq_datum_t value, int priority, TYPE(T, pq_datum_t) pq){
-    pq_datum *elem = malloc(sizeof(elem)); elem->value = value; elem->priority = priority; int count = 0;
+    pq_datum elem = { .value = value, .priority = priority };
 
-    if (METHOD(T, pq_datum_t, is_empty)(pq)){return METHOD(deque, pq_datum, push_front)(*elem, pq);}
+    if (METHOD(T, pq_datum_t, is_empty)(pq)){return METHOD(deque, pq_datum, push_front)(elem, pq);}
 
-    if (METHOD(deque, pq_datum, first)(pq).priority < priority){return METHOD(deque, pq_datum, push_front)(*elem, pq);}
-    if (METHOD(deque, pq_datum, last)(pq).priority > priority){return METHOD(deque, pq_datum, push_back)(*elem, pq);}
+    if (METHOD(deque, pq_datum, first)(pq).priority < priority){return METHOD(deque, pq_datum, push_front)(elem, pq);}
+    if (METHOD(deque, pq_datum, last)(pq).priority > priority){return METHOD(deque, pq_datum, push_back)(elem, pq);}
 
+    int count = 0;
     while(METHOD(deque, pq_datum, first)(pq).priority > priority){pq = METHOD(deque, pq_datum, rotate)(1, pq); count++;}
-    pq = METHOD(deque, pq_datum, push_front)(*elem, pq);
+    pq = METHOD(deque, pq_datum, push_front)(elem, pq);
     pq = METHOD(deque, pq_datum, rotate)(-count, pq);
 
     return pq;
 }
 
 TYPE(T, pq_datum_t) METHOD(T, pq_datum_t, pop)(pq_datum_t *value, TYPE(T, pq_datum_t) pq, void (*destructor)(pq_datum_t)){
-    pq_datum *elem = malloc(sizeof(elem));
-    pq = METHOD(deque, pq_datum, pop_front)(elem, pq, NULL);
+    assert(!METHOD(T, pq_datum_t, is_empty)(pq) && "Pq is empty !");
+    if (destructor) destructor(pq->head->datum.value);
 
-    *value = elem->value;
-    if (destructor) destructor(elem->value);
+    // Only one element
+    if (1 == METHOD(T, pq_datum_t, length)(pq)) {
+        *value = METHOD(T, pq_datum_t, peek)(pq);
+        if (destructor) destructor(pq->head->datum.value);
 
-    free(elem);
+        //free(&pq->head->datum);
+        free(pq->head);
+        pq->head = NULL;
+        pq->queue = NULL;
+        pq->length--;
+
+        return pq;
+    }
+
+    // Multiple elements
+    TYPE(link, pq_datum) *new_head = pq->head->next;
+    *value = METHOD(T, pq_datum_t, peek)(pq);
+    if (destructor) destructor(pq->head->datum.value);
+
+    new_head->prev = pq->queue;
+    pq->queue->next = new_head;
+
+    //free(&pq->head->datum);
+    free(pq->head);
+    pq->head = new_head;
+    pq->length--;
+
     return pq;
 }
 

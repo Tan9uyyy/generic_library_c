@@ -5,9 +5,9 @@
 
 #include <libellul.h>
 
-void printer(pq_datum node){printf("(%d, %d)", node.priority, node.value);}
+#define destructor NULL
 
-void destructor(pq_datum node){free(&node);}
+void printer(int value){printf("%d", value);}
 
 void pq_NULL(void){
     pq_int_t pq = pq_int_new();
@@ -46,7 +46,7 @@ void pq_tests(void){
     test_suite("Remove 1 element to pq");
 
     int results[6] = {0, 0, 0, 0, 0, 0};
-    pq = pq_int_pop(&results[0], pq);
+    pq = pq_int_pop(&results[0], pq, destructor);
     pq_int_print(pq, printer);
 
     test_assert(pq_int_is_empty(pq), "pq is empty after pop the only element");
@@ -66,7 +66,7 @@ void pq_tests(void){
     test_suite("Remove multiple elements");
 
     for (int i = 5; i >= 0; i--){
-        pq_int_pop(&results[i], pq);
+        pq_int_pop(&results[i], pq, destructor);
         pq_int_print(pq, printer);
     }
 

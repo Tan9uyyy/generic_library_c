@@ -283,18 +283,32 @@ TYPE(T, deque_datum_t) METHOD(T, deque_datum_t, delete)(TYPE(T, deque_datum_t) d
  * Print the deque like this { datum1 datum2 datum3 ...}
  */
 void METHOD(T, deque_datum_t, print)(TYPE(T, deque_datum_t) deque, void (*printer) (deque_datum_t)) {
-  printf("{ ");
+  // Case Empty
   if (METHOD(T, deque_datum_t, is_empty)(deque)) {
-    printf("}\n");
+    printf("{}\n"); 
+
     return;
   }
 
-  struct TYPE(link, deque_datum_t) *iterator = deque->head;
+  // Case 1 element
+  if (1 == METHOD(T, deque_datum_t, length)(deque)) { 
+    printf("{");
+    printer(deque->head->datum);
+    printf("}\n");
 
-  do {
+    return;
+  };
+
+  // Case multiple elements
+  printf("{");
+  printer(deque->head->datum);
+
+  TYPE(link, deque_datum_t) *iterator = deque->head->next;
+  while(iterator != deque->head) {
+    printf(", ");
     printer(iterator->datum);
     iterator = iterator->next;
-  } while (iterator != deque->head);
+  }
 
   printf("}\n");
 }

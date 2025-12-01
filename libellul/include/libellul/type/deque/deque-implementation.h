@@ -210,9 +210,11 @@ TYPE(T, deque_datum_t) METHOD(T, deque_datum_t, pop_back)(deque_datum_t *value, 
 TYPE(T, deque_datum_t) METHOD(T, deque_datum_t, rotate)(int nb_rot, TYPE(T, deque_datum_t) deque){
   if (nb_rot > 0){
     for (int i = 0; i < nb_rot; i++){deque->head = deque->head->next; deque->queue = deque->queue->next;}
+
+    return deque;
   }
 
-  for (int i = 0; i < nb_rot; i++){deque->queue = deque->queue->prev; deque->head = deque->head->next;}
+  for (int i = 0; i < -nb_rot; i++){deque->queue = deque->queue->prev; deque->head = deque->head->prev;}
 
   return deque;
 }

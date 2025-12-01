@@ -70,6 +70,14 @@ void deque_tests(void) {
   test_assert(!deque_int_is_empty(deque), "Push back multiple values");
   test_assert(deque_int_length(deque) == 7, "Deque length is 7");
 
+  test_suite("Rotate the deque");
+
+  deque_int_print(deque, printer);
+  deque_int_rotate(1, deque);
+  deque_int_print(deque, printer);
+  deque_int_rotate(-1, deque);
+  deque_int_print(deque, printer);
+
   test_suite("Pop front in deque");
 
   int value = 0;

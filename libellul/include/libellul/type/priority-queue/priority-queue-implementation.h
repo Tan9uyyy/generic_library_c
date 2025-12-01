@@ -36,6 +36,8 @@ pq_datum_t METHOD(T, pq_datum_t, peek)(TYPE(T, pq_datum_t) pq){return METHOD(deq
 TYPE(T, pq_datum_t) METHOD(T, pq_datum_t, push)(pq_datum_t value, int priority, TYPE(T, pq_datum_t) pq){
     pq_datum *elem = malloc(sizeof(elem)); elem->value = value; elem->priority = priority; int count = 0;
 
+    if (METHOD(T, pq_datum_t, is_empty)(pq)){return METHOD(deque, pq_datum, push_front)(*elem, pq);}
+
     if (METHOD(deque, pq_datum, first)(pq).priority < priority){return METHOD(deque, pq_datum, push_front)(*elem, pq);}
     if (METHOD(deque, pq_datum, last)(pq).priority > priority){return METHOD(deque, pq_datum, push_back)(*elem, pq);}
 
@@ -65,19 +67,31 @@ TYPE(T, pq_datum_t) METHOD(T, pq_datum_t, delete)(TYPE(T, pq_datum_t) pq, void (
 }
 
 void METHOD(T, pq_datum_t, print)(TYPE(T, pq_datum_t) pq, void (*printer) (pq_datum_t)){
-    printf("{ ");
-    if (METHOD(T, pq_datum_t, is_empty)(pq)) { // Case empty
-        printf("}\n");
+    // Case Empty
+    if (METHOD(T, pq_datum_t, is_empty)(pq)) {
+        printf("{}\n"); 
+
         return;
     }
 
+    // Case 1 element
+    if (1 == METHOD(T, pq_datum_t, length)(pq)) { 
+        printf("{");
+        printer_pq_datum(pq->head->datum, printer);
+        printf("}\n");
+
+        return;
+    };
+
+    // Case multiple elements
+    printf("{");
     printer_pq_datum(pq->head->datum, printer);
 
     TYPE(link, pq_datum) *iterator = pq->head->next;
-
-    while(iterator != pq->head){
+    while(iterator != pq->head) {
         printf(", ");
         printer_pq_datum(iterator->datum, printer);
+        iterator = iterator->next;
     }
 
     printf("}\n");

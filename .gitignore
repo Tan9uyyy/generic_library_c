@@ -1,0 +1,8 @@
+# Ignorer le dossier de configuration VS Code
+.vscode/
+
+# Ignorer les fichiers de workspace (si tu utilises les espaces de travail)
+*.code-workspace
+
+# Ignorer l'historique local (si tu utilises l'extension 'Local History')
+.history/

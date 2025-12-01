@@ -74,7 +74,7 @@ void deque_tests(void) {
 
   int value = 0;
   while (!deque_int_is_empty(deque)) {
-    deque = deque_int_pop_front(&value, deque);
+    deque = deque_int_pop_front(&value, deque, destructor);
     deque_int_print(deque, printer);
     test_assert(value, "Pop front is correct");
   }
@@ -91,7 +91,7 @@ void deque_tests(void) {
   deque_int_print(deque, printer);
 
   while (!deque_int_is_empty(deque)) {
-    deque = deque_int_pop_back(&value, deque);
+    deque = deque_int_pop_back(&value, deque, destructor);
     deque_int_print(deque, printer);
     test_assert(value, "Pop back is correct");
   }
@@ -112,13 +112,13 @@ void deque_tests(void) {
   deque = deque_int_push_front(3, deque);
   deque_int_print(deque, printer);
 
-  test_assert(deque_int_remove(1, deque, comparator), "supprime 1 qui n'existe pas dans la liste (ne fait rien).");
+  test_assert(deque_int_remove(1, deque, comparator, destructor), "supprime 1 qui n'existe pas dans la liste (ne fait rien).");
   deque_int_print(deque, printer);
-  test_assert(deque_int_remove(2, deque, comparator), "supprime 2.");
+  test_assert(deque_int_remove(2, deque, comparator, destructor), "supprime 2.");
   deque_int_print(deque, printer);
-  test_assert(deque_int_remove(3, deque, comparator), "supprime 3.");
+  test_assert(deque_int_remove(3, deque, comparator, destructor), "supprime 3.");
   deque_int_print(deque, printer);
-  test_assert(deque_int_remove(0, deque, comparator), "supprime 0.");
+  test_assert(deque_int_remove(0, deque, comparator, destructor), "supprime 0.");
   deque_int_print(deque, printer);
   test_assert(deque_int_is_empty(deque), "Deque est vide après suppressions.");
 
@@ -132,7 +132,11 @@ void deque_tests(void) {
   deque = deque_int_push_front(values[5], deque);
   deque = deque_int_push_front(values[6], deque);
 
+  deque_int_print(deque, printer);
+
   deque = deque_int_delete(deque, destructor);
+
+  deque_int_print(deque, printer);
   test_assert(deque_int_is_empty(deque), "Deque is empty after delete");
 
   free(values);

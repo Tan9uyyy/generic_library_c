@@ -5,7 +5,9 @@
 
 #include <libellul.h>
 
-void printer(int value){printf("%d", value);}
+void printer(pq_datum node){printf("(%d, %d)", node.priority, node.value);}
+
+void destructor(pq_datum node){free(&node);}
 
 void pq_NULL(void){
     pq_int_t pq = pq_int_new();

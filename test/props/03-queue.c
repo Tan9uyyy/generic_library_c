@@ -5,6 +5,8 @@
 
 #include <libellul.h>
 
+#define destructor NULL
+
 void printer(int val){printf("%d", val);}
 
 void queue_NULL(void) {
@@ -46,7 +48,7 @@ void queue_test(void){
 
     test_suite("Queue pop one element");
 
-    queue = queue_int_pop(&output, queue);
+    queue = queue_int_pop(&output, queue, destructor);
 
     queue_int_print(queue, printer);
 
@@ -70,7 +72,7 @@ void queue_test(void){
     test_suite("Queue pop multiple elements");
 
     for (int i = 0; i < 7; i++){
-        queue = queue_int_pop(&outputs[i], queue);
+        queue = queue_int_pop(&outputs[i], queue, destructor);
         queue_int_print(queue, printer);
         
         test_assert(outputs[i] == inputs[i], "Popped value is correct");

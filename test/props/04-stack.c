@@ -5,6 +5,8 @@
 
 #include <libellul.h>
 
+#define destructor NULL
+
 void printer(int val){printf("%d", val);}
 
 void stack_NULL(void) {
@@ -46,7 +48,7 @@ void stack_test(void){
 
     test_suite("stack pop one element");
 
-    stack = stack_int_pop(&output, stack);
+    stack = stack_int_pop(&output, stack, destructor);
 
     stack_int_print(stack, printer);
 
@@ -70,7 +72,7 @@ void stack_test(void){
     test_suite("stack pop multiple elements");
 
     for (int i = 0; i < 7; i++){
-        stack = stack_int_pop(&outputs[i], stack);
+        stack = stack_int_pop(&outputs[i], stack, destructor);
         stack_int_print(stack, printer);
         
         test_assert(outputs[i] == inputs[6 - i], "Popped value is correct");

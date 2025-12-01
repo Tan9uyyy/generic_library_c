@@ -19,15 +19,8 @@
 
 typedef TYPE(deque, pq_datum) TYPE(T, pq_datum_t);
 
-void pq_datum_destructor(pq_datum node, void (*destructor)(pq_datum_t)){
-    if (destructor){destructor(node.value);}
-
-    node.value = NULL; node.priority = NULL;
-    free(&node);
-}
-
-void pq_datum_printer(pq_datum node, void (*printer)(pq_datum_t)){
-    printf("( %d, ", node.priority);
+void printer_pq_datum(pq_datum node, void (*printer)(pq_datum_t)){
+    printf("(%d, ", node.priority);
     printer(node.value);
     printf(")");
 }
@@ -53,21 +46,41 @@ TYPE(T, pq_datum_t) METHOD(T, pq_datum_t, push)(pq_datum_t value, int priority, 
     return pq;
 }
 
-TYPE(T, pq_datum_t) METHOD(T, pq_datum_t, pop)(pq_datum_t *value, TYPE(T, pq_datum_t) pq){
+TYPE(T, pq_datum_t) METHOD(T, pq_datum_t, pop)(pq_datum_t *value, TYPE(T, pq_datum_t) pq, void (*destructor)(pq_datum_t)){
     pq_datum *elem = malloc(sizeof(elem));
-    pq = METHOD(deque, pq_datum, pop_front)(elem, pq);
+    pq = METHOD(deque, pq_datum, pop_front)(elem, pq, NULL);
 
     *value = elem->value;
+    if (destructor) destructor(elem->value);
+
     free(elem);
     return pq;
 }
 
-TYPE(T, pq_datum_t) METHOD(T, pq_datum_t, delete)(TYPE(T, pq_datum_t) pq, void (*destructor) (pq_datum)){
-    return METHOD(deque, pq_datum, delete)(pq, destructor);
+TYPE(T, pq_datum_t) METHOD(T, pq_datum_t, delete)(TYPE(T, pq_datum_t) pq, void (*destructor) (pq_datum_t)){
+    pq_datum_t storage;
+    while (!METHOD(T, pq_datum_t, is_empty)(pq)) {pq = METHOD(T, pq_datum_t, pop)(&storage, pq, destructor);}
+    
+    return pq;
 }
 
-void METHOD(T, pq_datum_t, print)(TYPE(T, pq_datum_t) pq, void (*printer) (pq_datum)){
-    METHOD(deque, pq_datum, print)(pq, printer);
+void METHOD(T, pq_datum_t, print)(TYPE(T, pq_datum_t) pq, void (*printer) (pq_datum_t)){
+    printf("{ ");
+    if (METHOD(T, pq_datum_t, is_empty)(pq)) { // Case empty
+        printf("}\n");
+        return;
+    }
+
+    printer_pq_datum(pq->head->datum, printer);
+
+    TYPE(link, pq_datum) *iterator = pq->head->next;
+
+    while(iterator != pq->head){
+        printf(", ");
+        printer_pq_datum(iterator->datum, printer);
+    }
+
+    printf("}\n");
 }
 
 

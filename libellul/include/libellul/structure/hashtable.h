@@ -3,6 +3,8 @@
 #include <libellul/structure/hashtable/linear.h>
 #elif defined( T_IMPL_HASHTABLE_ROBIN_HOOD )
 #include <libellul/structure/hashtable/robin-hood.h>
+#elif defined( T_IMPL_HASHTABLE_CLOSED_ADDRESSING )
+#include <libellul/structure/hashtable/closed_addressing.h>
 #else /* Default hashtable */
 #include <libellul/structure/hashtable/linear.h>
 #endif

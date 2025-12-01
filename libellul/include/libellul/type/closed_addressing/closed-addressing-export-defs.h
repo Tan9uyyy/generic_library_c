@@ -12,7 +12,7 @@ T *METHOD(T, map_datum_t, new)(void);
 /* retourne le nombre de couples à l'intérieur de la hashmap */
 size_t METHOD(T, map_datum_t, length)(T *hashtable);
 /* supprime la hashmap */
-void METHOD(T, map_datum_t, delete)(T *hashtable);
+void METHOD(T, map_datum_t, delete)(T **hashtable);
 /* retourne 1 si la hashmap contient la clé et 0 sinon */
 int METHOD(T, map_datum_t, contains)(T *hashtable, T_MAP_KEY key, (int)(*comparator)(T_MAP_KEY, T_MAP_KEY));
 /* Supprime le couple de clé key s'il existe et ne fait rien sinon */

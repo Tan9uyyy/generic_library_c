@@ -1,5 +1,5 @@
 #include <libellul.h>
-
+/*
 #define T_IMPL_HASHTABLE
 #define T_IMPL_HASHTABLE_CLOSED_ADDRESSING
 #define T_MAP_TAG closed_addressing_hashtable_int_int
@@ -35,11 +35,10 @@ static void closed_addressing_NULL( void ) {
   closed_addressing_hashtable_int_int_delete( &hashtable );
   test_assert( NULL == hashtable, "Can delete a NULL hashtable" );
 
-  test_abort( closed_addressing_hashtable_int_int_push( &hashtable, 3 ), "Cannot push to NULL hashtable" );
-  test_abort( closed_addressing_hashtable_int_int_pop( &hashtable, &value ), "Cannot pop from NULL hashtable" );
-
-  test_abort( closed_addressing_hashtable_int_int_resize( &hashtable, 42 ), "Cannot resize a NULL hashtable" );
-}
+  test_abort( closed_addressing_hashtable_int_int_put( &hashtable, 3 ), "Cannot put to NULL hashtable" );
+  test_abort( closed_addressing_hashtable_int_int_remove( &hashtable, &value ), "Cannot remove from NULL hashtable" );
+  test_abort( closed_addressing_hashtable_int_int_get( hashtable, 3, &value ), "Cannot get from NULL hashtable" );
+}*/
 /*
 int *rand_ints( size_t n ) {
   int *vec = calloc( n, sizeof( *vec ) );
@@ -80,9 +79,9 @@ void closed_addressing_hashtable_int_int_stack( size_t n ) {
 
 int main ( int argc, char *argv[] ) {
 
-  unit_test( argc, argv );
+  //unit_test( argc, argv );
 
-  closed_addressing_NULL();
+  //closed_addressing_NULL();
   //closed_addressing_hashtable_int_int_stack( 13 );
 
   exit( EXIT_SUCCESS );

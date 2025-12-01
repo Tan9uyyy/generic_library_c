@@ -7,6 +7,9 @@
 
 #include "treap-export-def.h"
 
+#ifdef T
+#undef T
+#endif
 #define T treap
 
 typedef struct TYPE(node, treap_datum_t){
@@ -145,14 +148,6 @@ void METHOD(T, treap_datum_t, print) (TYPE(T, treap_datum_t) treap, void (*print
     if (!METHOD(T, treap_datum_t, is_empty) (treap)){METHOD(T, treap_datum_t, print_rec) (treap, printer);}
     printf("}");
 }
-
-
-
-
-
-
-
-
 
 
 #undef T

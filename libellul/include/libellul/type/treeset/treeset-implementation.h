@@ -7,6 +7,9 @@
 
 #include "treeset-export-def.h"
 
+#ifdef T
+#undef T
+#endif
 #define T treeset
 
 typedef TYPE(treap, treeset_datum_t) TYPE(T, treeset_datum_t);

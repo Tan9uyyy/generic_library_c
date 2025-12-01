@@ -11,10 +11,22 @@
 #include "../../generics.h"
 #include "../../interface.h"
 
+/* On définit le type de la hashtable en fonction du type des clés et des valeurs */
+#ifdef map_datum_t
+#undef datum_t
+#endif
+#if !defined( T_SET_ELEMENT )
+#define map_datum_t GEN_SYM(T_MAP_KEY, T_MAP_VALUE)
+#else
+#define map_datum_t T_MAP_KEY
+#endif
+
 /* On définit le nom du type couple de manière unique via GEN_SYM 
    Ex: int_int_closed_addressing_couple */
+#ifdef COUPLE_TYPE
 #undef COUPLE_TYPE
-#define COUPLE_TYPE GEN_SYM(T_MAP_TAG, couple)
+#endif
+#define COUPLE_TYPE GEN_SYM(map_datum_t, couple)
 
 typedef struct COUPLE_TYPE {
     T_MAP_KEY key;
@@ -29,11 +41,18 @@ typedef struct COUPLE_TYPE {
 #undef T_L
 #define T_L TYPE(list, list_datum_t)
 
+#ifdef T
+#undef T
+#endif
+#define T TYPE(closed_addressing_hashtable, map_datum_t)
+
 /* La structure principale de la Map */
 typedef struct T {
   size_t    count;      /* Nombre d'éléments total */
   T_L      *buckets;    /* Tableau de tableau redimensionnable qui contient les listes de couple */
 } *T;
+
+#undef T
 
 #endif
 

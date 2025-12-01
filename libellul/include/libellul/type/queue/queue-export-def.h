@@ -11,6 +11,9 @@
 #include "../deque.h"
 #undef deque_datum_t
 
+#ifdef T
+#undef T
+#endif
 #define T queue
 
 typedef TYPE(deque, queue_datum_t) TYPE(T, queue_datum_t);

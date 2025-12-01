@@ -7,6 +7,9 @@
 
 #include "b-tree-export-def.h"
 
+#ifdef T
+#undef T
+#endif
 #define T binary_tree
 
 typedef struct TYPE(node, b_tree_datum_t){

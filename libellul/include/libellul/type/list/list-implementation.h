@@ -6,6 +6,9 @@
 #error "Undefined datum type !"
 #endif
 
+#ifdef T
+#undef T
+#endif
 #define T list
 
 #include "../../interface.h"

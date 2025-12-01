@@ -7,6 +7,9 @@
 
 #include "stack-export-def.h"
 
+#ifdef T
+#undef T
+#endif
 #define T stack
 
 typedef TYPE(deque, stack_datum_t) TYPE(T, stack_datum_t);

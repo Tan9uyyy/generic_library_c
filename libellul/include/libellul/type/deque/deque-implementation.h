@@ -7,6 +7,9 @@
 
 #include "deque-export-def.h"
 
+#ifdef T
+#undef T
+#endif
 #define T deque
 
 typedef struct TYPE(link, deque_datum_t) {

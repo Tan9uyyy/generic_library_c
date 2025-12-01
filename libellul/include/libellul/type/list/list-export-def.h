@@ -11,6 +11,9 @@
 #include "../deque.h"
 #undef deque_datum_t
 
+#ifdef T
+#undef T
+#endif
 #define T list
 
 typedef TYPE(deque, list_datum_t) TYPE(T, list_datum_t);

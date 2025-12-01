@@ -7,6 +7,9 @@
     #error "Undefined datum type !"
 #endif
 
+#ifdef T
+#undef T
+#endif
 #define T deque
 
 typedef struct TYPE(sentinel, deque_datum_t) *TYPE(T, deque_datum_t);

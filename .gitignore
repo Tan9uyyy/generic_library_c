@@ -6,3 +6,6 @@
 
 # Ignorer l'historique local (si tu utilises l'extension 'Local History')
 .history/
+
+# Ignorer le fixed_issue.i de mon répertoire
+fixed_issue.i

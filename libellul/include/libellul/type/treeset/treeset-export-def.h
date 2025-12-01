@@ -11,6 +11,9 @@
 #include "../treap.h"
 #undef treap_datum_t
 
+#ifdef T
+#undef T
+#endif
 #define T treeset
 
 typedef TYPE(treap, treeset_datum_t) TYPE(T, treeset_datum_t);

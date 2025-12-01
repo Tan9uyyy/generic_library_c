@@ -15,6 +15,9 @@
 #include "../deque/deque-implementation.h"
 #undef deque_datum_t
 
+#ifdef T
+#undef T
+#endif
 #define T pq
 
 typedef TYPE(deque, pq_datum) TYPE(T, pq_datum_t);

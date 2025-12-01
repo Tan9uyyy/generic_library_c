@@ -11,6 +11,9 @@
 
 #include "queue-export-def.h"
 
+#ifdef T
+#undef T
+#endif
 #define T queue
 
 typedef TYPE(deque, queue_datum_t) TYPE(T, queue_datum_t);

@@ -7,6 +7,9 @@
     #error "Undefined datum type !"
 #endif
 
+#ifdef T
+#undef T
+#endif
 #define T treap
 
 typedef struct TYPE(node, treap_datum_t) *TYPE(T, treap_datum_t);

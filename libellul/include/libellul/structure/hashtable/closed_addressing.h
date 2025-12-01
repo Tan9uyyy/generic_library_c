@@ -23,10 +23,16 @@ typedef struct COUPLE_TYPE {
 #endif
 } COUPLE_TYPE;
 
+#undef list_datum_t
+#define list_datum_t COUPLE_TYPE
+#include "../../type/list/list-implementation.h"
+#undef T_L
+#define T_L TYPE(list, list_datum_t)
+
 /* La structure principale de la Map */
 typedef struct T {
   size_t    count;      /* Nombre d'éléments total */
-  void      *buckets;    /* Tableau de tableau redimensionnable qui contient les listes de couple */
+  T_L      *buckets;    /* Tableau de tableau redimensionnable qui contient les listes de couple */
 } *T;
 
 #endif

@@ -1,0 +1,3 @@
+#ifndef _CLOSED_ADDRESSING_H__
+#define _CLOSED_ADDRESSING_H_
+

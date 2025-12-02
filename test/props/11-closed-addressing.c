@@ -1,44 +1,45 @@
 #include <libellul.h>
-/*
-#define T_IMPL_HASHTABLE
-#define T_IMPL_HASHTABLE_CLOSED_ADDRESSING
-#define T_MAP_TAG closed_addressing_hashtable_int_int
-#define T_MAP_KEY int
-#define T_MAP_VALUE int
 
-#include <libellul/type/map.h>
+// #define T_IMPL_HASHTABLE
+// #define T_IMPL_HASHTABLE_CLOSED_ADDRESSING
+// #define T_MAP_TAG closed_addressing_hashtable_int_int
+// #define T_MAP_KEY int
+// #define T_MAP_VALUE int
 
-#define destructor NULL
+// #define HASH(key) ( (key) % 13 )
+// #define DESTRUCTOR( val ) NULL
+// #define COMPARATOR(val1, val2) ((val1) == (val2))
+// #define PRINTER(val) printf("%d", (val))
 
-int comparator(int val1, int val2) { return val1 == val2; }
+// #include <libellul/type/map.h>
 
-static void closed_addressing_NULL( void ) {
-  int  value = 42;
-  int *hashtable = NULL;
+// static void closed_addressing_NULL( void ) {
+//   int  value = 42;
+//   T hashtable = NULL;
 
-  test_suite( "NULL as an hashtable" );
+//   test_suite( "NULL as an hashtable" );
 
-  test_assert( 0 == closed_addressing_hashtable_int_int_length( NULL ), "NULL is an hashtable of length zero" );
-  test_assert( closed_addressing_hashtable_int_int_is_empty( NULL ), "NULL is an the empty hashtable" );
+//   test_assert( 0 == closed_addressing_hashtable_int_int_length( NULL ), "NULL is an hashtable of length zero" );
+//   test_assert( closed_addressing_hashtable_int_int_is_empty( NULL ), "NULL is an the empty hashtable" );
 
-  test_abort( closed_addressing_hashtable_int_int_contains( NULL, 42, comparator), "NULL cannot contain anywhat" );
+//   test_abort( closed_addressing_hashtable_int_int_contains( NULL, 42), "NULL cannot contain anywhat" );
 
-  closed_addressing_hashtable_int_int_delete( NULL );
-  test_assert( 1, "Can delete NULL as an hashtable" );
+//   closed_addressing_hashtable_int_int_delete( NULL );
+//   test_assert( 1, "Can delete NULL as an hashtable" );
 
 
-  test_suite( "NULL variable as an hashtable" );
+//   test_suite( "NULL variable as an hashtable" );
 
-  test_assert( 0 == closed_addressing_hashtable_int_int_length( hashtable ), "A NULL hashtable has length zero" );
-  test_assert( closed_addressing_hashtable_int_int_is_empty( hashtable ), "A NULL hashtable is empty" );
+//   test_assert( 0 == closed_addressing_hashtable_int_int_length( hashtable ), "A NULL hashtable has length zero" );
+//   test_assert( closed_addressing_hashtable_int_int_is_empty( hashtable ), "A NULL hashtable is empty" );
 
-  closed_addressing_hashtable_int_int_delete( &hashtable );
-  test_assert( NULL == hashtable, "Can delete a NULL hashtable" );
+//   closed_addressing_hashtable_int_int_delete( &hashtable );
+//   test_assert( NULL == hashtable, "Can delete a NULL hashtable" );
 
-  test_abort( closed_addressing_hashtable_int_int_put( &hashtable, 3 ), "Cannot put to NULL hashtable" );
-  test_abort( closed_addressing_hashtable_int_int_remove( &hashtable, &value ), "Cannot remove from NULL hashtable" );
-  test_abort( closed_addressing_hashtable_int_int_get( hashtable, 3, &value ), "Cannot get from NULL hashtable" );
-}*/
+//   test_abort( closed_addressing_hashtable_int_int_put( &hashtable, 3, value), "Cannot put to NULL hashtable" );
+//   test_abort( closed_addressing_hashtable_int_int_remove( &hashtable, 3), "Cannot remove from NULL hashtable" );
+//   test_abort( closed_addressing_hashtable_int_int_get( hashtable, 3, &value ), "Cannot get from NULL hashtable" );
+// }
 /*
 int *rand_ints( size_t n ) {
   int *vec = calloc( n, sizeof( *vec ) );

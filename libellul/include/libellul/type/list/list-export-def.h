@@ -1,35 +1,23 @@
-#ifndef _LIST_EXPORT_DEF_H__
-#define _LIST_EXPORT_DEF_H__
-
-#include "../../interface.h"
-
-#ifndef list_datum_t
-    #error "Undefined datum type !"
-#endif
-
-#define deque_datum_t list_datum_t
-#include "../deque.h"
-#undef deque_datum_t
-
-#ifdef T
-#undef T
-#endif
-#define T list
-
-typedef TYPE(deque, list_datum_t) TYPE(T, list_datum_t);
-
-TYPE(T, list_datum_t)   METHOD(T, list_datum_t, new)(void);
-int                     METHOD(T, list_datum_t, is_empty)(TYPE(T, list_datum_t) list);
-int                     METHOD(T, list_datum_t, length)(TYPE(T, list_datum_t) list);
-list_datum_t            METHOD(T, list_datum_t, get)(TYPE(T, list_datum_t) list, int index);
-TYPE(T, list_datum_t)   METHOD(T, list_datum_t, set)(list_datum_t value, TYPE(T, list_datum_t) list, int index);
-TYPE(T, list_datum_t)   METHOD(T, list_datum_t, push)(list_datum_t value, TYPE(T, list_datum_t) list);
-TYPE(T, list_datum_t)   METHOD(T, list_datum_t, pop)(list_datum_t *value, TYPE(T, list_datum_t) list, void (*destructor)(list_datum_t));
-int                     METHOD(T, list_datum_t, contains)(TYPE(T, list_datum_t) list, list_datum_t value, int (*comparator)(list_datum_t val1, list_datum_t val2));
-TYPE(T, list_datum_t)   METHOD(T, list_datum_t, remove)(list_datum_t value, TYPE(T, list_datum_t) list, int (*comparator)(list_datum_t val1, list_datum_t val2), void (*destructor)(list_datum_t));
-TYPE(T, list_datum_t)   METHOD(T, list_datum_t, delete)(TYPE(T, list_datum_t) list, void (*destructor)(list_datum_t));
-void                    METHOD(T, list_datum_t, print)(TYPE(T, list_datum_t) list, void (*printer) (list_datum_t));
-
-#undef T
-
-#endif
+/* All list implementations must provide these functions: */
+/* Retourne une list vide */
+T_LIST_INTERFACE T              LIST_METHOD(new) (void);
+/* Retourne 1 si la list est vide, 0 sinon */
+T_LIST_INTERFACE int            LIST_METHOD(is_empty) (T list);
+/* Retourne le nombre d'éléments dans la list */
+T_LIST_INTERFACE int            LIST_METHOD(length) (T list);
+/* Retourne l'élément n°index de la list */
+T_LIST_INTERFACE list_datum_t   LIST_METHOD(get) (T list, int index);
+/* Insère l'élément à la place n°index de la list et retourne la nouvelle list */
+T_LIST_INTERFACE T              LIST_METHOD(set) (list_datum_t value, T list, int index);
+/* Insère l'élément à la fin de la list et retourne la nouvelle list */
+T_LIST_INTERFACE T              LIST_METHOD(push) (list_datum_t value, T list);
+/* Retire le dernier élément de la list, le stocke dans value et retourne la nouvelle list */
+T_LIST_INTERFACE T              LIST_METHOD(pop) (list_datum_t *value, T list);
+/* Retourne 1 si la list contient obj, 0 sinon */
+T_LIST_INTERFACE int            LIST_METHOD(contains) (T list, list_datum_t value);
+/* Retire l'élément obj de la list et retourne la nouvelle list */
+T_LIST_INTERFACE T              LIST_METHOD(remove) (list_datum_t value, T list);
+/* Supprime la list proprement en utilisant le destructeur sur chaque élément */
+T_LIST_INTERFACE T              LIST_METHOD(delete) (T list);
+/* Affiche la list en utilisant la fonction printer pour chaque élément */
+void                            LIST_METHOD(print) (T list);

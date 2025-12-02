@@ -1,3 +1,4 @@
+/*
 #ifndef _PRIORITY_QUEUE_H__
 #define _PRIORITY_QUEUE_H__
 
@@ -6,3 +7,4 @@
 
 
 #endif
+*/

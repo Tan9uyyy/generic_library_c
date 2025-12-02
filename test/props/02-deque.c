@@ -1,32 +1,33 @@
-#include <libellul/type/deque.h>
-
+#define T_DEQUE
+#define T_DEQUE_TAG int_deque
 #define deque_datum_t int
-#include <libellul/type/deque/deque-implementation.h>
+#define T int_deque_t
 
+#define DESTRUCTOR(val) NULL
+#define COMPARATOR(val1, val2) ((val1) == (val2))
+#define PRINTER(val) printf("%d", (val))
+
+#include <libellul/type/deque.h>
 #include <libellul.h>
 
-#define destructor NULL
-int comparator(int val1, int val2) { return val1 == val2; }
-void printer(int val){printf("%d", val);}
-
 void deque_NULL(void) {
-  deque_int_t deque = deque_int_new();
+  int_deque_t deque = int_deque_new();
 
-  deque_int_print(deque, printer);
+  int_deque_print(deque);
 
   test_suite("NULL as a deque");
 
-  test_assert(deque_int_is_empty(deque), "NULL is an empty deque");
-  test_assert(deque_int_length(deque) == 0, "NULL length is 0");
+  test_assert(int_deque_is_empty(deque), "NULL is an empty deque");
+  test_assert(int_deque_length(deque) == 0, "NULL length is 0");
 
-  deque_int_delete(deque, destructor);
+  int_deque_delete(deque);
   test_assert(1, "Can delete NULL as a deque");
 
   free(deque);
 }
 
 void deque_tests(void) {
-  deque_int_t deque = deque_int_new();
+  int_deque_t deque = int_deque_new();
 
   test_suite("Push front in deque");
 
@@ -39,113 +40,113 @@ void deque_tests(void) {
   values[5] = -1;
   values[6] = -2;
 
-  deque = deque_int_push_front(values[0], deque);
+  deque = int_deque_push_front(values[0], deque);
 
-  deque_int_print(deque, printer);
+  int_deque_print(deque);
 
-  test_assert(!deque_int_is_empty(deque), "Deque is not empty");
-  test_assert(deque_int_length(deque) == 1, "Deque length is 1");
-  test_assert(values[0] == deque_int_first(deque), "Deque head is correct");
+  test_assert(!int_deque_is_empty(deque), "Deque is not empty");
+  test_assert(int_deque_length(deque) == 1, "Deque length is 1");
+  test_assert(values[0] == int_deque_first(deque), "Deque head is correct");
 
   for (int i = 1; i < 4; i++)
-    deque = deque_int_push_front(values[i], deque);
-  deque_int_print(deque, printer);
+    deque = int_deque_push_front(values[i], deque);
+  int_deque_print(deque);
 
-  test_assert(!deque_int_is_empty(deque), "Push front multiple values");
-  test_assert(deque_int_length(deque) == 4, "Deque length is 4");
+  test_assert(!int_deque_is_empty(deque), "Push front multiple values");
+  test_assert(int_deque_length(deque) == 4, "Deque length is 4");
 
   test_suite("Push back in deque");
 
-  deque = deque_int_push_back(values[4], deque);
-  deque_int_print(deque, printer);
+  deque = int_deque_push_back(values[4], deque);
+  int_deque_print(deque);
 
-  test_assert(!deque_int_is_empty(deque), "Deque is still not empty");
-  test_assert(deque_int_length(deque) == 5, "Deque length is 5");
-  test_assert(values[4] == deque_int_last(deque), "Deque queue is correct");
+  test_assert(!int_deque_is_empty(deque), "Deque is still not empty");
+  test_assert(int_deque_length(deque) == 5, "Deque length is 5");
+  test_assert(values[4] == int_deque_last(deque), "Deque queue is correct");
 
   for (int i = 5; i < 7; i++)
-    deque = deque_int_push_back(values[i], deque);
-  deque_int_print(deque, printer);
+    deque = int_deque_push_back(values[i], deque);
+  int_deque_print(deque);
 
-  test_assert(!deque_int_is_empty(deque), "Push back multiple values");
-  test_assert(deque_int_length(deque) == 7, "Deque length is 7");
+  test_assert(!int_deque_is_empty(deque), "Push back multiple values");
+  test_assert(int_deque_length(deque) == 7, "Deque length is 7");
 
   test_suite("Rotate the deque");
 
-  deque_int_print(deque, printer);
-  deque_int_rotate(1, deque);
-  deque_int_print(deque, printer);
-  deque_int_rotate(-1, deque);
-  deque_int_print(deque, printer);
+  int_deque_print(deque);
+  int_deque_rotate(1, deque);
+  int_deque_print(deque);
+  int_deque_rotate(-1, deque);
+  int_deque_print(deque);
 
   test_suite("Pop front in deque");
 
   int value = 0;
-  while (!deque_int_is_empty(deque)) {
-    deque = deque_int_pop_front(&value, deque, destructor);
-    deque_int_print(deque, printer);
+  while (!int_deque_is_empty(deque)) {
+    deque = int_deque_pop_front(&value, deque);
+    int_deque_print(deque);
     test_assert(value, "Pop front is correct");
   }
 
   test_suite("Pop back in deque");
 
-  deque = deque_int_push_front(values[0], deque);
-  deque = deque_int_push_front(values[1], deque);
-  deque = deque_int_push_front(values[2], deque);
-  deque = deque_int_push_front(values[3], deque);
-  deque = deque_int_push_front(values[4], deque);
-  deque = deque_int_push_front(values[5], deque);
-  deque = deque_int_push_front(values[6], deque);
-  deque_int_print(deque, printer);
+  deque = int_deque_push_front(values[0], deque);
+  deque = int_deque_push_front(values[1], deque);
+  deque = int_deque_push_front(values[2], deque);
+  deque = int_deque_push_front(values[3], deque);
+  deque = int_deque_push_front(values[4], deque);
+  deque = int_deque_push_front(values[5], deque);
+  deque = int_deque_push_front(values[6], deque);
+  int_deque_print(deque);
 
-  while (!deque_int_is_empty(deque)) {
-    deque = deque_int_pop_back(&value, deque, destructor);
-    deque_int_print(deque, printer);
+  while (!int_deque_is_empty(deque)) {
+    deque = int_deque_pop_back(&value, deque);
+    int_deque_print(deque);
     test_assert(value, "Pop back is correct");
   }
 
-  test_assert(deque_int_is_empty(deque), "Deque is empty after fully poped");
+  test_assert(int_deque_is_empty(deque), "Deque is empty after fully poped");
 
   test_suite("Deque contains");
 
-  deque = deque_int_push_front(0, deque);
-  deque_int_print(deque, printer);
+  deque = int_deque_push_front(0, deque);
+  int_deque_print(deque);
 
-  test_assert(deque_int_contains(deque, 0, comparator), "Deque contient 0.");
-  test_assert(!deque_int_contains(deque, 1, comparator), "Deque ne contient pas 1.");
+  test_assert(int_deque_contains(deque, 0), "Deque contient 0.");
+  test_assert(!int_deque_contains(deque, 1), "Deque ne contient pas 1.");
 
   test_suite("Deque remove");
 
-  deque = deque_int_push_front(2, deque);
-  deque = deque_int_push_front(3, deque);
-  deque_int_print(deque, printer);
+  deque = int_deque_push_front(2, deque);
+  deque = int_deque_push_front(3, deque);
+  int_deque_print(deque);
 
-  test_assert(deque_int_remove(1, deque, comparator, destructor), "supprime 1 qui n'existe pas dans la liste (ne fait rien).");
-  deque_int_print(deque, printer);
-  test_assert(deque_int_remove(2, deque, comparator, destructor), "supprime 2.");
-  deque_int_print(deque, printer);
-  test_assert(deque_int_remove(3, deque, comparator, destructor), "supprime 3.");
-  deque_int_print(deque, printer);
-  test_assert(deque_int_remove(0, deque, comparator, destructor), "supprime 0.");
-  deque_int_print(deque, printer);
-  test_assert(deque_int_is_empty(deque), "Deque est vide après suppressions.");
+  test_assert(int_deque_remove(1, deque), "supprime 1 qui n'existe pas dans la liste (ne fait rien).");
+  int_deque_print(deque);
+  test_assert(int_deque_remove(2, deque), "supprime 2.");
+  int_deque_print(deque);
+  test_assert(int_deque_remove(3, deque), "supprime 3.");
+  int_deque_print(deque);
+  test_assert(int_deque_remove(0, deque), "supprime 0.");
+  int_deque_print(deque);
+  test_assert(int_deque_is_empty(deque), "Deque est vide après suppressions.");
 
   test_suite("Deque delete");
 
-  deque = deque_int_push_back(values[0], deque);
-  deque = deque_int_push_back(values[1], deque);
-  deque = deque_int_push_back(values[2], deque);
-  deque = deque_int_push_back(values[3], deque);
-  deque = deque_int_push_front(values[4], deque);
-  deque = deque_int_push_front(values[5], deque);
-  deque = deque_int_push_front(values[6], deque);
+  deque = int_deque_push_back(values[0], deque);
+  deque = int_deque_push_back(values[1], deque);
+  deque = int_deque_push_back(values[2], deque);
+  deque = int_deque_push_back(values[3], deque);
+  deque = int_deque_push_front(values[4], deque);
+  deque = int_deque_push_front(values[5], deque);
+  deque = int_deque_push_front(values[6], deque);
 
-  deque_int_print(deque, printer);
+  int_deque_print(deque);
 
-  deque = deque_int_delete(deque, destructor);
+  deque = int_deque_delete(deque);
 
-  deque_int_print(deque, printer);
-  test_assert(deque_int_is_empty(deque), "Deque is empty after delete");
+  int_deque_print(deque);
+  test_assert(int_deque_is_empty(deque), "Deque is empty after delete");
 
   free(values);
   free(deque);

@@ -1,31 +1,12 @@
-#ifndef DEQUE_IMPLEMENTATION_H__
-#define DEQUE_IMPLEMENTATION_H__
-
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "deque-export-def.h"
 
-#ifdef T
-#undef T
-#endif
-#define T deque
 
-typedef struct TYPE(link, deque_datum_t) {
-  struct TYPE(link, deque_datum_t) * next;
-  struct TYPE(link, deque_datum_t) * prev;
-  deque_datum_t datum;
-} TYPE(link, deque_datum_t);
-
-typedef struct TYPE(sentinel, deque_datum_t) {
-  struct TYPE(link, deque_datum_t) * head;
-  struct TYPE(link, deque_datum_t) * queue;
-  int length;
-} TYPE(sentinel, deque_datum_t);
-
-TYPE(T, deque_datum_t) METHOD(T, deque_datum_t, new)(void) {
-  TYPE(T, deque_datum_t) deque = malloc(sizeof(*deque));
+T DEQUE_METHOD(new)(void) {
+  T deque = malloc(sizeof(*deque));
   assert(deque && "Allocation failed !");
 
   deque->head = NULL;
@@ -35,25 +16,25 @@ TYPE(T, deque_datum_t) METHOD(T, deque_datum_t, new)(void) {
   return deque;
 }
 
-int METHOD(T, deque_datum_t, is_empty)(TYPE(T, deque_datum_t) deque) {return deque->length == 0;}
+int DEQUE_METHOD(is_empty)(T deque) {return deque->length == 0;}
 
-int METHOD(T, deque_datum_t, length)(TYPE(T, deque_datum_t) deque) { return deque->length; }
+int DEQUE_METHOD(length)(T deque) { return deque->length; }
 
-deque_datum_t METHOD(T, deque_datum_t, first)(TYPE(T, deque_datum_t) deque) {
-  assert(!METHOD(T, deque_datum_t, is_empty)(deque) && "Deque is empty !");
+deque_datum_t DEQUE_METHOD(first)(T deque) {
+  assert(!DEQUE_METHOD(is_empty)(deque) && "Deque is empty !");
 
   return deque->head->datum;
 }
 
-deque_datum_t METHOD(T, deque_datum_t, last)(TYPE(T, deque_datum_t) deque) {
-  assert(!METHOD(T, deque_datum_t, is_empty)(deque) && "Deque is empty !");
+deque_datum_t DEQUE_METHOD(last)(T deque) {
+  assert(!DEQUE_METHOD(is_empty)(deque) && "Deque is empty !");
 
   return deque->queue->datum;
 }
 
-deque_datum_t METHOD(T, deque_datum_t, get)(TYPE(T, deque_datum_t) deque, int index) {
+deque_datum_t DEQUE_METHOD(get)(T deque, int index) {
   assert(index >= 0 && index < deque->length && "Index out of range !");
-  TYPE(link, deque_datum_t) *iterator = deque->head;
+  TYPE(node, deque_datum_t) *iterator = deque->head;
 
   for (int i = 0; i < index; i++, iterator = iterator->next)
     ;
@@ -61,9 +42,9 @@ deque_datum_t METHOD(T, deque_datum_t, get)(TYPE(T, deque_datum_t) deque, int in
   return iterator->datum;
 }
 
-TYPE(T, deque_datum_t) METHOD(T, deque_datum_t, set)(deque_datum_t value, TYPE(T, deque_datum_t) deque, int index) {
+T DEQUE_METHOD(set)(deque_datum_t value, T deque, int index) {
   assert(index >= 0 && index < deque->length && "Index out of range !");
-  TYPE(link, deque_datum_t) *iterator = deque->head;
+  TYPE(node, deque_datum_t) *iterator = deque->head;
 
   for (int i = 0; i < index; i++, iterator = iterator->next)
     ;
@@ -76,14 +57,14 @@ TYPE(T, deque_datum_t) METHOD(T, deque_datum_t, set)(deque_datum_t value, TYPE(T
  * Return a pointer to the new head of the deque which datum is the one given in
  * parameter
  */
-TYPE(T, deque_datum_t) METHOD(T, deque_datum_t, push_front)(deque_datum_t value, TYPE(T, deque_datum_t) deque) {
-  TYPE(link, deque_datum_t) *new_head = malloc(sizeof(*new_head));
+T DEQUE_METHOD(push_front)(deque_datum_t value, T deque) {
+  TYPE(node, deque_datum_t) *new_head = malloc(sizeof(*new_head));
   assert(new_head && "Allocation failed !");
 
   new_head->datum = value;
 
   // Particular case if deque is empty
-  if (METHOD(T, deque_datum_t, is_empty)(deque)) {
+  if (DEQUE_METHOD(is_empty)(deque)) {
     new_head->next = new_head;
     new_head->prev = new_head;
 
@@ -110,14 +91,14 @@ TYPE(T, deque_datum_t) METHOD(T, deque_datum_t, push_front)(deque_datum_t value,
  * Return a pointer to the same head as the change is the queue,
  * The datum of the queue is the one given in parameters
  */
-TYPE(T, deque_datum_t) METHOD(T, deque_datum_t, push_back)(deque_datum_t value, TYPE(T, deque_datum_t) deque) {
-  TYPE(link, deque_datum_t) *new_queue = malloc(sizeof(*new_queue));
+T DEQUE_METHOD(push_back)(deque_datum_t value, T deque) {
+  TYPE(node, deque_datum_t) *new_queue = malloc(sizeof(*new_queue));
   assert(new_queue && "Allocation failed !");
 
   new_queue->datum = value;
 
   // Particular case if deque is empty
-  if (METHOD(T, deque_datum_t, is_empty)(deque)) {
+  if (DEQUE_METHOD(is_empty)(deque)) {
     new_queue->next = new_queue;
     new_queue->prev = new_queue;
 
@@ -145,13 +126,13 @@ TYPE(T, deque_datum_t) METHOD(T, deque_datum_t, push_back)(deque_datum_t value, 
  * The current head is freed and its value is stored inside the pointer given in
  * parameters
  */
-TYPE(T, deque_datum_t) METHOD(T, deque_datum_t, pop_front)(deque_datum_t *value, TYPE(T, deque_datum_t) deque, void (*destructor)(deque_datum_t)) {
-  assert(!METHOD(T, deque_datum_t, is_empty)(deque) && "Deque is empty !");
+T DEQUE_METHOD(pop_front)(deque_datum_t *value, T deque) {
+  assert(!DEQUE_METHOD(is_empty)(deque) && "Deque is empty !");
 
   // Only one element
   if (deque->length == 1) {
-    *value = METHOD(T, deque_datum_t, first)(deque);
-    if (destructor) destructor(deque->head->datum);
+    *value = DEQUE_METHOD(first)(deque);
+    if (DESTRUCTOR()) DESTRUCTOR(deque->head->datum);
 
     free(deque->head);
     deque->head = NULL;
@@ -162,9 +143,9 @@ TYPE(T, deque_datum_t) METHOD(T, deque_datum_t, pop_front)(deque_datum_t *value,
   }
 
   // Multiple elements
-  TYPE(link, deque_datum_t) *new_head = deque->head->next;
-  *value = METHOD(T, deque_datum_t, first)(deque);
-  if (destructor) destructor(deque->head->datum);
+  TYPE(node, deque_datum_t) *new_head = deque->head->next;
+  *value = DEQUE_METHOD(first)(deque);
+  if (DESTRUCTOR()) DESTRUCTOR(deque->head->datum);
 
   new_head->prev = deque->queue;
   deque->queue->next = new_head;
@@ -180,13 +161,13 @@ TYPE(T, deque_datum_t) METHOD(T, deque_datum_t, pop_front)(deque_datum_t *value,
  * queue, The current queue is freed and its value is stored inside the pointer
  * given in parameters
  */
-TYPE(T, deque_datum_t) METHOD(T, deque_datum_t, pop_back)(deque_datum_t *value, TYPE(T, deque_datum_t) deque, void (*destructor)(deque_datum_t)) {
-  assert(!METHOD(T, deque_datum_t, is_empty)(deque) && "Deque is empty !");
+T DEQUE_METHOD(pop_back)(deque_datum_t *value, T deque) {
+  assert(!DEQUE_METHOD(is_empty)(deque) && "Deque is empty !");
 
   // Only one element
   if (deque->length == 1) {
-    *value = METHOD(T, deque_datum_t, last)(deque);
-    if (destructor) destructor(deque->queue->datum);
+    *value = DEQUE_METHOD(last)(deque);
+    if (DESTRUCTOR()) DESTRUCTOR(deque->queue->datum);
 
     free(deque->queue);
     deque->head = NULL;
@@ -197,9 +178,9 @@ TYPE(T, deque_datum_t) METHOD(T, deque_datum_t, pop_back)(deque_datum_t *value, 
   }
 
   // Multiple elements
-  TYPE(link, deque_datum_t) *new_queue = deque->queue->prev;
-  *value = METHOD(T, deque_datum_t, last)(deque);
-  if (destructor) destructor(deque->queue->datum);
+  TYPE(node, deque_datum_t) *new_queue = deque->queue->prev;
+  *value = DEQUE_METHOD(last)(deque);
+  if (DESTRUCTOR()) DESTRUCTOR(deque->queue->datum);
 
   new_queue->next = deque->head;
   deque->head->prev = new_queue;
@@ -210,7 +191,7 @@ TYPE(T, deque_datum_t) METHOD(T, deque_datum_t, pop_back)(deque_datum_t *value, 
   return deque;
 }
 
-TYPE(T, deque_datum_t) METHOD(T, deque_datum_t, rotate)(int nb_rot, TYPE(T, deque_datum_t) deque){
+T DEQUE_METHOD(rotate)(int nb_rot, T deque){
   if (nb_rot > 0){
     for (int i = 0; i < nb_rot; i++){deque->head = deque->head->next; deque->queue = deque->queue->next;}
 
@@ -226,14 +207,14 @@ TYPE(T, deque_datum_t) METHOD(T, deque_datum_t, rotate)(int nb_rot, TYPE(T, dequ
  * 1 if deque contains obj
  * 0 if deque doesn't contain obj
  */
-int METHOD(T, deque_datum_t, contains)(TYPE(T, deque_datum_t) deque, deque_datum_t obj, int (*comparator)(deque_datum_t val1, deque_datum_t val2)) {
-  if (METHOD(T, deque_datum_t, is_empty)(deque))
+int DEQUE_METHOD(contains)(T deque, deque_datum_t obj) {
+  if (DEQUE_METHOD(is_empty)(deque))
     return 0;
 
-  TYPE(link, deque_datum_t) *iterator = deque->head;
+  TYPE(node, deque_datum_t) *iterator = deque->head;
 
   do {
-    if (comparator(iterator->datum, obj)) {
+    if (COMPARATOR(iterator->datum, obj)) {
       return 1;
     }
     iterator = iterator->next;
@@ -242,29 +223,29 @@ int METHOD(T, deque_datum_t, contains)(TYPE(T, deque_datum_t) deque, deque_datum
   return 0;
 }
 
-TYPE(T, deque_datum_t)    METHOD(T, deque_datum_t, remove)(deque_datum_t value, TYPE(T, deque_datum_t) deque, int (*comparator)(deque_datum_t, deque_datum_t), void (*destructor)(deque_datum_t)) {
+T    DEQUE_METHOD(remove)(deque_datum_t value, T deque) {
   deque_datum_t storage;
 
   // Deque empty
-  if (METHOD(T, deque_datum_t, is_empty)(deque)) return NULL;
+  if (DEQUE_METHOD(is_empty)(deque)) return NULL;
   
   // Only one element
-  if ((1 == deque->length) && comparator(deque->head->datum, value)){return METHOD(T, deque_datum_t, pop_back)(&storage, deque, destructor);}
+  if ((1 == deque->length) && COMPARATOR(deque->head->datum, value)){return DEQUE_METHOD(pop_back)(&storage, deque);}
 
   // Multiple elements
-  TYPE(link, deque_datum_t) *iterator = deque->head->next;
+  TYPE(node, deque_datum_t) *iterator = deque->head->next;
 
-  while(!comparator(iterator->datum, value) && iterator != deque->head){iterator = iterator->next;}
+  while(!COMPARATOR(iterator->datum, value) && iterator != deque->head){iterator = iterator->next;}
 
-  if (!comparator(iterator->datum, value)) {return deque;} // Value not in deque
-  if (iterator == deque->head)  {return METHOD(T, deque_datum_t, pop_front) (&storage, deque, destructor);} // Value at front
-  if (iterator == deque->queue) {return METHOD(T, deque_datum_t, pop_back)  (&storage, deque, destructor);} // Value at back
+  if (!COMPARATOR(iterator->datum, value)) {return deque;} // Value not in deque
+  if (iterator == deque->head)  {return DEQUE_METHOD(pop_front) (&storage, deque);} // Value at front
+  if (iterator == deque->queue) {return DEQUE_METHOD(pop_back)  (&storage, deque);} // Value at back
 
-  TYPE(link, deque_datum_t) *deque_head = deque->head; // If value is neither at the front nor the back
-  TYPE(link, deque_datum_t) *deque_queue = deque->queue;
+  TYPE(node, deque_datum_t) *deque_head = deque->head; // If value is neither at the front nor the back
+  TYPE(node, deque_datum_t) *deque_queue = deque->queue;
   deque->head = iterator; deque->queue = iterator->prev;
 
-  deque = METHOD(T, deque_datum_t, pop_front)(&storage, deque, destructor);
+  deque = DEQUE_METHOD(pop_front)(&storage, deque);
   deque->head = deque_head; deque->queue = deque_queue;
 
   return deque;
@@ -273,13 +254,13 @@ TYPE(T, deque_datum_t)    METHOD(T, deque_datum_t, remove)(deque_datum_t value, 
 
 /*
  * Return a null pointer after freeing all the elements inside the deque
- * If the datum needs to be freed you need to give a destructor in parameter to
+ * If the datum needs to be freed you need to give a DESTRUCTOR in parameter to
  * dodge leaks... like in the matrix
  */
-TYPE(T, deque_datum_t) METHOD(T, deque_datum_t, delete)(TYPE(T, deque_datum_t) deque, void (*destructor)(deque_datum_t)) {
+T DEQUE_METHOD(delete)(T deque) {
   deque_datum_t storage;
-  while (!METHOD(T, deque_datum_t, is_empty)(deque)) {
-      deque = METHOD(T, deque_datum_t, pop_back)(&storage, deque, destructor); // Use of pop_back so the deque head doesn't change
+  while (!DEQUE_METHOD(is_empty)(deque)) {
+      deque = DEQUE_METHOD(pop_back)(&storage, deque); // Use of pop_back so the deque head doesn't change
   }
   return deque;
 }
@@ -287,18 +268,18 @@ TYPE(T, deque_datum_t) METHOD(T, deque_datum_t, delete)(TYPE(T, deque_datum_t) d
 /*
  * Print the deque like this { datum1 datum2 datum3 ...}
  */
-void METHOD(T, deque_datum_t, print)(TYPE(T, deque_datum_t) deque, void (*printer) (deque_datum_t)) {
+void DEQUE_METHOD(print)(T deque) {
   // Case Empty
-  if (METHOD(T, deque_datum_t, is_empty)(deque)) {
+  if (DEQUE_METHOD(is_empty)(deque)) {
     printf("{}\n"); 
 
     return;
   }
 
   // Case 1 element
-  if (1 == METHOD(T, deque_datum_t, length)(deque)) { 
+  if (1 == DEQUE_METHOD(length)(deque)) { 
     printf("{");
-    printer(deque->head->datum);
+    PRINTER(deque->head->datum);
     printf("}\n");
 
     return;
@@ -306,18 +287,14 @@ void METHOD(T, deque_datum_t, print)(TYPE(T, deque_datum_t) deque, void (*printe
 
   // Case multiple elements
   printf("{");
-  printer(deque->head->datum);
+  PRINTER(deque->head->datum);
 
-  TYPE(link, deque_datum_t) *iterator = deque->head->next;
+  TYPE(node, deque_datum_t) *iterator = deque->head->next;
   while(iterator != deque->head) {
     printf(", ");
-    printer(iterator->datum);
+    PRINTER(iterator->datum);
     iterator = iterator->next;
   }
 
   printf("}\n");
 }
-
-#undef T
-
-#endif

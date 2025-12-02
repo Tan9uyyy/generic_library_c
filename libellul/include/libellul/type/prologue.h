@@ -2,4 +2,4 @@
 #include <stdio.h>
 
 
-#include <libellul/generics.h>
+#include <libellul/interface.h>

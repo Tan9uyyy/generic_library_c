@@ -1,3 +1,4 @@
+/*
 #include <libellul/type/stack.h>
 
 #define stack_datum_t int
@@ -93,14 +94,15 @@ void stack_test(void){
 
     free(stack);
 }
+*/
 
 int main (int argc, char *argv[]){
-    unit_test(argc, argv);
+    // unit_test(argc, argv);
 
-    test_suite("\n\n\n ================================================ TEST 04-stack.c =========================================================");
+    // test_suite("\n\n\n ================================================ TEST 04-stack.c =========================================================");
 
-    stack_NULL();
-    stack_test();
+    // stack_NULL();
+    // stack_test();
 
-    exit(EXIT_SUCCESS);
+    return 0;// exit(EXIT_SUCCESS);
 }

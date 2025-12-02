@@ -1,6 +1,4 @@
-#ifndef _PRIORITY_QUEUE_IMPLEMENTATION_H__
-#define _PRIORITY_QUEUE_IMPLEMENTATION_H__
-
+/*
 #include <stdlib.h>
 #include <assert.h>
 #include <stdio.h>
@@ -128,5 +126,4 @@ void METHOD(T, pq_datum_t, print)(TYPE(T, pq_datum_t) pq, void (*printer) (pq_da
 
 
 #undef T
-
-#endif
+*/

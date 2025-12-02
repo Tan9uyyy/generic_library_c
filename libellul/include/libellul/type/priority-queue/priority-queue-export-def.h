@@ -1,3 +1,4 @@
+/*
 #ifndef _PRIORITY_QUEUE_EXPORT_DEF_H__
 #define _PRIORITY_QUEUE_EXPORT_DEF_H__
 
@@ -36,3 +37,4 @@ void                    METHOD(T, pq_datum_t, print) (TYPE(T, pq_datum_t) pq, vo
 #undef T
 
 #endif
+*/

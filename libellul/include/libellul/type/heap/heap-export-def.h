@@ -20,8 +20,8 @@ int                     METHOD(T, heap_datum_t, is_empty) (TYPE(T, heap_datum_t)
 int                     METHOD(T, heap_datum_t, length) (TYPE(T, heap_datum_t) heap);
 heap_datum_t            METHOD(T, heap_datum_t, root) (TYPE(T, heap_datum_t) heap);
 int                     METHOD(T, heap_datum_t, push) (TYPE(T, heap_datum_t) heap, heap_datum_t value, int (*comparator) (heap_datum_t, heap_datum_t));
-int                     METHOD(T, heap_datum_t, pop) (TYPE(T, heap_datum_t) heap, heap_datum_t* value, void (*destructor) (heap_datum_t));
-int                     METHOD(T, heap_datum_t, delete) (TYPE(T, heap_datum_t) heap, void (*destructor) (heap_datum_t));
+int                     METHOD(T, heap_datum_t, pop) (TYPE(T, heap_datum_t) heap, heap_datum_t* value, int (*comparator) (heap_datum_t, heap_datum_t));
+void                     METHOD(T, heap_datum_t, delete) (TYPE(T, heap_datum_t) heap);
 
 #undef T
 

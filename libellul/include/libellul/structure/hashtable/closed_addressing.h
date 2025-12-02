@@ -41,18 +41,11 @@ typedef struct COUPLE_TYPE {
 #undef T_L
 #define T_L TYPE(list, list_datum_t)
 
-#ifdef T
-#undef T
-#endif
-#define T TYPE(closed_addressing_hashtable, map_datum_t)
-
 /* La structure principale de la Map */
 typedef struct T {
   size_t    count;      /* Nombre d'éléments total */
   T_L      *buckets;    /* Tableau de tableau redimensionnable qui contient les listes de couple */
 } *T;
-
-#undef T
 
 #endif
 
@@ -64,6 +57,8 @@ typedef struct T {
 #include <libellul/memory.h>
 #include <libellul/type/array.h>
 
-#include <libellul/type/closed_addressing/closed-adressing-export-defs.h>
+#include <libellul/type/closed_addressing/closed-addressing-implementation.h>
+
+#endif
 
 #undef T_IMPL_HASHTABLE_CLOSED_ADDRESSING_H

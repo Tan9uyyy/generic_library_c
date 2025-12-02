@@ -56,4 +56,14 @@ typedef struct T {
 
 #endif
 
+#include <libellul/type/map/interface.h>
+
+#if !defined( T_MAP_EXPORT_DEFS )
+/* Code templating for the actual implementation starts here */
+
+#include <libellul/memory.h>
+#include <libellul/type/array.h>
+
+#include <libellul/type/closed_addressing/closed-adressing-export-defs.h>
+
 #undef T_IMPL_HASHTABLE_CLOSED_ADDRESSING_H

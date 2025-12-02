@@ -7,10 +7,12 @@
 
 #include "../array.h"
 
+/* Comparateur de couple utilisant le comparateur des clés */
 int couple_comparator(COUPLE_TYPE *couple1, COUPLE_TYPE *couple2, int (*comparator)(T_MAP_KEY, T_MAP_KEY)) {
   return comparator(couple1->key, couple2->key);
 }
 
+/* Destructeur de couple utilisant le destructeur des valeurs */
 void couple_destructor(COUPLE_TYPE *couple, void (*destructor)(T_MAP_VALUE)) {
 #if !defined( T_SET_ELEMENT )
   if(destructor != NULL){
@@ -20,36 +22,37 @@ void couple_destructor(COUPLE_TYPE *couple, void (*destructor)(T_MAP_VALUE)) {
 #endif
 }
 
+/* retourne une hashmap en adressage fermé vide */
 T *METHOD(T, map_datum_t, new)(void) { 
-  T *hashtable = malloc(sizeof(T));
+  T hashtable = malloc(sizeof(*T));
   hashtable->buckets = (T_L *) array(T_L);
   hashtable->count = 0;
   return hashtable;
 }
 
-size_t METHOD(T, map_datum_t, length)(T *hashtable) {
-  // size_t compteur = 0;
-  // for (int i = array_size(hashtable) - 1; i >= 0; i -= 1) {
-  //   compteur += METHOD(list, map_datum_t, length)(((T_L *)hashtable)[i]);
-  // } ancienne version
+/* retourne le nombre de couples à l'intérieur de la hashmap */
+size_t METHOD(T, map_datum_t, length)(T hashtable) {
   return hashtable->count;
 }
 
-void METHOD(T, map_datum_t, delete)(T **hashtable) { 
-  for(int i = METHOD(T, map_datum_t, length)(*hashtable) - 1; i >= 0; i -= 1){
-    METHOD(list, list_datum_t, delete)((T_L *)((*hashtable)->buckets[i]), free);
+/* supprime la hashmap */
+void METHOD(T, map_datum_t, delete)(T *hashtable) { 
+  for(int i = METHOD(T, map_datum_t, length)(hashtable) - 1; i >= 0; i -= 1){
+    METHOD(list, list_datum_t, delete)((T_L *)((hashtable)->buckets[i]), free);
   }
   array_delete(hashtable);
 }
 
-int METHOD(T, map_datum_t, contains)(T *hashtable, T_MAP_KEY key, int (*comparator)(T_MAP_KEY, T_MAP_KEY)) {
+/* retourne 1 si la hashmap contient la clé et 0 sinon */
+int METHOD(T, map_datum_t, contains)(T hashtable, T_MAP_KEY key, int (*comparator)(T_MAP_KEY, T_MAP_KEY)) {
   COUPLE_TYPE *couple_exemple = (COUPLE_TYPE *)(sizeof(COUPLE_TYPE));
   couple_exemple->key = key;
   int hash_code = HASH(key);
   return (METHOD(list, list_datum_t, contains)((T_L *)hashtable[hash_code], couple_exemple, couple_comparator));
 }
 
-void METHOD(T, map_datum_t, remove)(T *hashtable, T_MAP_KEY key, int (*comparator)(T_MAP_KEY, T_MAP_KEY), void (*destructor)(T_MAP_VALUE)) {
+/* Supprime le couple de clé key s'il existe et ne fait rien sinon */
+void METHOD(T, map_datum_t, remove)(T hashtable, T_MAP_KEY key, int (*comparator)(T_MAP_KEY, T_MAP_KEY), void (*destructor)(T_MAP_VALUE)) {
   COUPLE_TYPE *couple_exemple = (COUPLE_TYPE *)(sizeof(COUPLE_TYPE));
   couple_exemple->key = key;
   int hash_code = HASH(key);
@@ -57,15 +60,15 @@ void METHOD(T, map_datum_t, remove)(T *hashtable, T_MAP_KEY key, int (*comparato
   return void;
 }
 
-int METHOD(T, map_datum_t, put)(T *hashtable, T_MAP_KEY key, T_MAP_VALUE value) {
+/* Rajoute le couple de clé key et de valeur value dans la hashmap */
+int METHOD(T, map_datum_t, put)(T hashtable, T_MAP_KEY key, T_MAP_VALUE value) {
   return 0;
 }
 
-int METHOD(T, map_datum_t, get)(T *hashtable, T_MAP_KEY key, T_MAP_VALUE *value) {
+/* Récupère la valeur associée à la clé key dans la hashmap */
+int METHOD(T, map_datum_t, get)(T hashtable, T_MAP_KEY key, T_MAP_VALUE *value) {
   return 0;
 }
-
-int METHOD(T, map_datum_t, isEmpty)(T *hashtable) { return 0; }
 
 #undef T
 #undef T_MAP_KEY

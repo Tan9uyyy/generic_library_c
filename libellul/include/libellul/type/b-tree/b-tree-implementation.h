@@ -10,13 +10,13 @@
 #ifdef T
 #undef T
 #endif
-#define T binary_tree
+#define T b_tree
 
-typedef struct TYPE(node, b_tree_datum_t){
-    struct TYPE(node, b_tree_datum_t) *ls;
-    struct TYPE(node, b_tree_datum_t) *rs;
+typedef struct TYPE(b_tree_node, b_tree_datum_t){
+    struct TYPE(b_tree_node, b_tree_datum_t) *ls;
+    struct TYPE(b_tree_node, b_tree_datum_t) *rs;
     b_tree_datum_t value;
-} TYPE(node, b_tree_datum_t);
+} TYPE(b_tree_node, b_tree_datum_t);
 
 TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, new) (void){return NULL;}
 
@@ -24,7 +24,7 @@ int METHOD(T, b_tree_datum_t, is_empty) (TYPE(T, b_tree_datum_t) b_tree){return 
 
 TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, rec_push) (TYPE(T, b_tree_datum_t) b_tree, b_tree_datum_t value, int (*comparator) (b_tree_datum_t, b_tree_datum_t)){
     if (METHOD(T, b_tree_datum_t, is_empty) (b_tree)){
-        struct TYPE(node, b_tree_datum_t) *new_node = malloc(sizeof(*new_node));
+        TYPE(b_tree_node, b_tree_datum_t) *new_node = malloc(sizeof(*new_node));
         assert(new_node && "Allocation failed !");
 
         new_node->value = value;

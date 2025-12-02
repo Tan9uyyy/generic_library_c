@@ -30,6 +30,9 @@
 #define T_MAP_INTERFACE extern
 #endif
 
+#ifdef T
+#undef T
+#endif
 #define T                      GEN_SYM( T_MAP_TAG, t )
 #define MAP_METHOD( name )     GEN_SYM( T_MAP_TAG, name )
 

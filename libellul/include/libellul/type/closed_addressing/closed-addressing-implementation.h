@@ -7,8 +7,17 @@
 
 #include "../array.h"
 
-int comparator_couple(COUPLE_TYPE couple1, COUPLE_TYPE couple2) {
-  return couple1.key == couple2.key;
+int couple_comparator(COUPLE_TYPE *couple1, COUPLE_TYPE *couple2, int (*comparator)(T_MAP_KEY, T_MAP_KEY)) {
+  return comparator(couple1->key, couple2->key);
+}
+
+void couple_destructor(COUPLE_TYPE *couple, void (*destructor)(T_MAP_VALUE)) {
+#if !defined( T_SET_ELEMENT )
+  if(destructor != NULL){
+    destructor(couple.value);
+  }
+  free(couple);
+#endif
 }
 
 T *METHOD(T, map_datum_t, new)(void) { 
@@ -33,14 +42,18 @@ void METHOD(T, map_datum_t, delete)(T **hashtable) {
   array_delete(hashtable);
 }
 
-int METHOD(T, map_datum_t, contains)(T *hashtable, T_MAP_KEY key, (int)(*comparator)(T_MAP_KEY, T_MAP_KEY)) {
+int METHOD(T, map_datum_t, contains)(T *hashtable, T_MAP_KEY key, int (*comparator)(T_MAP_KEY, T_MAP_KEY)) {
+  COUPLE_TYPE *couple_exemple = (COUPLE_TYPE *)(sizeof(COUPLE_TYPE));
+  couple_exemple->key = key;
   int hash_code = HASH(key);
-  return (METHOD(list, list_datum_t, contains)((T_L *)hashtable[hash_code], key, comparator));
+  return (METHOD(list, list_datum_t, contains)((T_L *)hashtable[hash_code], couple_exemple, couple_comparator));
 }
 
-void METHOD(T, map_datum_t, remove)(T *hashtable, T_MAP_KEY key) {
+void METHOD(T, map_datum_t, remove)(T *hashtable, T_MAP_KEY key, int (*comparator)(T_MAP_KEY, T_MAP_KEY), void (*destructor)(T_MAP_VALUE)) {
+  COUPLE_TYPE *couple_exemple = (COUPLE_TYPE *)(sizeof(COUPLE_TYPE));
+  couple_exemple->key = key;
   int hash_code = HASH(key);
-  METHOD(list, list_datum_t, remove)(key, (T_L *)hashtable[hash_code], comparator_couple, NULL);
+  METHOD(list, list_datum_t, remove)(couple_exemple, (T_L *)hashtable[hash_code], couple_comparator, couple_destructor);
   return void;
 }
 

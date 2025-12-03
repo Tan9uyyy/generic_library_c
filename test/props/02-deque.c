@@ -4,12 +4,14 @@
 #define T int_deque_t
 
 #define DESTRUCTOR(val) NULL
-#define DESTRUCTOR_IS_NULL //macro flag pour indiquer que le destructeur est NULL (ça me simplifie pour les if parce que sinon je comprends rien)
+#define DESTRUCTOR_IS_NULL // macro flag pour indiquer que le destructeur est
+                           // NULL (ça me simplifie pour les if parce que sinon
+                           // je comprends rien)
 #define COMPARATOR(val1, val2) ((val1) == (val2))
 #define PRINTER(val) printf("%d", (val))
 
-#include <libellul/type/deque.h>
 #include <libellul.h>
+#include <libellul/type/deque.h>
 
 void deque_NULL(void) {
   int_deque_t deque = int_deque_new();
@@ -23,8 +25,6 @@ void deque_NULL(void) {
 
   int_deque_delete(deque);
   test_assert(1, "Can delete NULL as a deque");
-
-  free(deque);
 }
 
 void deque_tests(void) {
@@ -113,8 +113,8 @@ void deque_tests(void) {
   deque = int_deque_push_front(0, deque);
   int_deque_print(deque);
 
-  test_assert(int_deque_contains(deque, 0), "Deque contient 0.");
-  test_assert(!int_deque_contains(deque, 1), "Deque ne contient pas 1.");
+  test_assert(int_deque_contains(deque, 0) >= 0, "Deque contient 0.");
+  test_assert(int_deque_contains(deque, 1) < 0, "Deque ne contient pas 1.");
 
   test_suite("Deque remove");
 
@@ -122,7 +122,8 @@ void deque_tests(void) {
   deque = int_deque_push_front(3, deque);
   int_deque_print(deque);
 
-  test_assert(int_deque_remove(1, deque), "supprime 1 qui n'existe pas dans la liste (ne fait rien).");
+  test_assert(int_deque_remove(1, deque),
+              "supprime 1 qui n'existe pas dans la liste (ne fait rien).");
   int_deque_print(deque);
   test_assert(int_deque_remove(2, deque), "supprime 2.");
   int_deque_print(deque);
@@ -150,7 +151,6 @@ void deque_tests(void) {
   test_assert(int_deque_is_empty(deque), "Deque is empty after delete");
 
   free(values);
-  free(deque);
 }
 
 int main(int argc, char *argv[]) {

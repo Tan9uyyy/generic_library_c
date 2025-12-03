@@ -16,9 +16,16 @@ T DEQUE_METHOD(new)(void) {
   return deque;
 }
 
-int DEQUE_METHOD(is_empty)(T deque) {return deque->length == 0;}
+int DEQUE_METHOD(is_empty)(T deque) {
+  return (!deque || deque->length == 0);
+}
 
-int DEQUE_METHOD(length)(T deque) { return deque->length; }
+int DEQUE_METHOD(length)(T deque) { 
+  if (!deque)
+  {
+    return 0; // Consider NULL deque as empty with length 0
+  }
+  return deque->length; }
 
 deque_datum_t DEQUE_METHOD(first)(T deque) {
   assert(!DEQUE_METHOD(is_empty)(deque) && "Deque is empty !");
@@ -207,30 +214,31 @@ T DEQUE_METHOD(rotate)(int nb_rot, T deque){
 }
 
 /* Return
- * 1 if deque contains obj
- * 0 if deque doesn't contain obj
+ * index if deque contains obj
+ * -1 if deque doesn't contain obj
  */
 int DEQUE_METHOD(contains)(T deque, deque_datum_t obj) {
   if (DEQUE_METHOD(is_empty)(deque))
-    return 0;
-
+    return -1;
+  int index = 0;
   TYPE(node, deque_datum_t) *iterator = deque->head;
 
   do {
     if (COMPARATOR(iterator->datum, obj)) {
-      return 1;
+      return index;
     }
+    index++;
     iterator = iterator->next;
   } while (iterator != deque->head);
 
-  return 0;
+  return -1;
 }
 
 T    DEQUE_METHOD(remove)(deque_datum_t value, T deque) {
   deque_datum_t storage;
 
   // Deque empty
-  if (DEQUE_METHOD(is_empty)(deque)) return NULL;
+  if (!deque || DEQUE_METHOD(is_empty)(deque)) return deque;
   
   // Only one element
   if ((1 == deque->length) && COMPARATOR(deque->head->datum, value)){return DEQUE_METHOD(pop_back)(&storage, deque);}
@@ -257,15 +265,17 @@ T    DEQUE_METHOD(remove)(deque_datum_t value, T deque) {
 
 /*
  * Return a null pointer after freeing all the elements inside the deque
- * If the datum needs to be freed you need to give a DESTRUCTOR in parameter to
+ * If the datum needs to be freed you need to declare a DESTRUCTOR in macro to
  * dodge leaks... like in the matrix
  */
 T DEQUE_METHOD(delete)(T deque) {
-  deque_datum_t storage;
-  while (!DEQUE_METHOD(is_empty)(deque)) {
-      deque = DEQUE_METHOD(pop_back)(&storage, deque); // Use of pop_back so the deque head doesn't change
+  if(!deque){ return NULL; }
+  for (int i = deque->length - 1; i >= 0; i -= 1) {
+    deque_datum_t storage;
+    deque = DEQUE_METHOD(pop_back)(&storage, deque);
   }
-  return deque;
+  free(deque);
+  return NULL;
 }
 
 /*

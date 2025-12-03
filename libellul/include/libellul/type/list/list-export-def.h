@@ -13,7 +13,7 @@ T_LIST_INTERFACE T              LIST_METHOD(set) (list_datum_t value, T list, in
 T_LIST_INTERFACE T              LIST_METHOD(push) (list_datum_t value, T list);
 /* Retire le dernier élément de la list, le stocke dans value et retourne la nouvelle list */
 T_LIST_INTERFACE T              LIST_METHOD(pop) (list_datum_t *value, T list);
-/* Retourne 1 si la list contient obj, 0 sinon */
+/* Retourne l'index de la value si la list contient obj, -1 sinon */
 T_LIST_INTERFACE int            LIST_METHOD(contains) (T list, list_datum_t value);
 /* Retire l'élément obj de la list et retourne la nouvelle list */
 T_LIST_INTERFACE T              LIST_METHOD(remove) (list_datum_t value, T list);

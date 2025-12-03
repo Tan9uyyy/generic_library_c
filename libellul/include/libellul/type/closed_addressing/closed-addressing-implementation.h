@@ -7,7 +7,10 @@ T_MAP_INTERFACE T MAP_METHOD(new)(void) {
     printf("Error allocating hashtable\n");
     return NULL;
   }
-  hashtable->buckets = (T_L *)array(T_L);
+  hashtable->buckets = (T_L *)array_new(HASHTABLE_SIZE, T_L);
+  for (int i = array_length(hashtable->buckets) - 1; i >= 0; i -= 1) {
+    hashtable->buckets[i] = LIST_METHOD(new)();
+  }
   hashtable->count = 0;
   return hashtable;
 }
@@ -26,12 +29,10 @@ T_MAP_INTERFACE void MAP_METHOD(delete)(T *hashtable) {
     return;
   }
 
-  if ((*hashtable)->buckets) {
-    for (int i = array_length((*hashtable)->buckets) - 1; i >= 0; i -= 1) {
-      (*hashtable)->buckets[i] = LIST_METHOD(delete)((*hashtable)->buckets[i]);
-    }
-    array_delete((*hashtable)->buckets);
+  for (int i = array_length((*hashtable)->buckets) - 1; i >= 0; i -= 1) {
+    (*hashtable)->buckets[i] = LIST_METHOD(delete)(((*hashtable)->buckets)[i]);
   }
+  array_delete(&(*hashtable)->buckets);
 
   free(*hashtable);
   *hashtable = NULL;
@@ -46,7 +47,10 @@ T_MAP_INTERFACE int MAP_METHOD(contains)(T hashtable, T_MAP_KEY key) {
   int hash_code = HASH(key);
   int contains =
       LIST_METHOD(contains)(hashtable->buckets[hash_code], couple_exemple);
-  return contains;
+  if (contains >= 0)
+    return 1;
+  else
+    return 0;
 }
 
 /* Supprime le couple de clé key s'il existe et ne fait rien sinon */
@@ -58,24 +62,43 @@ T_MAP_INTERFACE int MAP_METHOD(remove)(T *hashtable, T_MAP_KEY key) {
   int hash_code = HASH(key);
   (*hashtable)->buckets[hash_code] =
       LIST_METHOD(remove)(couple_exemple, (*hashtable)->buckets[hash_code]);
+  (*hashtable)->count--;
   return 0;
 }
 
 /* Rajoute le couple de clé key et de valeur value dans la hashmap */
-T_MAP_INTERFACE int MAP_METHOD(put)(T *hashtable, T_MAP_KEY key, T_MAP_VALUE value) {
+T_MAP_INTERFACE int MAP_METHOD(put)(T *hashtable, T_MAP_KEY key,
+                                    T_MAP_VALUE value) {
   if (!hashtable || !*hashtable)
     return -1;
-  (void)key;
-  (void)value;
+  COUPLE_TYPE new_couple;
+  new_couple.key = key;
+#if !defined(T_SET_ELEMENT)
+  new_couple.value = value;
+#endif
+  int hash_code = HASH(key);
+  (*hashtable)->buckets[hash_code] =
+      LIST_METHOD(push)(new_couple, (*hashtable)->buckets[hash_code]);
+  (*hashtable)->count++;
   return 0;
 }
 
 /* Récupère la valeur associée à la clé key dans la hashmap */
 T_MAP_INTERFACE int MAP_METHOD(get)(T hashtable, T_MAP_KEY key,
                                     T_MAP_VALUE *value) {
-  (void)hashtable;
-  (void)key;
-  (void)value;
+  if (!hashtable || !hashtable->buckets)
+    return -1;
+  int hash_code = HASH(key);
+  COUPLE_TYPE saved_couple;
+  int index = LIST_METHOD(contains)(hashtable->buckets[hash_code],
+                                    (COUPLE_TYPE){.key = key});
+  if (index < 0) {
+    return -1;
+  }
+  saved_couple = LIST_METHOD(get)(hashtable->buckets[hash_code], index);
+#if !defined(T_SET_ELEMENT)
+  *value = saved_couple.value;
+#endif
   return 0;
 }
 

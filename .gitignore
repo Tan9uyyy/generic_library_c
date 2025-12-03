@@ -9,3 +9,9 @@
 
 # Ignorer le fixed_issue.i de mon répertoire
 fixed_issue.i
+
+# Ignorer le cache
+.cache/
+
+# Ignorer compile command
+compile_commands.json

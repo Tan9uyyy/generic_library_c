@@ -1,90 +1,70 @@
-#ifndef _TREESET_IMPLEMENTATION_H__
-#define _TREESET_IMPLEMENTATION_H__
-
 #include <stdlib.h>
 #include <assert.h>
 #include <stdio.h>
 
-#include "treeset-export-def.h"
+T TREESET_METHOD(new)(){return NULL;}
 
-#ifdef T
-#undef T
-#endif
-#define T treeset
+int TREESET_METHOD(is_empty)(T treeset){return NULL == treeset;}
 
-typedef TYPE(treap, treeset_datum_t) TYPE(T, treeset_datum_t);
+int TREESET_METHOD(contains)(T treeset, treeset_datum_t value){return METHOD(treap, treeset_datum_t, contains)(treeset, value);}
 
-TYPE(T, treeset_datum_t) METHOD(T, treeset_datum_t, new)(){return NULL;}
+T TREESET_METHOD(add)(T treeset, treeset_datum_t value){
+    if (TREESET_METHOD(contains)(treeset, value)){return treeset;}
 
-int METHOD(T, treeset_datum_t, is_empty)(TYPE(T, treeset_datum_t) treeset){return NULL == treeset;}
-
-int METHOD(T, treeset_datum_t, contains)(TYPE(T, treeset_datum_t) treeset, treeset_datum_t value, int (*comparator)(treeset_datum_t, treeset_datum_t)){
-    if (NULL == treeset){return 0;}
-    
-    return METHOD(treap, treeset_datum_t, contains)(treeset, value, comparator);
+    return METHOD(treap, treeset_datum_t, push)(treeset, value);
 }
 
-TYPE(T, treeset_datum_t) METHOD(T, treeset_datum_t, add)(TYPE(T, treeset_datum_t) treeset, treeset_datum_t value, int (*comparator)(treeset_datum_t, treeset_datum_t), int (*priority_func)(treeset_datum_t)){
-    if (!METHOD(T, treeset_datum_t, contains)(treeset, value, comparator)){
-        return METHOD(treap, treeset_datum_t, push)(treeset, value, comparator, priority_func);
-    }
+treeset_datum_t TREESET_METHOD(upper_bound)(T treeset){return METHOD(treap, treeset_datum_t, max)(treeset);}
 
-    return treeset;
-}
+treeset_datum_t TREESET_METHOD(lower_bound)(T treeset){return METHOD(treap, treeset_datum_t, min)(treeset);}
 
-treeset_datum_t METHOD(T, treeset_datum_t, upper_bound)(TYPE(T, treeset_datum_t) treeset){return METHOD(treap, treeset_datum_t, max)(treeset);}
+T TREESET_METHOD(remove_max)(T treeset){treeset_datum_t buffer; return METHOD(treap, treeset_datum_t, pop_big) (treeset, &buffer);}
 
-treeset_datum_t METHOD(T, treeset_datum_t, lower_bound)(TYPE(T, treeset_datum_t) treeset){return METHOD(treap, treeset_datum_t, min)(treeset);}
+T TREESET_METHOD(remove_min)(T treeset){treeset_datum_t buffer; return METHOD(treap, treeset_datum_t, pop_small) (treeset, &buffer);}
 
-TYPE(T, treeset_datum_t) METHOD(T, treeset_datum_t, remove_max)(TYPE(T, treeset_datum_t) treeset){treeset_datum_t buffer = 0; return METHOD(treap, treeset_datum_t, pop_big) (treeset, &buffer);}
-
-TYPE(T, treeset_datum_t) METHOD(T, treeset_datum_t, remove_min)(TYPE(T, treeset_datum_t) treeset){treeset_datum_t buffer = 0; return METHOD(treap, treeset_datum_t, pop_small) (treeset, &buffer);}
-
-TYPE(T, treeset_datum_t) METHOD(T, treeset_datum_t, reunion)(TYPE(T, treeset_datum_t) *treeset1, TYPE(T, treeset_datum_t) *treeset2, int (*comparator)(treeset_datum_t, treeset_datum_t), int (*priority_func)(treeset_datum_t)){
+T TREESET_METHOD(reunion)(T *treeset1, T *treeset2){
     treeset_datum_t value;
-    TYPE(T, treeset_datum_t) new_treeset1 = METHOD(T, treeset_datum_t, new)();
-    TYPE(T, treeset_datum_t) new_treeset2 = METHOD(T, treeset_datum_t, new)();
-    TYPE(T, treeset_datum_t) res_treeset = METHOD(T, treeset_datum_t, new)();
+    T new_treeset1 = TREESET_METHOD(new)();
+    T new_treeset2 = TREESET_METHOD(new)();
+    T res_treeset = TREESET_METHOD(new)();
 
-    while (!METHOD(T, treeset_datum_t, is_empty)(*treeset1)){
+    while (!TREESET_METHOD(is_empty)(*treeset1)){
         *treeset1 = METHOD(treap, treeset_datum_t, pop_small) (*treeset1, &value);
-        new_treeset1 = METHOD(T, treeset_datum_t, add) (new_treeset1, value, comparator, priority_func);
+        new_treeset1 = TREESET_METHOD(add) (new_treeset1, value);
 
-        res_treeset = METHOD(T, treeset_datum_t, add) (res_treeset, value, comparator, priority_func);
+        res_treeset = TREESET_METHOD(add) (res_treeset, value);
     }
 
-    while (!METHOD(T, treeset_datum_t, is_empty)(*treeset2)){
+    while (!TREESET_METHOD(is_empty)(*treeset2)){
         *treeset2 = METHOD(treap, treeset_datum_t, pop_big) (*treeset2, &value);
-        new_treeset2 = METHOD(T, treeset_datum_t, add) (new_treeset2, value, comparator, priority_func);
+        new_treeset2 = TREESET_METHOD(add) (new_treeset2, value);
 
-        res_treeset = METHOD(T, treeset_datum_t, add) (res_treeset, value, comparator, priority_func);
+        res_treeset = TREESET_METHOD(add) (res_treeset, value);
     }
 
     *treeset1 = new_treeset1; *treeset2 = new_treeset2;
     return res_treeset;
 }
 
-TYPE(T, treeset_datum_t) METHOD(T, treeset_datum_t, inter)(TYPE(T, treeset_datum_t) *treeset1, TYPE(T, treeset_datum_t) *treeset2, int (*comparator)(treeset_datum_t, treeset_datum_t), int (*priority_func)(treeset_datum_t)){
+T TREESET_METHOD(inter)(T *treeset1, T *treeset2){
     treeset_datum_t value;
-    TYPE(T, treeset_datum_t) new_treeset2 = METHOD(T, treeset_datum_t, new)();
-    TYPE(T, treeset_datum_t) res_treeset = METHOD(T, treeset_datum_t, new)();
+    T new_treeset2 = TREESET_METHOD(new)();
+    T res_treeset = TREESET_METHOD(new)();
 
-    while (!METHOD(T, treeset_datum_t, is_empty)(*treeset2)){
+    while (!TREESET_METHOD(is_empty)(*treeset2)){
         *treeset2 = METHOD(treap, treeset_datum_t, pop_small) (*treeset2, &value);
-        new_treeset2 = METHOD(T, treeset_datum_t, add) (new_treeset2, value, comparator, priority_func);
+        new_treeset2 = TREESET_METHOD(add) (new_treeset2, value);
 
-        if (METHOD(T, treeset_datum_t, contains)(*treeset1, value, comparator)){
-            res_treeset = METHOD(T, treeset_datum_t, add) (res_treeset, value, comparator, priority_func);
-        }
+        if (TREESET_METHOD(contains)(*treeset1, value)) res_treeset = TREESET_METHOD(add) (res_treeset, value);
     }
 
     *treeset2 = new_treeset2;
     return res_treeset;
 }
 
-TYPE(T, treeset_datum_t) METHOD(T, treeset_datum_t, delete)(TYPE(T, treeset_datum_t) treeset, void (*destructor)(treeset_datum_t)){return METHOD(treap, treeset_datum_t, delete)(treeset, destructor);}
+T TREESET_METHOD(delete)(T treeset){return METHOD(treap, treeset_datum_t, delete)(treeset);}
 
-void METHOD(T, treeset_datum_t, print)(TYPE(T, treeset_datum_t) treeset, void (*printer)(treeset_datum_t)){METHOD(treap, treeset_datum_t, print) (treeset, printer);}
+void TREESET_METHOD(print)(T treeset){METHOD(treap, treeset_datum_t, print) (treeset);}
 
 
 

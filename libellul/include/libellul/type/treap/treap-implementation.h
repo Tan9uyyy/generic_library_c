@@ -60,7 +60,6 @@ T TREAP_METHOD(pop_small) (T treap, treap_datum_t *value){
     *value = treap->value.value;
     T next = treap->rs;
     if (TREAP_DESTRUCTOR()) TREAP_DESTRUCTOR(treap->value.value);
-    // free(&treap);
 
     return next;
 }
@@ -73,7 +72,6 @@ T TREAP_METHOD(pop_big) (T treap, treap_datum_t *value){
     *value = treap->value.value;
     T next = treap->ls;
     if (TREAP_DESTRUCTOR()) TREAP_DESTRUCTOR(treap->value.value);
-    // free(&treap);
 
     return next;
 }

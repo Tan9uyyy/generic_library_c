@@ -30,6 +30,9 @@
 #define T                      GEN_SYM( T_TREAP_TAG, t )
 #define TREAP_METHOD( name )     GEN_SYM( T_TREAP_TAG, name )
 
+#if defined(T_TREESET_IMPL_TREAP)
+#include <libellul/type/treeset/interface.h>
+#endif
 
 #define T_TREAP_IMPL_B_TREE
 
@@ -47,6 +50,10 @@ typedef struct treap_couple {
 #define PRINTER(val) (printf("(%d, %d)", val.priority, val.value))
 
 #include <libellul/structure/b-tree.h>
+
+#if defined(T_TREESET_IMPL_TREAP)
+#include <libellul/type/treeset/treeset-implementation.h>
+#endif
 
 #define T_INTERFACE   T_TREAP_INTERFACE
 #if defined( T_TREAP_EXPORT_DEFS )

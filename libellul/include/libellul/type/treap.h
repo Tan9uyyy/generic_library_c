@@ -1,13 +1,62 @@
-#ifndef _TREAP_H__
-#define _TREAP_H__
+/*
+ * 'treap' abstract data type.
+ *
+ * Available type implementations:
+ *
+ * T_IMPL_B_TREE (default)
+ * ...
+ *
+ */
 
-#ifdef treap_datum_t
-    #include "treap/treap-export-def.h"
-    #undef treap_datum_t
+#ifndef T_TREAP_TAG
+#error "Undefined T_TREAP_TAG"
 #endif
 
-#define treap_datum_t int
-#include "treap/treap-export-def.h"
-
-
+#ifndef treap_datum_t
+#error "Undefined treap datum type !"
 #endif
+
+#include <libellul/type/prologue.h>
+
+#if !defined( T_TREAP_EXPORT_DEFS ) && !defined( T_TREAP_EXPORT_CODE )
+#define T_TREAP_INTERFACE static inline
+#else
+#define T_TREAP_INTERFACE extern
+#endif
+
+#ifdef T
+#undef T
+#endif
+#define T                      GEN_SYM( T_TREAP_TAG, t )
+#define TREAP_METHOD( name )     GEN_SYM( T_TREAP_TAG, name )
+
+
+#define T_TREAP_IMPL_B_TREE
+
+typedef struct treap_couple {
+    treap_datum_t value;
+    int priority;
+} treap_couple;
+
+#define b_tree_datum_t treap_couple
+#define T_B_TREE_TAG GEN_SYM(b_tree_datum_t, b_tree)
+#define B_TREE_METHOD( name )     GEN_SYM( T_B_TREE_TAG, name )
+
+#define DESTRUCTOR(val) NULL
+#define COMPARATOR(val1, val2) (val1.value - val2.value)
+#define PRINTER(val) (printf("(%d, %d)", val.priority, val.value))
+
+#include <libellul/structure/b-tree.h>
+
+#define T_INTERFACE   T_TREAP_INTERFACE
+#if defined( T_TREAP_EXPORT_DEFS )
+#define T_EXPORT_DEFS
+#endif
+
+#undef T_TREAP_IMPL_B_TREE
+#undef T_TREAP_TAG
+#undef T_TREAP_INTERFACE
+#undef T_TREAP_EXPORT_DEFS
+#undef T_TREAP_EXPORT_CODE
+#undef T
+#undef TREAP_METHOD

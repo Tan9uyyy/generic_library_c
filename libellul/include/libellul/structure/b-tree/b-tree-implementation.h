@@ -34,11 +34,7 @@ T B_TREE_METHOD(pop_cascade) (T b_tree){
         return b_tree;
     }
 
-    if (b_tree->ls){
-        b_tree->value = b_tree->ls->value;
-        b_tree->ls = B_TREE_METHOD(pop_cascade) (b_tree->ls);
-        return b_tree;
-    }
+    if (b_tree->ls) return b_tree->ls;
 
     if (DESTRUCTOR()) DESTRUCTOR(b_tree->value);
     free(b_tree);
@@ -128,12 +124,13 @@ void B_TREE_METHOD(print_rec) (T b_tree){
     if (!B_TREE_METHOD(is_empty) (b_tree->ls)) {B_TREE_METHOD(print_rec) (b_tree->ls); printf(" ");}
 
     PRINTER(b_tree->value);
+    printf(" ");
 
     if (!B_TREE_METHOD(is_empty) (b_tree->rs)) {printf(" "); B_TREE_METHOD(print_rec) (b_tree->rs);}
 }
 
 void B_TREE_METHOD(print) (T b_tree){
-    printf("{");
+    printf("{ ");
     if (!B_TREE_METHOD(is_empty) (b_tree)) B_TREE_METHOD(print_rec) (b_tree);
-    printf("}");
+    printf("}\n");
 }

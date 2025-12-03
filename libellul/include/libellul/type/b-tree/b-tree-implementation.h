@@ -5,8 +5,6 @@
 #include <assert.h>
 #include <stdio.h>
 
-#include "b-tree-export-def.h"
-
 #ifdef T
 #undef T
 #endif
@@ -22,7 +20,7 @@ TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, new) (void){return NULL;}
 
 int METHOD(T, b_tree_datum_t, is_empty) (TYPE(T, b_tree_datum_t) b_tree){return NULL == b_tree;}
 
-TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, rec_push) (TYPE(T, b_tree_datum_t) b_tree, b_tree_datum_t value, int (*comparator) (b_tree_datum_t, b_tree_datum_t)){
+TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, push) (TYPE(T, b_tree_datum_t) b_tree, b_tree_datum_t value){
     if (METHOD(T, b_tree_datum_t, is_empty) (b_tree)){
         TYPE(b_tree_node, b_tree_datum_t) *new_node = malloc(sizeof(*new_node));
         assert(new_node && "Allocation failed !");
@@ -33,20 +31,50 @@ TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, rec_push) (TYPE(T, b_tree_datu
         return new_node;
     }
 
-    if (comparator(value, b_tree->value) > 0){
-        b_tree->rs = METHOD(T, b_tree_datum_t, rec_push) (b_tree->rs, value, *comparator);
+    if (COMPARATOR(value, b_tree->value) < 0){
+        b_tree->rs = METHOD(T, b_tree_datum_t, push) (b_tree->rs, value);
         return b_tree;
     }
 
-    b_tree->ls = METHOD(T, b_tree_datum_t, rec_push) (b_tree->ls, value, *comparator);
+    b_tree->ls = METHOD(T, b_tree_datum_t, push) (b_tree->ls, value);
     return b_tree;
 }
 
-TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, push) (TYPE(T, b_tree_datum_t) b_tree, b_tree_datum_t value, int (*comparator) (b_tree_datum_t, b_tree_datum_t)){
-    return METHOD(T, b_tree_datum_t, rec_push) (b_tree, value, comparator);
+TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, pop_cascade) (TYPE(T, b_tree_datum_t) b_tree){
+    if (b_tree->rs){
+        b_tree->value = b_tree->rs->value;
+        b_tree->rs = METHOD(T, b_tree_datum_t, pop_cascade) (b_tree->rs);
+        return b_tree;
+    }
+
+    if (b_tree->ls){
+        b_tree->value = b_tree->ls->value;
+        b_tree->ls = METHOD(T, b_tree_datum_t, pop_cascade) (b_tree->ls);
+        return b_tree;
+    }
+
+    if (DESTRUCTOR()) DESTRUCTOR(b_tree->value);
+    free(b_tree);
+    return NULL;
 }
 
-static inline TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, pop_small_rec) (TYPE(T, b_tree_datum_t) b_tree, b_tree_datum_t *value){
+TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, pop) (TYPE(T, b_tree_datum_t) b_tree, b_tree_datum_t value){
+    if (METHOD(T, b_tree_datum_t, is_empty) (b_tree)) return b_tree;
+
+    if (COMPARATOR(value, b_tree->value) < 0) {
+        b_tree->rs = METHOD(T, b_tree_datum_t, pop) (b_tree->rs, value);
+        return b_tree;
+    }
+
+    if (COMPARATOR(value, b_tree->value) > 0) {
+        b_tree->ls = METHOD(T, b_tree_datum_t, pop) (b_tree->ls, value);
+        return b_tree;
+    }
+
+    return METHOD(T, b_tree_datum_t, pop_cascade) (b_tree);
+}
+
+TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, pop_small_rec) (TYPE(T, b_tree_datum_t) b_tree, b_tree_datum_t *value){
     if (METHOD(T, b_tree_datum_t, is_empty) (b_tree->ls)){
         *value = b_tree->value;
 
@@ -66,7 +94,7 @@ TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, pop_small) (TYPE(T, b_tree_dat
     return METHOD(T, b_tree_datum_t, pop_small_rec(b_tree, value));
 }
 
-static inline TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, pop_big_rec) (TYPE(T, b_tree_datum_t) b_tree, b_tree_datum_t *value){
+TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, pop_big_rec) (TYPE(T, b_tree_datum_t) b_tree, b_tree_datum_t *value){
     if (METHOD(T, b_tree_datum_t, is_empty) (b_tree->rs)){
         *value = b_tree->value;
 
@@ -86,40 +114,40 @@ TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, pop_big) (TYPE(T, b_tree_datum
     return METHOD(T, b_tree_datum_t, pop_big_rec(b_tree, value));
 }
 
-int METHOD(T, b_tree_datum_t, contains) (TYPE(T, b_tree_datum_t) b_tree, b_tree_datum_t value, int (*comparator)(b_tree_datum_t, b_tree_datum_t)){
-    if (METHOD(T, b_tree_datum_t, is_empty) (b_tree)){return 0;}
+int METHOD(T, b_tree_datum_t, contains) (TYPE(T, b_tree_datum_t) b_tree, b_tree_datum_t value){
+    if (METHOD(T, b_tree_datum_t, is_empty) (b_tree)) return 0;
 
-    if (comparator(value, b_tree->value) == 0){return 1;}
+    if (COMPARATOR(value, b_tree->value) == 0) return 1;
 
-    if (comparator(value, b_tree->value) > 0){return METHOD(T, b_tree_datum_t, contains) (b_tree->rs, value, *comparator);}
+    if (COMPARATOR(value, b_tree->value) < 0) return METHOD(T, b_tree_datum_t, contains) (b_tree->rs, value);
 
-    return METHOD(T, b_tree_datum_t, contains) (b_tree->ls, value, *comparator);
+    return METHOD(T, b_tree_datum_t, contains) (b_tree->ls, value);
 }
 
-TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, delete) (TYPE(T, b_tree_datum_t) b_tree, void (*destructor)(b_tree_datum_t)){
-    if (METHOD(T, b_tree_datum_t, is_empty) (b_tree)){return NULL;}
+TYPE(T, b_tree_datum_t) METHOD(T, b_tree_datum_t, delete) (TYPE(T, b_tree_datum_t) b_tree){
+    if (METHOD(T, b_tree_datum_t, is_empty) (b_tree)) return NULL;
 
-    if (b_tree->ls){METHOD(T, b_tree_datum_t, delete) (b_tree->ls, *destructor);}
+    if (b_tree->ls) METHOD(T, b_tree_datum_t, delete) (b_tree->ls);
 
-    if (b_tree->rs){METHOD(T, b_tree_datum_t, delete) (b_tree->rs, *destructor);}
+    if (b_tree->rs) METHOD(T, b_tree_datum_t, delete) (b_tree->rs);
 
-    if (destructor){destructor(b_tree->value);}
+    if (DESTRUCTOR()) DESTRUCTOR(b_tree->value); 
     free(b_tree);
 
     return NULL;
 }
 
-void METHOD(T, b_tree_datum_t, print_rec) (TYPE(T, b_tree_datum_t) b_tree, void (*printer)(b_tree_datum_t)){
-    if (!METHOD(T, b_tree_datum_t, is_empty) (b_tree->ls)){METHOD(T, b_tree_datum_t, print_rec) (b_tree->ls, printer); printf(" ");}
+void METHOD(T, b_tree_datum_t, print_rec) (TYPE(T, b_tree_datum_t) b_tree){
+    if (!METHOD(T, b_tree_datum_t, is_empty) (b_tree->ls)) {METHOD(T, b_tree_datum_t, print_rec) (b_tree->ls); printf(" ");}
 
-    printer(b_tree->value);
+    PRINTER(b_tree->value);
 
-    if (!METHOD(T, b_tree_datum_t, is_empty) (b_tree->rs)){printf(" "); METHOD(T, b_tree_datum_t, print_rec) (b_tree->rs, printer);}
+    if (!METHOD(T, b_tree_datum_t, is_empty) (b_tree->rs)) {printf(" "); METHOD(T, b_tree_datum_t, print_rec) (b_tree->rs);}
 }
 
-void METHOD(T, b_tree_datum_t, print) (TYPE(T, b_tree_datum_t) b_tree, void (*printer)(b_tree_datum_t)){
+void METHOD(T, b_tree_datum_t, print) (TYPE(T, b_tree_datum_t) b_tree){
     printf("{");
-    if (!METHOD(T, b_tree_datum_t, is_empty) (b_tree))METHOD(T, b_tree_datum_t, print_rec) (b_tree, printer);
+    if (!METHOD(T, b_tree_datum_t, is_empty) (b_tree)) METHOD(T, b_tree_datum_t, print_rec) (b_tree);
     printf("}");
 }
 

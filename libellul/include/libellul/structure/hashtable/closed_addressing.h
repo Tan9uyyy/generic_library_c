@@ -29,6 +29,9 @@
 #error "Undefined key_printer function!"
 #endif
 
+/* On défini le load factor */
+#define LOAD_FACTOR 0.75
+
 /* On définit le type de la hashtable en fonction du type des clés et des
  * valeurs */
 #ifdef map_datum_t

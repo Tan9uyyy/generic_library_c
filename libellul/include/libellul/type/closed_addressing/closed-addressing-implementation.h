@@ -67,18 +67,24 @@ T_MAP_INTERFACE int MAP_METHOD(remove)(T *hashtable, T_MAP_KEY key) {
 }
 
 /* Rajoute le couple de clé key et de valeur value dans la hashmap */
-T_MAP_INTERFACE int MAP_METHOD(put)(T *hashtable, T_MAP_KEY key,
-                                    T_MAP_VALUE value) {
+T_MAP_INTERFACE int MAP_METHOD(put)(T *hashtable, T_MAP_KEY key, T_MAP_VALUE value) {
+  /* on vérifie qu'on a accès à la table */
   if (!hashtable || !*hashtable)
     return -1;
+  /* on crée le couple à ajouter */
   COUPLE_TYPE new_couple;
-  new_couple.key = key;
-#if !defined(T_SET_ELEMENT)
-  new_couple.value = value;
-#endif
-  int hash_code = HASH(key);
-  (*hashtable)->buckets[hash_code] =
-      LIST_METHOD(push)(new_couple, (*hashtable)->buckets[hash_code]);
+    new_couple.key = key;
+  #if !defined(T_SET_ELEMENT)
+    new_couple.value = value;
+  #endif
+  /* on vérifie le load factor avant d'ajouter */
+  float current_load_factor = (float)(*hashtable)->count / (float)array_length((*hashtable)->buckets);
+  //if (current_load_factor < LOAD_FACTOR) {
+    int hash_code = HASH(key);
+    (*hashtable)->buckets[hash_code] = LIST_METHOD(push)(new_couple, (*hashtable)->buckets[hash_code]);
+  //} else {
+
+  //}
   (*hashtable)->count++;
   return 0;
 }

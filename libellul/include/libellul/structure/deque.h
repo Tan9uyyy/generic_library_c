@@ -1,4 +1,4 @@
-/*
+/**
  * Deque.
  *
  * Variants:

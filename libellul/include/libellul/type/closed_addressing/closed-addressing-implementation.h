@@ -102,6 +102,18 @@ T_MAP_INTERFACE int MAP_METHOD(get)(T hashtable, T_MAP_KEY key,
   return 0;
 }
 
+T_MAP_INTERFACE void MAP_METHOD(print)(T hashtable) {
+  if (!hashtable) {
+    printf("NULL hashtable\n");
+    return;
+  }
+  printf("Hashtable with %zu elements:\n", hashtable->count);
+  for (size_t i = 0; i < array_length(hashtable->buckets); i++) {
+    printf("Bucket %d: ", i);
+    LIST_METHOD(print)(hashtable->buckets[i]);
+  }
+}
+
 #undef T
 #undef T_MAP_KEY
 #undef T_MAP_VALUE

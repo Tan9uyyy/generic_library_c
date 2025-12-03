@@ -22,6 +22,9 @@
 #ifndef VALUE_DESTRUCTOR
 #error "Undefined key_destructor function!"
 #endif
+#ifndef KEY_PRINTER
+#error "Undefined key_printer function!"
+#endif
 #ifndef VALUE_PRINTER
 #error "Undefined key_printer function!"
 #endif
@@ -58,7 +61,7 @@ typedef struct COUPLE_TYPE {
 #else
 #define DESTRUCTOR(couple) VALUE_DESTRUCTOR((couple).value)
 #endif
-#define PRINTER(couple) VALUE_PRINTER((couple).value)
+#define PRINTER(couple) (printf("{"), KEY_PRINTER((couple).key), printf(","), VALUE_PRINTER((couple).value), printf("}"))
 
 #undef list_datum_t
 #define list_datum_t COUPLE_TYPE

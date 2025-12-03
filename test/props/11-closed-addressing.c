@@ -13,6 +13,7 @@
                            // NULL (ça me simplifie pour les if parce que
                            // sinonje comprends rien)
 #define KEY_COMPARATOR(val1, val2) ((val1) == (val2))
+#define KEY_PRINTER(val) printf("%d", (val))
 #define VALUE_PRINTER(val) printf("%d", (val))
 
 #include <libellul/type/map.h>
@@ -59,6 +60,7 @@ void int_int_closed_addressing_hashtable_stack(size_t n) {
   test_suite("Créer une nouvelle hashtable vide");
 
   int_int_closed_addressing_hashtable_t hashtable = int_int_closed_addressing_hashtable_new();
+  int_int_closed_addressing_hashtable_print(hashtable);
 
   test_assert(int_int_closed_addressing_hashtable_is_empty(hashtable),
               "A new hashtable is empty");
@@ -67,6 +69,7 @@ void int_int_closed_addressing_hashtable_stack(size_t n) {
 
   for (size_t i = 0; i < n; i++) {
     int_int_closed_addressing_hashtable_put(&hashtable, key[i], value[i]);
+    int_int_closed_addressing_hashtable_print(hashtable);
     test_assert(int_int_closed_addressing_hashtable_contains(hashtable, key[i]),
                 "Can push to hashtable");
   }
@@ -77,6 +80,7 @@ void int_int_closed_addressing_hashtable_stack(size_t n) {
   for (size_t i = 0; i < n; i++) {
     popped = -1;
     popped = int_int_closed_addressing_hashtable_remove(&hashtable, key[i]);
+    int_int_closed_addressing_hashtable_print(hashtable);
     test_assert(0 == popped, "Can pop from hashtable");
   }
 
@@ -89,6 +93,7 @@ void int_int_closed_addressing_hashtable_stack(size_t n) {
   test_suite("Suppression de la hashtable");
 
   int_int_closed_addressing_hashtable_delete(&hashtable);
+  int_int_closed_addressing_hashtable_print(hashtable);
   test_assert(NULL == hashtable, "hashtable is NULL after delete");
 
   free(key);

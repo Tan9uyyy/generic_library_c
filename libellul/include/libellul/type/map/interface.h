@@ -19,7 +19,10 @@ T_MAP_INTERFACE int    MAP_METHOD( compare ) ( void *_set1, void *_set2 );
 T_MAP_INTERFACE int    MAP_METHOD( put )( T *map, T_MAP_KEY key, T_MAP_VALUE value );
 /* Stocke la valeur de value de la clé si le couple est bien dans la map */
 T_MAP_INTERFACE int    MAP_METHOD( get )( T map, T_MAP_KEY key, T_MAP_VALUE *value );
+/* Affiche la map */
+T_MAP_INTERFACE void    MAP_METHOD( print )( T map );
 #endif
+
 
 /* Automatically constructed by type/map/epilogue.h: */
 T_MAP_INTERFACE int    MAP_METHOD( is_empty )( T map );

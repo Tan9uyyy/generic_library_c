@@ -1,6 +1,4 @@
-#include <stdlib.h>
 #include <assert.h>
-#include <stdio.h>
 
 T_QUEUE_INTERFACE T QUEUE_METHOD(new) (void) {return DEQUE_METHOD(new) ();}
 

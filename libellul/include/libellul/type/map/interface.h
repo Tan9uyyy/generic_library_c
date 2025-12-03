@@ -1,4 +1,3 @@
-
 /* All map implementations must provide these functions: */
 /* retourne une map vide */
 T_MAP_INTERFACE T      MAP_METHOD( new )( void );

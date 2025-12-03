@@ -25,6 +25,8 @@ typedef struct {
 #define DEQUE_METHOD( name ) GEN_SYM( T_DEQUE_TAG, name )
 #elif defined( T_QUEUE_IMPL_DEQUE )
 #include <libellul/type/queue/interface.h>
+#elif defined( T_STACK_IMPL_DEQUE )
+#include <libellul/type/stack/interface.h>
 #elif defined( T_LIST_IMPL_DEQUE )
 #include <libellul/type/list/list-export-def.h>
 #else
@@ -37,12 +39,14 @@ typedef struct {
 #include <libellul/memory.h>
 #include <libellul/type/array.h>
 
-/* on inclut deque afin de pouvoir créer les fonctions queue grâce aux fonctions deque */
-#include <libellul/type/deque/deque-implementation.h>
-/* on crée nos fonctions queue */
+/* on inclut deque afin de pouvoir créer les fonctions queue/list/stack grâce aux fonctions deque */
+#include <libellul/structure/deque/deque-implementation.h>
+/* on crée nos fonctions queue/list/stack */
 #ifdef T_DEQUE
 #elif defined (T_QUEUE_IMPL_DEQUE)
 #include <libellul/type/queue/queue-implementation.h>
+#elif defined( T_STACK_IMPL_DEQUE )
+#include <libellul/type/stack/stack-implementation.h>
 #elif defined( T_LIST_IMPL_DEQUE )
 #include <libellul/type/list/list-implementation.h>
 #else

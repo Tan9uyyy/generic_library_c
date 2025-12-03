@@ -1,9 +1,4 @@
-#ifndef _LIST_IMPLEMENTATION_H__
-#define _LIST_IMPLEMENTATION_H__
-
 #include <assert.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 T LIST_METHOD(new)(void) {
   return DEQUE_METHOD(new)();
@@ -53,5 +48,3 @@ void LIST_METHOD(print)(T list) {
 }
 
 #undef T
-
-#endif

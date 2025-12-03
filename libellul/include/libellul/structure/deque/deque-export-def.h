@@ -1,13 +1,6 @@
-#include "../../interface.h"
-
 #ifndef deque_datum_t
     #error "Undefined datum type !"
 #endif
-
-// #ifdef T
-// #undef T
-// #endif
-// #define T deque
 
 T               DEQUE_METHOD(new)(void);
 int             DEQUE_METHOD(is_empty)(T deque);
@@ -25,5 +18,3 @@ int             DEQUE_METHOD(contains)(T deque, deque_datum_t value);
 T               DEQUE_METHOD(remove)(deque_datum_t value, T deque);
 T               DEQUE_METHOD(delete)(T deque);
 void            DEQUE_METHOD(print)(T deque);
-
-//#undef T

@@ -1,44 +1,28 @@
-// #ifndef _STACK_IMPLEMENTATION_H__
-// #define _STACK_IMPLEMENTATION_H__
+#include <assert.h>
 
-// #include <stdlib.h>
-// #include <assert.h>
-// #include <stdio.h>
+T_STACK_INTERFACE T STACK_METHOD(new) (void) {return DEQUE_METHOD(new) ();}
 
-// #include "stack-export-def.h"
+T_STACK_INTERFACE int STACK_METHOD(is_empty) (T stack) {return DEQUE_METHOD(is_empty) (stack);}
 
-// #ifdef T
-// #undef T
-// #endif
-// #define T stack
+T_STACK_INTERFACE int STACK_METHOD(length) (T stack) {return DEQUE_METHOD(length) (stack);}
 
-// typedef TYPE(deque, stack_datum_t) TYPE(T, stack_datum_t);
+T_STACK_INTERFACE stack_datum_t STACK_METHOD(first) (T stack) {return DEQUE_METHOD(first) (stack);}
 
-// TYPE(T, stack_datum_t) METHOD(T, stack_datum_t, new) (void) {return METHOD(deque, stack_datum_t, new) ();}
+T_STACK_INTERFACE T STACK_METHOD(push) (stack_datum_t value, T stack) {
+    return DEQUE_METHOD(push_front) (value, stack);
+}
 
-// int METHOD(T, stack_datum_t, is_empty) (TYPE(T, stack_datum_t) stack) {return METHOD(deque, stack_datum_t, is_empty) (stack);}
+T_STACK_INTERFACE T STACK_METHOD(pop) (stack_datum_t *value, T stack) {
+    return DEQUE_METHOD(pop_front) (value, stack);
+}
 
-// int METHOD(T, stack_datum_t, length) (TYPE(T, stack_datum_t) stack) {return METHOD(deque, stack_datum_t, length) (stack);}
+T_STACK_INTERFACE T STACK_METHOD(delete) (T stack){
+    return DEQUE_METHOD(delete) (stack);
+}
 
-// stack_datum_t METHOD(T, stack_datum_t, first) (TYPE(T, stack_datum_t) stack) {return METHOD(deque, stack_datum_t, first) (stack);}
-
-// TYPE(T, stack_datum_t) METHOD(T, stack_datum_t, push) (stack_datum_t value, TYPE(T, stack_datum_t) stack) {
-//     return METHOD(deque, stack_datum_t, push_front) (value, stack);
-// }
-
-// TYPE(T, stack_datum_t) METHOD(T, stack_datum_t, pop) (stack_datum_t *value, TYPE(T, stack_datum_t) stack, void (*destructor)(stack_datum_t)) {
-//     return METHOD(deque, stack_datum_t, pop_front) (value, stack, destructor);
-// }
-
-// TYPE(T, stack_datum_t) METHOD(T, stack_datum_t, delete) (TYPE(T, stack_datum_t) stack, void (*destructor) (stack_datum_t)){
-//     return METHOD(deque, stack_datum_t, delete) (stack, destructor);
-// }
-
-// void METHOD(T, stack_datum_t, print) (TYPE(T, stack_datum_t) stack, void (*printer)(stack_datum_t)){
-//     METHOD(deque, stack_datum_t, print) (stack, printer);
-// }
+T_STACK_INTERFACE void STACK_METHOD(print) (T stack){
+    DEQUE_METHOD(print) (stack);
+}
 
 
-// #undef T
-
-// #endif
+#undef T

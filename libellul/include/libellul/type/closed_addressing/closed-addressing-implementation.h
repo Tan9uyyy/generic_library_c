@@ -1,35 +1,12 @@
-/*il y a surement un autre endroit ou mettre ça plus intelligemment*/
-#ifndef HASH
-#error "Undefined hash function!"
-#endif
-#ifndef COMPARATOR
-#error "Undefined comparator function!"
-#endif
-#ifndef DESTRUCTOR
-#error "Undefined destructor function!"
-#endif
-
-#include "../array.h"
-
-/* Comparateur de couple utilisant le comparateur des clés */
-int couple_comparator(COUPLE_TYPE couple1, COUPLE_TYPE couple2) {
-  return COMPARATOR(couple1.key, couple2.key);
-}
-
-/* Destructeur de couple utilisant le destructeur des valeurs */
-void couple_destructor(COUPLE_TYPE couple) {
-#if !defined(T_SET_ELEMENT)
-  void *dest_result = DESTRUCTOR(couple.value);
-  if (dest_result != NULL) {
-    /* DESTRUCTOR a fait quelque chose */
-  }
-#endif
-  /* Note: on ne peut pas free couple car c'est une valeur passée par copie */
-}
+#include <libellul/type/array.h>
 
 /* retourne une hashmap en adressage fermé vide */
 T_MAP_INTERFACE T MAP_METHOD(new)(void) {
-  T hashtable = malloc(sizeof(*hashtable));
+  T hashtable = (T)malloc(sizeof(*hashtable));
+  if (!hashtable) {
+    printf("Error allocating hashtable\n");
+    return NULL;
+  }
   hashtable->buckets = (T_L *)array(T_L);
   hashtable->count = 0;
   return hashtable;
@@ -37,55 +14,68 @@ T_MAP_INTERFACE T MAP_METHOD(new)(void) {
 
 /* retourne le nombre de couples à l'intérieur de la hashmap */
 T_MAP_INTERFACE size_t MAP_METHOD(length)(T hashtable) {
+  if (!hashtable) {
+    return 0;
+  }
   return hashtable->count;
 }
 
 /* supprime la hashmap */
 T_MAP_INTERFACE void MAP_METHOD(delete)(T *hashtable) {
-  if (!hashtable || !*hashtable)
+  if (!hashtable || !*hashtable) {
     return;
-  for (int i = MAP_METHOD(length)(*hashtable) - 1; i >= 0; i -= 1) {
-    METHOD(list, list_datum_t, delete)((T_L *)((*hashtable)->buckets[i]),
-                                       couple_destructor);
   }
-  array_delete(*hashtable);
+
+  if ((*hashtable)->buckets) {
+    for (int i = array_length((*hashtable)->buckets) - 1; i >= 0; i -= 1) {
+      (*hashtable)->buckets[i] = LIST_METHOD(delete)((*hashtable)->buckets[i]);
+    }
+    array_delete((*hashtable)->buckets);
+  }
+
+  free(*hashtable);
   *hashtable = NULL;
 }
 
 /* retourne 1 si la hashmap contient la clé et 0 sinon */
 T_MAP_INTERFACE int MAP_METHOD(contains)(T hashtable, T_MAP_KEY key) {
+  if (!hashtable || !hashtable->buckets)
+    return 0;
   COUPLE_TYPE couple_exemple;
   couple_exemple.key = key;
   int hash_code = HASH(key);
-  int contains = (METHOD(list, list_datum_t, contains)(
-      (T_L *)hashtable->buckets[hash_code], couple_exemple, couple_comparator));
+  int contains =
+      LIST_METHOD(contains)(hashtable->buckets[hash_code], couple_exemple);
   return contains;
 }
 
 /* Supprime le couple de clé key s'il existe et ne fait rien sinon */
 T_MAP_INTERFACE int MAP_METHOD(remove)(T *hashtable, T_MAP_KEY key) {
-  if (!hashtable || !*hashtable)
+  if (!hashtable || !(*hashtable) || !((*hashtable)->buckets))
     return -1;
   COUPLE_TYPE couple_exemple;
   couple_exemple.key = key;
   int hash_code = HASH(key);
-  METHOD(list, list_datum_t, remove)(couple_exemple,
-                                     (T_L *)(*hashtable)->buckets[hash_code],
-                                     couple_comparator, couple_destructor);
+  (*hashtable)->buckets[hash_code] =
+      LIST_METHOD(remove)(couple_exemple, (*hashtable)->buckets[hash_code]);
   return 0;
 }
 
 /* Rajoute le couple de clé key et de valeur value dans la hashmap */
-T_MAP_INTERFACE int MAP_METHOD(put)(T *hashtable, T_MAP_KEY key,
-                                    T_MAP_VALUE value) {
+T_MAP_INTERFACE int MAP_METHOD(put)(T *hashtable, T_MAP_KEY key, T_MAP_VALUE value) {
   if (!hashtable || !*hashtable)
     return -1;
+  (void)key;
+  (void)value;
   return 0;
 }
 
 /* Récupère la valeur associée à la clé key dans la hashmap */
 T_MAP_INTERFACE int MAP_METHOD(get)(T hashtable, T_MAP_KEY key,
                                     T_MAP_VALUE *value) {
+  (void)hashtable;
+  (void)key;
+  (void)value;
   return 0;
 }
 

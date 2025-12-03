@@ -132,7 +132,10 @@ T DEQUE_METHOD(pop_front)(deque_datum_t *value, T deque) {
   // Only one element
   if (deque->length == 1) {
     *value = DEQUE_METHOD(first)(deque);
-    if (DESTRUCTOR()) DESTRUCTOR(deque->head->datum);
+    #ifdef DESTRUCTOR_IS_NULL
+    #else
+    DESTRUCTOR(deque->head->datum);
+    #endif
 
     free(deque->head);
     deque->head = NULL;

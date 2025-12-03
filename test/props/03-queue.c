@@ -3,6 +3,7 @@
 #define queue_datum_t int
 
 #define DESTRUCTOR(val) NULL
+#define DESTRUCTOR_IS_NULL //macro flag pour indiquer que le destructeur est NULL (ça me simplifie pour les if parce que sinon je comprends rien)
 #define COMPARATOR(val1, val2) ((val1) == (val2))
 #define PRINTER(val) printf("%d", (val))
 

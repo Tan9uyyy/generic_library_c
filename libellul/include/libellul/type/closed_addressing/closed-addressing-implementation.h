@@ -137,7 +137,7 @@ T_MAP_INTERFACE int MAP_METHOD(get)(T hashtable, T_MAP_KEY key, T_MAP_VALUE *val
 #ifdef T_IMPL_HASHTABLE_CLOSED_ADDRESSING_MOVE_TO_FRONT
   /* on déplace le couple au début de la liste */
   hashtable->buckets[hash_code] = LIST_METHOD(remove)(saved_couple, hashtable->buckets[hash_code]);
-  hashtable->buckets[hash_code] = QUEUE_METHOD(push_front)(saved_couple, hashtable->buckets[hash_code]);
+  hashtable->buckets[hash_code] = DEQUE_METHOD(push_front)(saved_couple, hashtable->buckets[hash_code]);
 #endif
   return 0;
 }

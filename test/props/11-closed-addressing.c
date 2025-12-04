@@ -1,6 +1,9 @@
 #include <libellul.h>
 
 #define T_IMPL_HASHTABLE
+/* choix de l'implémentation : soit
+* T_IMPL_HASHTABLE_CLOSED_ADDRESSING pour l'implémentation normale 
+* T_IMPL_HASHTABLE_CLOSED_ADDRESSING_MOVE_TO_FRONT pour l'implé move_to_front */
 #define T_IMPL_HASHTABLE_CLOSED_ADDRESSING
 #define T_MAP_TAG int_int_closed_addressing_hashtable
 #define T_MAP_KEY int
@@ -119,7 +122,7 @@ int main(int argc, char *argv[]) {
              "=========================================================");
 
   closed_addressing_NULL();
-  int_int_closed_addressing_hashtable_stack(13);
+  int_int_closed_addressing_hashtable_stack(20);
 
   exit(EXIT_SUCCESS);
 }

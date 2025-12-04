@@ -64,16 +64,42 @@ T_MAP_INTERFACE int MAP_METHOD(contains)(T hashtable, T_MAP_KEY key) {
 }
 
 T_MAP_INTERFACE int MAP_METHOD(remove)(T *hashtable, T_MAP_KEY key) {
-  if (!hashtable || !*hashtable) {
-    return 0;
-  }
-  int index = MAP_METHOD(contains)(*hashtable, key);
-  if (index < 0) {
-    return 0; /* key not found */
-  }
-  (*hashtable)->occupied[index] = 2; /* mark as tombstone */
+    if (!hashtable || !*hashtable) {
+        return 0;
+    }
+    int index = MAP_METHOD(contains)(*hashtable, key);
+    if (index < 0) {
+        return 0; /* key not found */
+    }
+    /* Dépend de l'implémentation */
+#if !defined(T_IMPL_HASHTABLE_LINEAR_NO_TOMBSTONES)
+    (*hashtable)->occupied[index] = 2; /* mark as tombstone */
+    (*hashtable)->tombstones++;
+#elif defined(T_IMPL_HASHTABLE_LINEAR_NO_TOMBSTONES)
+    /* Backward-shifting deletion */
+    int next_index = (index + 1) % array_size((*hashtable)->bucket);
+    while ((*hashtable)->occupied[next_index] == 1) {
+        int ideal_pos = HASH((*hashtable)->bucket[next_index]) % array_size((*hashtable)->bucket);
+        /* Check if the element at next_index can be shifted back to hash_code */
+        if ((ideal_pos <= index && index < next_index) ||
+            (index < next_index && next_index < ideal_pos) ||
+            (next_index < ideal_pos && ideal_pos <= index)) {
+            /* Shift element back */
+            (*hashtable)->bucket[index] = (*hashtable)->bucket[next_index];
+        #if !defined(T_SET_ELEMENT)
+            (*hashtable)->value[index] = (*hashtable)->value[next_index];
+        #endif
+            (*hashtable)->occupied[index] = 1; /* mark as occupied */
+            }
+            index = next_index;
+            next_index = (index + 1) % array_size((*hashtable)->bucket);
+        }
+    /* Finally mark the last shifted position as empty */
+    (*hashtable)->occupied[index] = 0;
+#else
+#endif
+
   (*hashtable)->length--;
-  (*hashtable)->tombstones++;
   return 1;
 }
 
@@ -81,23 +107,22 @@ T_MAP_INTERFACE int MAP_METHOD(remove)(T *hashtable, T_MAP_KEY key) {
 T_MAP_INTERFACE int MAP_METHOD(insert)(T *set, T_SET_ELEMENT element) {}
 #else
 /* Rajoute le couple key,value dans la map et renvoie son index */
-T_MAP_INTERFACE int MAP_METHOD(put)(T *hashtable, T_MAP_KEY key,
-                                    T_MAP_VALUE value) {
+T_MAP_INTERFACE int MAP_METHOD(put)(T *hashtable, T_MAP_KEY key, T_MAP_VALUE value) {
   if (!hashtable || !*hashtable) {
     return -1;
   }
   /* Check load factor and resize if necessary */
-  float current_load_factor =
-      (float)((*hashtable)->length + ((*hashtable)->tombstones) + 1) /
-      (float)array_size((*hashtable)->bucket);
+  float current_length = (float)(*hashtable)->length;
+#if !defined ( T_IMPL_HASHTABLE_LINEAR_NO_TOMBSTONES )
+  current_length += (float)(*hashtable)->tombstones;
+#endif
+  float current_load_factor = current_length / (float)array_size((*hashtable)->bucket);
   if (current_load_factor >= LOAD_FACTOR) {
-    T new_hashtable =
-        MAP_METHOD(new__)(array_size((*hashtable)->bucket) * ARRAY_ALLOC_GEOM);
+    T new_hashtable = MAP_METHOD(new__)(array_size((*hashtable)->bucket) * ARRAY_ALLOC_GEOM);
     /* Reinsert all existing elements */
     for (size_t i = 0; i < array_size((*hashtable)->bucket); i++) {
       if ((*hashtable)->occupied[i] == 1) {
-        MAP_METHOD(put)(&new_hashtable, (*hashtable)->bucket[i],
-                        (*hashtable)->value[i]);
+        MAP_METHOD(put)(&new_hashtable, (*hashtable)->bucket[i], (*hashtable)->value[i]);
       }
     }
     /* Delete old hashtable */
@@ -127,8 +152,7 @@ T_MAP_INTERFACE int MAP_METHOD(put)(T *hashtable, T_MAP_KEY key,
   return hash_code;
 }
 
-T_MAP_INTERFACE int MAP_METHOD(get)(T hashtable, T_MAP_KEY key,
-                                    T_MAP_VALUE *value) {
+T_MAP_INTERFACE int MAP_METHOD(get)(T hashtable, T_MAP_KEY key, T_MAP_VALUE *value) {
   if (!hashtable) {
     return 0;
   }

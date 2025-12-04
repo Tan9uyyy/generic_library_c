@@ -1,7 +1,7 @@
 #include <libellul.h>
 
 #define T_IMPL_HASHTABLE
-#define T_IMPL_HASHTABLE_LINEAR
+#define T_IMPL_HASHTABLE_LINEAR_NO_TOMBSTONES
 #define T_MAP_TAG int_int_linear_hashtable
 #define T_MAP_KEY int
 #define T_MAP_VALUE int
@@ -108,7 +108,7 @@ int main(int argc, char *argv[]) {
              "=========================================================");
 
   linear_NULL();
-  int_int_linear_hashtable_stack(13);
+  int_int_linear_hashtable_stack(20);
 
   exit(EXIT_SUCCESS);
 }

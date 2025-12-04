@@ -82,8 +82,8 @@ typedef struct COUPLE_TYPE {
 /* La structure principale de la Map */
 typedef struct T {
   size_t count; /* Nombre d'éléments total */
-  T_L *buckets; /* Tableau de tableau redimensionnable qui contient les listes
-                   de couple */
+  size_t length; /* Nombre de buckets */
+  T_L *buckets; /* Tableau de tableau redimensionnable qui contient les listes de couple */
 } *T;
 
 #endif

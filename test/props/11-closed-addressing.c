@@ -6,8 +6,8 @@
 #define T_MAP_KEY int
 #define T_MAP_VALUE int
 
-#define HASHTABLE_SIZE 13
-#define HASH(key) ((key) % HASHTABLE_SIZE)
+#define HASHTABLE_SIZE 13 
+#define HASH(key) (key)
 #define VALUE_DESTRUCTOR(val) NULL
 #define DESTRUCTOR_IS_NULL // macro flag pour indiquer que le destructeur est
                            // NULL (ça me simplifie pour les if parce que

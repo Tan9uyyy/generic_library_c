@@ -103,6 +103,13 @@ void treap_tests(){
 
     test_assert(int_treap_is_empty(treap), "Deleted treap is empty");
 
+    test_suite("treeset delete with 1 element");
+
+    treap = int_treap_push(treap, 42);
+    treap = int_treap_delete(treap);
+
+    test_assert(1, "Can delete treap with one element");
+
     free(treap);
 }
 

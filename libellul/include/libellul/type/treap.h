@@ -18,21 +18,21 @@
 
 #include <libellul/type/prologue.h>
 
+#if defined(T_TREESET_IMPL_TREAP)
+#define T_TREAP_INTERFACE T_TREESET_INTERFACE
+#else
 #if !defined( T_TREAP_EXPORT_DEFS ) && !defined( T_TREAP_EXPORT_CODE )
 #define T_TREAP_INTERFACE static inline
 #else
 #define T_TREAP_INTERFACE extern
 #endif
-
-#ifdef T
-#undef T
 #endif
+
+#ifndef T
 #define T                      GEN_SYM( T_TREAP_TAG, t )
-#define TREAP_METHOD( name )     GEN_SYM( T_TREAP_TAG, name )
-
-#if defined(T_TREESET_IMPL_TREAP)
-#include <libellul/type/treeset/interface.h>
+#define T_FLAG
 #endif
+#define TREAP_METHOD( name )     GEN_SYM( T_TREAP_TAG, name )
 
 #define T_TREAP_IMPL_B_TREE
 
@@ -52,10 +52,11 @@ typedef struct treap_couple {
 #include <libellul/structure/b-tree.h>
 
 #if defined(T_TREESET_IMPL_TREAP)
+#include <libellul/type/treeset/interface.h>
 #include <libellul/type/treeset/treeset-implementation.h>
 #endif
 
-#define T_INTERFACE   T_TREAP_INTERFACE
+#define T_INTERFACE   T_TREESET_INTERFACE
 #if defined( T_TREAP_EXPORT_DEFS )
 #define T_EXPORT_DEFS
 #endif
@@ -65,5 +66,8 @@ typedef struct treap_couple {
 #undef T_TREAP_INTERFACE
 #undef T_TREAP_EXPORT_DEFS
 #undef T_TREAP_EXPORT_CODE
+#ifdef T_FLAG
 #undef T
+#undef T_FLAG
+#endif
 #undef TREAP_METHOD

@@ -14,7 +14,7 @@
 void treeset_NULL( void ) {
     int_treeset_t treeset = int_treeset_new();
 
-    int_treeset_print(treeset); printf("\n");
+    int_treeset_print(treeset);
 
     test_suite( "NULL as a treeset" );
 
@@ -38,15 +38,15 @@ void treeset_tests(){
     test_suite("Treeset add 1 element");
 
     treeset1 = int_treeset_add(treeset1, values1[0]);
-    int_treeset_print(treeset1); printf("\n");
+    int_treeset_print(treeset1);
 
     test_assert(!int_treeset_is_empty(treeset1), "Treeset not empty after add");
     test_assert(int_treeset_contains(treeset1, values1[0]), "Treeset contains the value added");
 
     test_suite("Treeset delete with 1 element");
 
-    treeset1 = int_treeset_delete(treeset1, NULL);
-    int_treeset_print(treeset1); printf("\n");
+    treeset1 = int_treeset_delete(treeset1);
+    int_treeset_print(treeset1);
 
     test_assert(int_treeset_is_empty(treeset1), "Treeset empty after delete");
 
@@ -57,8 +57,8 @@ void treeset_tests(){
         treeset2 = int_treeset_add(treeset2, values2[i]);
     }
 
-    printf("Treeset1 : "); int_treeset_print(treeset1); printf("\n");
-    printf("Treeset2 : "); int_treeset_print(treeset2); printf("\n");
+    printf("Treeset1 : "); int_treeset_print(treeset1);
+    printf("Treeset2 : "); int_treeset_print(treeset2);
 
     test_assert(int_treeset_lower_bound(treeset1) == values1[0] && int_treeset_lower_bound(treeset2) == values2[0], "Lower bounds are correct ");
     test_assert(int_treeset_upper_bound(treeset1) == values1[4] && int_treeset_upper_bound(treeset2) == values2[4], "Upper bounds are correct ");
@@ -68,25 +68,25 @@ void treeset_tests(){
     treeset1 = int_treeset_remove_min(treeset1);
     treeset2 = int_treeset_remove_max(treeset2);
 
-    printf("Treeset1 : "); int_treeset_print(treeset1); printf("\n");
-    printf("Treeset2 : "); int_treeset_print(treeset2); printf("\n");
+    printf("Treeset1 : "); int_treeset_print(treeset1);
+    printf("Treeset2 : "); int_treeset_print(treeset2);
 
     test_assert(int_treeset_lower_bound(treeset1) == values1[1], "Lower bound is correct after removal");
     test_assert(int_treeset_upper_bound(treeset2) == values2[3], "Upper bound is correct after removal");
 
     test_suite("Treeset operations");
 
-    int_treeset_t treeset_union = int_treeset_reunion(&treeset1, &treeset2);
+    int_treeset_t treeset_union = int_treeset_reunion(treeset1, treeset2);
 
-    printf("Treeset1 : "); int_treeset_print(treeset1); printf("\n");
-    printf("Treeset2 : "); int_treeset_print(treeset2); printf("\n");
-    printf("Treeset_union : "); int_treeset_print(treeset_union); printf("\n");
+    printf("Treeset1 : "); int_treeset_print(treeset1);
+    printf("Treeset2 : "); int_treeset_print(treeset2);
+    printf("Treeset_union : "); int_treeset_print(treeset_union);
 
-    int_treeset_t int_treeseter = int_treeset_inter(&treeset1, &treeset2);
+    int_treeset_t int_treeseter = int_treeset_inter(treeset1, treeset2);
 
-    printf("Treeset1 : "); int_treeset_print(treeset1); printf("\n");
-    printf("Treeset2 : "); int_treeset_print(treeset2); printf("\n");
-    printf("Treeset_inter : "); int_treeset_print(int_treeseter); printf("\n");
+    printf("Treeset1 : "); int_treeset_print(treeset1);
+    printf("Treeset2 : "); int_treeset_print(treeset2);
+    printf("Treeset_inter : "); int_treeset_print(int_treeseter);
 
     printf("Union bounds : %d, %d\n", int_treeset_lower_bound(treeset_union), int_treeset_upper_bound(treeset_union));
     printf("Expected bounds : %d, %d\n", values1[1], values2[3]);
@@ -98,10 +98,10 @@ void treeset_tests(){
 
     test_suite("Full treeset delete");
 
-    treeset1 = int_treeset_delete(treeset1, NULL);
-    treeset2 = int_treeset_delete(treeset2, NULL);
-    treeset_union = int_treeset_delete(treeset_union, NULL);
-    int_treeseter = int_treeset_delete(int_treeseter, NULL);
+    treeset1 = int_treeset_delete(treeset1);
+    treeset2 = int_treeset_delete(treeset2);
+    treeset_union = int_treeset_delete(treeset_union);
+    int_treeseter = int_treeset_delete(int_treeseter);
 
     test_assert(int_treeset_is_empty(treeset1), "treeset1 deleted");
     test_assert(int_treeset_is_empty(treeset2), "treeset1 deleted");

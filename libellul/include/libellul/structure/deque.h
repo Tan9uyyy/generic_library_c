@@ -28,7 +28,7 @@ typedef struct {
 #elif defined( T_STACK_IMPL_DEQUE )
 #include <libellul/type/stack/interface.h>
 #elif defined( T_LIST_IMPL_DEQUE )
-#include <libellul/type/list/list-export-def.h>
+#include <libellul/type/list/interface.h>
 #elif defined(T_PQ_IMPL_DEQUE)
 #include <libellul/type/priority-queue/interface.h>
 #else

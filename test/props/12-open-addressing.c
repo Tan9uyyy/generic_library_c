@@ -2,7 +2,6 @@
 
 #define T_IMPL_HASHTABLE
 #define T_IMPL_HASHTABLE_LINEAR
-#define TOMBSTONE -1
 #define T_MAP_TAG int_int_linear_hashtable
 #define T_MAP_KEY int
 #define T_MAP_VALUE int
@@ -17,99 +16,99 @@
 #define KEY_PRINTER(val) printf("%d", (val))
 #define VALUE_PRINTER(val) printf("%d", (val))
 
-//#include <libellul/type/map.h>
+#include <libellul/type/map.h>
 
-// static void linear_NULL(void) {
-//   int_int_linear_hashtable_t hashtable = NULL;
+static void linear_NULL(void) {
+  int_int_linear_hashtable_t hashtable = NULL;
 
-//   test_suite("NULL as an hashtable");
+  test_suite("NULL as an hashtable");
 
-//   test_assert(0 == int_int_linear_hashtable_length(NULL),
-//               "NULL is an hashtable of length zero");
-//   test_assert(int_int_linear_hashtable_is_empty(NULL),
-//               "NULL is an the empty hashtable");
+  test_assert(0 == int_int_linear_hashtable_length(NULL),
+              "NULL is an hashtable of length zero");
+  test_assert(int_int_linear_hashtable_is_empty(NULL),
+              "NULL is an the empty hashtable");
 
-//   int_int_linear_hashtable_delete(NULL);
-//   test_assert(1, "Can delete NULL as an hashtable");
+  int_int_linear_hashtable_delete(NULL);
+  test_assert(1, "Can delete NULL as an hashtable");
 
-//   test_suite("NULL variable as an hashtable");
+  test_suite("NULL variable as an hashtable");
 
-//   test_assert(0 == int_int_linear_hashtable_length(hashtable),
-//               "A NULL hashtable has length zero");
-//   test_assert(int_int_linear_hashtable_is_empty(hashtable),
-//               "A NULL hashtable is empty");
+  test_assert(0 == int_int_linear_hashtable_length(hashtable),
+              "A NULL hashtable has length zero");
+  test_assert(int_int_linear_hashtable_is_empty(hashtable),
+              "A NULL hashtable is empty");
 
-//   int_int_linear_hashtable_delete(&hashtable);
-//   test_assert(NULL == hashtable, "Can delete a NULL hashtable");
-// }
+  int_int_linear_hashtable_delete(&hashtable);
+  test_assert(NULL == hashtable, "Can delete a NULL hashtable");
+}
 
-// int *rand_ints(size_t n) {
-//   int *vec = calloc(n, sizeof(*vec));
-//   assert(vec);
+int *rand_ints(size_t n) {
+  int *vec = calloc(n, sizeof(*vec));
+  assert(vec);
 
-//   for (size_t i = 0; i < n; i++)
-//     vec[i] = rand() % 50;
+  for (size_t i = 0; i < n; i++)
+    vec[i] = rand() % 50;
 
-//   return vec;
-// }
+  return vec;
+}
 
-// void int_int_linear_hashtable_stack(size_t n) {
-//   int *key = rand_ints(n);
-//   int *value = rand_ints(n);
+void int_int_linear_hashtable_stack(size_t n) {
+  int *key = rand_ints(n);
+  int *value = rand_ints(n);
 
-//   test_suite("Créer une nouvelle hashtable vide");
+  test_suite("Créer une nouvelle hashtable vide");
 
-//   int_int_linear_hashtable_t hashtable = int_int_linear_hashtable_new();
-//   int_int_linear_hashtable_print(hashtable);
+  int_int_linear_hashtable_t hashtable = int_int_linear_hashtable_new();
+  int_int_linear_hashtable_print(hashtable);
 
-//   test_assert(int_int_linear_hashtable_is_empty(hashtable),
-//               "A new hashtable is empty");
+  test_assert(int_int_linear_hashtable_is_empty(hashtable),
+              "A new hashtable is empty");
 
-//   test_suite("Put des valeurs dans la hashtable");
+  test_suite("Put des valeurs dans la hashtable");
 
-//   for (size_t i = 0; i < n; i++) {
-//     int_int_linear_hashtable_put(&hashtable, key[i], value[i]);
-//     int_int_linear_hashtable_print(hashtable);
-//     test_assert(int_int_linear_hashtable_contains(hashtable, key[i]),
-//                 "Can push to hashtable");
-//   }
+  for (size_t i = 0; i < n; i++) {
+    int_int_linear_hashtable_put(&hashtable, key[i], value[i]);
+    int_int_linear_hashtable_print(hashtable);
+    test_assert(int_int_linear_hashtable_contains(hashtable, key[i]),
+                "Can push to hashtable");
+  }
 
-//   test_suite("Pop des valeurs de la hashtable");
+  test_suite("Pop des valeurs de la hashtable");
 
-//   int popped;
-//   for (size_t i = 0; i < n; i++) {
-//     popped = -1;
-//     popped = int_int_linear_hashtable_remove(&hashtable, key[i]);
-//     int_int_linear_hashtable_print(hashtable);
-//     test_assert(0 == popped, "Can pop from hashtable");
-//   }
+  int popped;
+  for (size_t i = 0; i < n; i++) {
+    popped = 0;
+    popped = int_int_linear_hashtable_remove(&hashtable, key[i]);
+    int_int_linear_hashtable_print(hashtable);
+    test_assert(1 == popped, "Can pop from hashtable");
+  }
 
-//   test_suite("Une hashtable complètement popée est vide");
+  test_suite("Une hashtable complètement popée est vide");
 
-//   test_assert(int_int_linear_hashtable_is_empty(hashtable),
-//               "Empty, non-NULL hashtable at the end");
+  test_assert(int_int_linear_hashtable_is_empty(hashtable),
+              "Empty, non-NULL hashtable at the end");
 
 
-//   test_suite("Suppression de la hashtable");
+  test_suite("Suppression de la hashtable");
 
-//   int_int_linear_hashtable_delete(&hashtable);
-//   int_int_linear_hashtable_print(hashtable);
-//   test_assert(NULL == hashtable, "hashtable is NULL after delete");
+  int_int_linear_hashtable_delete(&hashtable);
+  int_int_linear_hashtable_print(hashtable);
+  test_assert(NULL == hashtable, "hashtable is NULL after delete");
 
-//   free(key);
-//   free(value);
-// }
+  free(key);
+  free(value);
+}
 
 int main(int argc, char *argv[]) {
 
   unit_test(argc, argv);
 
-//   test_suite("\n\n\n ================================================ TEST "
-//              "12-open-addressing.c "
-//              "=========================================================");
+  test_suite("\n\n\n ================================================ TEST "
+             "12-open-addressing.c "
+             "=========================================================");
 
-//   linear_NULL();
-//   int_int_linear_hashtable_stack(13);
+  linear_NULL();
+  int_int_linear_hashtable_stack(13);
 
   exit(EXIT_SUCCESS);
 }

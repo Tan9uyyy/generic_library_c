@@ -84,6 +84,7 @@ T_MAP_INTERFACE int MAP_METHOD(put)(T *hashtable, T_MAP_KEY key, T_MAP_VALUE val
   /* on vérifie si la clé existe déjà avant d'ajouter */
   int contains = LIST_METHOD(contains)((*hashtable)->buckets[hash_code], new_couple);
   if (contains<0) {
+    (*hashtable)->count++;
     /* on vérifie le load factor avant d'ajouter */
     float current_load_factor = (float)(*hashtable)->count / (float)(*hashtable)->length;
     if (current_load_factor >= LOAD_FACTOR) {
@@ -103,19 +104,16 @@ T_MAP_INTERFACE int MAP_METHOD(put)(T *hashtable, T_MAP_KEY key, T_MAP_VALUE val
       *hashtable = new_hashtable;
       hash_code = HASH(key)%((*hashtable)->length);
     }
-    /* on ajoute le nouveau couple */
-    (*hashtable)->buckets[hash_code] = DEQUE_METHOD(push_front)(new_couple, (*hashtable)->buckets[hash_code]);
-    (*hashtable)->count++;
-    return 0;
   }
   else {
-    /* la clé existe déjà, on met à jour la valeur */
+    /* la clé existe déjà, on supprime l'ancien couple */
     #if !defined(T_SET_ELEMENT)
     LIST_METHOD(remove)(new_couple, (*hashtable)->buckets[hash_code]);
-    (*hashtable)->buckets[hash_code] = DEQUE_METHOD(push_front)(new_couple, (*hashtable)->buckets[hash_code]);
     #endif
-    return 0;
   }
+  /* on ajoute le nouveau couple */
+  (*hashtable)->buckets[hash_code] = DEQUE_METHOD(push_front)(new_couple, (*hashtable)->buckets[hash_code]);
+  return 0;
 }
 
 /* Récupère la valeur associée à la clé key dans la hashmap */

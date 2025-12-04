@@ -89,7 +89,7 @@ size_t  array_length( void *array ) {
 }
 
 size_t array_size( void *array ) {
-  return array ? ARRAY_HEADER( array )->size : 0;
+  return array ? ARRAY_HEADER( array )->allocd : 0;
 }
 
 

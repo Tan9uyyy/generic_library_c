@@ -126,3 +126,9 @@ int main(int argc, char *argv[]) {
 
   exit(EXIT_SUCCESS);
 }
+
+#undef T_IMPL_HASHTABLE
+#undef T_IMPL_HASHTABLE_CLOSED_ADDRESSING
+#undef T_MAP_TAG
+#undef T_MAP_KEY
+#undef T_MAP_VALUE

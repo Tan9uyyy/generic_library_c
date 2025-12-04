@@ -76,7 +76,7 @@ void int_int_closed_addressing_hashtable_stack(size_t n) {
 
   test_suite("Get des valeurs dans la hashtable");
 
-  for(size_t i = 0; i < n-10; i++) {
+  for(size_t i = 0; i < 2; i++) {
     int retrieved_value = -1;
     int res = int_int_closed_addressing_hashtable_get(hashtable, key[i], &retrieved_value);
     int_int_couple get_couple = (int_int_couple){.key=key[i], .value=retrieved_value};
@@ -122,7 +122,7 @@ int main(int argc, char *argv[]) {
              "=========================================================");
 
   closed_addressing_NULL();
-  int_int_closed_addressing_hashtable_stack(20);
+  int_int_closed_addressing_hashtable_stack(2 /* on met juste à deux pour gagner de la place sur le terminal */);
 
   exit(EXIT_SUCCESS);
 }

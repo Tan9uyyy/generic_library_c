@@ -22,47 +22,40 @@ T TREESET_METHOD(remove_max)(T treeset){treeset_datum_t buffer; return TREAP_MET
 
 T TREESET_METHOD(remove_min)(T treeset){treeset_datum_t buffer; return TREAP_METHOD(pop_small)(treeset, &buffer);}
 
+T TREESET_METHOD(reu_copy)(T treeset1, T res){
+    if (TREESET_METHOD(is_empty)(treeset1)) return res;
+    res = TREESET_METHOD(add)(res, treeset1->value.value);
+
+    TREESET_METHOD(reu_copy)(treeset1->ls, res);
+    TREESET_METHOD(reu_copy)(treeset1->rs, res);
+
+    return res;
+}
+
+T TREESET_METHOD(inter_copy)(T treeset1, T treeset2, T res){
+    if (TREESET_METHOD(is_empty)(treeset1)) return res;
+    if (TREESET_METHOD(contains)(treeset2, treeset1->value.value)) res = TREESET_METHOD(add)(res, treeset1->value.value);
+
+    TREESET_METHOD(inter_copy)(treeset1->ls, treeset2, res);
+    TREESET_METHOD(inter_copy)(treeset1->rs, treeset2, res);
+
+    return res;
+}
+
 T TREESET_METHOD(reunion)(T treeset1, T treeset2){
-    treeset_datum_t value;
-    T new_treeset1 = TREESET_METHOD(new)();
-    T new_treeset2 = TREESET_METHOD(new)();
-    T res_treeset = TREESET_METHOD(new)();
+    T res = TREESET_METHOD(new)();
 
-    while (!TREESET_METHOD(is_empty)(treeset1)){
-        value = TREESET_METHOD(lower_bound) (treeset1);
-        treeset1 = TREESET_METHOD(remove_min) (treeset1);
-        new_treeset1 = TREESET_METHOD(add) (new_treeset1, value);
-
-        res_treeset = TREESET_METHOD(add) (res_treeset, value);
-    }
-
-    while (!TREESET_METHOD(is_empty)(treeset2)){
-        value = TREESET_METHOD(upper_bound) (treeset1);
-        treeset1 = TREESET_METHOD(remove_max) (treeset1);
-        new_treeset2 = TREESET_METHOD(add) (new_treeset2, value);
-
-        res_treeset = TREESET_METHOD(add) (res_treeset, value);
-    }
-
-    treeset1 = new_treeset1; treeset2 = new_treeset2;
-    return res_treeset;
+    res = TREESET_METHOD(reu_copy)(treeset1, res);
+    res = TREESET_METHOD(reu_copy)(treeset2, res);
+    return res;
 }
 
 T TREESET_METHOD(inter)(T treeset1, T treeset2){
-    treeset_datum_t value;
-    T new_treeset2 = TREESET_METHOD(new)();
-    T res_treeset = TREESET_METHOD(new)();
+    T res = TREESET_METHOD(new)();
 
-    while (!TREESET_METHOD(is_empty)(treeset2)){
-        value = TREESET_METHOD(lower_bound) (treeset2);
-        treeset2 = TREESET_METHOD(remove_min) (treeset2);
-        new_treeset2 = TREESET_METHOD(add) (new_treeset2, value);
-
-        if (TREESET_METHOD(contains)(treeset1, value)) res_treeset = TREESET_METHOD(add) (res_treeset, value);
-    }
-
-    treeset2 = new_treeset2;
-    return res_treeset;
+    res = TREESET_METHOD(inter_copy)(treeset1, treeset2, res);
+    res = TREESET_METHOD(inter_copy)(treeset2, treeset1, res);
+    return res;
 }
 
 T TREESET_METHOD(delete)(T treeset){return TREAP_METHOD(delete)(treeset);}

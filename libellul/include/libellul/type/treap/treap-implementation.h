@@ -8,11 +8,9 @@ int TREAP_METHOD(is_empty) (T treap){return B_TREE_METHOD(is_empty)(treap);}
 
 T TREAP_METHOD(rec_push) (T treap, treap_datum_t value, int priority){
     if (TREAP_METHOD(is_empty) (treap)){
-        treap_couple *new_node = malloc(sizeof(*new_node));
-        assert(new_node && "Allocation failed !");
+        treap_couple new_node = {.value = value, .priority = priority};
 
-        new_node->value = value; new_node->priority = priority;
-        return B_TREE_METHOD(push)(treap, *new_node);
+        return B_TREE_METHOD(push)(treap, new_node);
     }
 
     // Use of priority_func to randomized the consequences of collisions to balance the tree
@@ -37,43 +35,32 @@ T TREAP_METHOD(rec_push) (T treap, treap_datum_t value, int priority){
 
 T TREAP_METHOD(push) (T treap, treap_datum_t value){return TREAP_METHOD(rec_push) (treap, value, TREAP_PRIORITY_FUNC(value));}
 
-treap_datum_t TREAP_METHOD(max) (T treap){
+treap_datum_t TREAP_METHOD(min) (T treap){
     if (TREAP_METHOD(is_empty)(treap)) return NULL;
     if (TREAP_METHOD(is_empty)(treap->rs)) return treap->value.value;
-    return TREAP_METHOD(max)(treap->rs);
+    return TREAP_METHOD(min)(treap->rs);
 }
 
-treap_datum_t TREAP_METHOD(min) (T treap){
+treap_datum_t TREAP_METHOD(max) (T treap){
     if (TREAP_METHOD(is_empty)(treap)) return NULL;
     if (TREAP_METHOD(is_empty)(treap->ls)) return treap->value.value;
     return TREAP_METHOD(max)(treap->ls);
 }
 
 T TREAP_METHOD(pop_small) (T treap, treap_datum_t *value){
-    assert(!TREAP_METHOD(is_empty)(treap) && "Treap is empty !");
+    treap_couple elem;
+    treap = B_TREE_METHOD(pop_small) (treap, &elem);
+    *value = elem.value;
 
-    if (!TREAP_METHOD(is_empty)(treap->ls)) {
-        treap->ls = TREAP_METHOD(pop_small)(treap->ls, value);
-        return treap;
-    }
-
-    *value = treap->value.value;
-    T next = treap->rs;
-    if (TREAP_DESTRUCTOR()) TREAP_DESTRUCTOR(treap->value.value);
-
-    return next;
+    return treap;
 }
 
 T TREAP_METHOD(pop_big) (T treap, treap_datum_t *value){
-    assert(!TREAP_METHOD(is_empty)(treap) && "Treap is empty !");
+    treap_couple elem;
+    treap = B_TREE_METHOD(pop_big) (treap, &elem);
+    *value = elem.value;
 
-    if (!TREAP_METHOD(is_empty)(treap->rs)) return TREAP_METHOD(pop_big)(treap->rs, value);
-
-    *value = treap->value.value;
-    T next = treap->ls;
-    if (TREAP_DESTRUCTOR()) TREAP_DESTRUCTOR(treap->value.value);
-
-    return next;
+    return treap;
 }
 
 int TREAP_METHOD(contains) (T treap, treap_datum_t value){
@@ -83,13 +70,7 @@ int TREAP_METHOD(contains) (T treap, treap_datum_t value){
     return TREAP_METHOD(contains)(treap->ls, value);
 }
 
-T TREAP_METHOD(delete) (T treap){
-    treap_datum_t storage;
-
-    while (!TREAP_METHOD(is_empty)(treap)) TREAP_METHOD(pop_small)(treap, &storage);
-
-    return treap;
-}
+T TREAP_METHOD(delete) (T treap){return B_TREE_METHOD(delete)(treap);}
 
 void TREAP_METHOD(print_rec) (T treap){
     if (!TREAP_METHOD(is_empty)(treap->ls))TREAP_METHOD(print_rec)(treap->ls);

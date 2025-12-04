@@ -2,8 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "deque-export-def.h"
-
 
 T DEQUE_METHOD(new)(void) {
   T deque = malloc(sizeof(*deque));

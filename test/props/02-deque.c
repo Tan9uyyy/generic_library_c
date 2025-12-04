@@ -2,6 +2,7 @@
 #define T_DEQUE_TAG int_deque
 #define deque_datum_t int
 #define T int_deque_t
+#define T_DEQUE_IMPL_ARRAY
 
 #define DESTRUCTOR(val) NULL
 #define DESTRUCTOR_IS_NULL // macro flag pour indiquer que le destructeur est
@@ -32,14 +33,7 @@ void deque_tests(void) {
 
   test_suite("Push front in deque");
 
-  int *values = calloc(7, sizeof(values));
-  values[0] = 42;
-  values[1] = 1;
-  values[2] = 2;
-  values[3] = 3;
-  values[4] = -39;
-  values[5] = -1;
-  values[6] = -2;
+  int values[7] = {42, 1, 2, 3, -39, -1, -2};
 
   deque = int_deque_push_front(values[0], deque);
 
@@ -49,9 +43,10 @@ void deque_tests(void) {
   test_assert(int_deque_length(deque) == 1, "Deque length is 1");
   test_assert(values[0] == int_deque_first(deque), "Deque head is correct");
 
-  for (int i = 1; i < 4; i++)
+  for (int i = 1; i < 4; i++) {
     deque = int_deque_push_front(values[i], deque);
-  int_deque_print(deque);
+    int_deque_print(deque);
+  }
 
   test_assert(!int_deque_is_empty(deque), "Push front multiple values");
   test_assert(int_deque_length(deque) == 4, "Deque length is 4");
@@ -91,13 +86,7 @@ void deque_tests(void) {
 
   test_suite("Pop back in deque");
 
-  deque = int_deque_push_front(values[0], deque);
-  deque = int_deque_push_front(values[1], deque);
-  deque = int_deque_push_front(values[2], deque);
-  deque = int_deque_push_front(values[3], deque);
-  deque = int_deque_push_front(values[4], deque);
-  deque = int_deque_push_front(values[5], deque);
-  deque = int_deque_push_front(values[6], deque);
+  for (int i = 0; i < 7; i++) deque = int_deque_push_front(values[i], deque);
   int_deque_print(deque);
 
   while (!int_deque_is_empty(deque)) {
@@ -113,8 +102,8 @@ void deque_tests(void) {
   deque = int_deque_push_front(0, deque);
   int_deque_print(deque);
 
-  test_assert(int_deque_contains(deque, 0) >= 0, "Deque contient 0.");
-  test_assert(int_deque_contains(deque, 1) < 0, "Deque ne contient pas 1.");
+  test_assert(int_deque_contains(deque, 0) == 1, "Deque contient 0.");
+  test_assert(int_deque_contains(deque, 1) == 0, "Deque ne contient pas 1.");
 
   test_suite("Deque remove");
 
@@ -135,14 +124,7 @@ void deque_tests(void) {
 
   test_suite("Deque delete");
 
-  deque = int_deque_push_back(values[0], deque);
-  deque = int_deque_push_back(values[1], deque);
-  deque = int_deque_push_back(values[2], deque);
-  deque = int_deque_push_back(values[3], deque);
-  deque = int_deque_push_front(values[4], deque);
-  deque = int_deque_push_front(values[5], deque);
-  deque = int_deque_push_front(values[6], deque);
-
+  for (int i = 0; i < 7; i++) deque = int_deque_push_back(values[i], deque);
   int_deque_print(deque);
 
   deque = int_deque_delete(deque);
@@ -150,7 +132,8 @@ void deque_tests(void) {
   int_deque_print(deque);
   test_assert(int_deque_is_empty(deque), "Deque is empty after delete");
 
-  free(values);
+  // You need to uncomment the next line if you are using arrays for deque
+  //array_delete(deque);
 }
 
 int main(int argc, char *argv[]) {

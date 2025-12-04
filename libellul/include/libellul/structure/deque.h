@@ -8,6 +8,15 @@
 
 //#if defined( T_LIST_EXPORT_DEFS ) || !defined( T_LIST_EXPORT_CODE )
 
+#ifdef T_DEQUE_IMPL_ARRAY
+
+#include <libellul/memory.h>
+#include <libellul/type/array.h>
+
+typedef deque_datum_t *T;
+
+#else
+
 typedef struct TYPE(node, deque_datum_t) {
   struct TYPE(node, deque_datum_t) * next;
   struct TYPE(node, deque_datum_t) * prev;
@@ -19,6 +28,8 @@ typedef struct {
   struct TYPE(node, deque_datum_t) * queue;
   int length;
 } *T;
+
+#endif
 
 //#endif
 #ifdef T_DEQUE
@@ -35,14 +46,14 @@ typedef struct {
 #error "Deque must implemente a abstract data type!"
 #endif
 
-//#if !defined( T_LIST_EXPORT_DEFS )
-/* Code templating for the actual implementation starts here */
-
-#include <libellul/memory.h>
-#include <libellul/type/array.h>
-
 /* on inclut deque afin de pouvoir créer les fonctions queue/list/stack grâce aux fonctions deque */
+#include <libellul/structure/deque/deque-export-def.h>
+#ifdef T_DEQUE_IMPL_ARRAY
+#include <libellul/structure/deque/deque-implementation-array.h>
+#else
 #include <libellul/structure/deque/deque-implementation.h>
+#endif
+
 /* on crée nos fonctions queue/list/stack */
 #ifdef T_DEQUE
 #elif defined (T_QUEUE_IMPL_DEQUE)

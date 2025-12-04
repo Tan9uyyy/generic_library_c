@@ -1,37 +1,21 @@
-#ifndef _HEAP_IMPLEMENTATION_H__
-#define _HEAP_IMPLEMENTATION_H__
-
 #include <stdlib.h>
 #include <assert.h>
 #include <stdio.h>
-
-#ifndef heap_datum_t
-    #error "Undefined datum type !"
-#endif
-
-#include "heap-export-def.h"
-
-#ifdef T
-#undef T
-#endif
-#define T heap
-
-typedef heap_datum_t *TYPE(T, heap_datum_t);
 
 #define FATHER(i) ((i - 1) / 2)
 #define LEFT_SON(i) (2 * i + 1)
 #define RIGHT_SON(i) (2 * i + 2)
 #define HAS_SON(i, len) (LEFT_SON(i) >= len)
 
-TYPE(T, heap_datum_t) METHOD(T, heap_datum_t, new) (){return array(heap_datum_t);}
+T HEAP_METHOD(new) (){return array(heap_datum_t);}
 
-int METHOD(T, heap_datum_t, is_empty) (TYPE(T, heap_datum_t) heap){return array_is_empty(heap);}
+int HEAP_METHOD(is_empty) (T heap){return array_is_empty(heap);}
 
-int METHOD(T, heap_datum_t, length) (TYPE(T, heap_datum_t) heap){return (int)array_length(heap);}
+int HEAP_METHOD(length) (T heap){return (int)array_length(heap);}
 
-heap_datum_t METHOD(T, heap_datum_t, root) (TYPE(T, heap_datum_t) heap){return *heap;}
+heap_datum_t HEAP_METHOD(root) (T heap){return *heap;}
 
-int METHOD(T, heap_datum_t, swap) (TYPE(T, heap_datum_t) heap, int src, int dst){
+int HEAP_METHOD(swap) (T heap, int src, int dst){
     int len = (int)array_length(heap);
     assert((src < len) && (dst < len) && "Index out of range !");
 
@@ -41,80 +25,76 @@ int METHOD(T, heap_datum_t, swap) (TYPE(T, heap_datum_t) heap, int src, int dst)
     return 0;
 }
 
-int METHOD(T, heap_datum_t, contains_rec) (TYPE(T, heap_datum_t) heap, heap_datum_t value, int (*comparator) (heap_datum_t, heap_datum_t), int index, int len){
-    if (comparator(heap[index], value) < 0) return 0; // If root is bigger we stop
-    if (0 == comparator(heap[index], value)) return 1; // If root is equal we return true
+int HEAP_METHOD(contains_rec) (T heap, heap_datum_t value, int index, int len){
+    if (HEAP_COMPARATOR(heap[index], value) > 0) return 0; // If root is bigger we stop
+    if (0 == HEAP_COMPARATOR(heap[index], value)) return 1; // If root is equal we return true
 
     if (LEFT_SON(index) > len) return 0; // If root has no son we stop
-    int output = METHOD(T, heap_datum_t, contains_rec) (heap, value, comparator, LEFT_SON(index), len);
+    int output = HEAP_METHOD(contains_rec) (heap, value, LEFT_SON(index), len);
 
     if (RIGHT_SON(index) > len) return output; // If root has no right son we return the result on the left sub tree
-    output |= METHOD(T, heap_datum_t, contains_rec) (heap, value, comparator, RIGHT_SON(index), len);
+    output |= HEAP_METHOD(contains_rec) (heap, value, RIGHT_SON(index), len);
 
     return output;
 }
 
-int METHOD(T, heap_datum_t, contains) (TYPE(T, heap_datum_t) heap, heap_datum_t value, int (*comparator) (heap_datum_t, heap_datum_t)){
-    return METHOD(T, heap_datum_t, contains_rec) (heap, value, comparator, 0, array_length(heap));
+int HEAP_METHOD(contains) (T heap, heap_datum_t value){
+    return HEAP_METHOD(contains_rec) (heap, value, 0, array_length(heap));
 }
 
-int METHOD(T, heap_datum_t, push) (TYPE(T, heap_datum_t) heap, heap_datum_t value, int (*comparator) (heap_datum_t, heap_datum_t)){
+int HEAP_METHOD(push) (T heap, heap_datum_t value){
     int index = (int)array_length(heap);
     array_push(&heap, value);
 
-    while (comparator(heap[index], heap[FATHER(index)]) > 0 && index != 0){
-        METHOD(T, heap_datum_t, swap) (heap, index, FATHER(index));
+    while (HEAP_COMPARATOR(heap[index], heap[FATHER(index)]) < 0 && index != 0){
+        HEAP_METHOD(swap) (heap, index, FATHER(index));
         index = FATHER(index);
     }
 
     return 0;
 }
 
-int heap_smallest_son(TYPE(T, heap_datum_t) heap, int index, int (*comparator) (heap_datum_t, heap_datum_t)){
+int heap_smallest_son(T heap, int index){
     int len = array_length(heap);
     if (LEFT_SON(index) >= len) return 0; // Case without any son
-    if (RIGHT_SON(index) >= len) return LEFT_SON(index); // Cas with only left son
+    if (RIGHT_SON(index) >= len) return LEFT_SON(index); // Case with only left son
 
-    if (comparator(heap[LEFT_SON(index)], heap[RIGHT_SON(index)]) >= 0) return LEFT_SON(index); // left son >= right son
-    return RIGHT_SON(index); // right son >= left son
+    if (HEAP_COMPARATOR(heap[LEFT_SON(index)], heap[RIGHT_SON(index)]) >= 0) return RIGHT_SON(index); // right son <= left son
+    return LEFT_SON(index); // left son <= right son
 }
 
-int METHOD(T, heap_datum_t, pop) (TYPE(T, heap_datum_t) heap, heap_datum_t* value, int (*comparator) (heap_datum_t, heap_datum_t)){
+int HEAP_METHOD(pop) (T heap, heap_datum_t* value){
     assert(!array_is_empty(heap) && "Heap is empty !");
 
     int len = (int) array_length(heap);
-    METHOD(T, heap_datum_t, swap) (heap, 0, len-1);
+    HEAP_METHOD(swap) (heap, 0, len-1);
     array_pop(&heap, value); len--;
 
-    int index = 0; int smallest_son = heap_smallest_son(heap, 0, comparator);
+    int index = 0; int smallest_son = heap_smallest_son(heap, 0);
     while (smallest_son){
-        if (comparator(heap[index], heap[smallest_son]) >= 0) break; // If smallest son bigger we stop swapping
+        if (HEAP_COMPARATOR(heap[index], heap[smallest_son]) < 0) break; // If smallest son bigger we stop swapping
 
-        heap_int_swap(heap, index, smallest_son);
-        index = smallest_son; smallest_son = heap_smallest_son(heap, index, comparator);
+        HEAP_METHOD(swap)(heap, index, smallest_son);
+        index = smallest_son; smallest_son = heap_smallest_son(heap, index);
     }
 
     return 0;
 }
 
-void METHOD(T, heap_datum_t, delete) (TYPE(T, heap_datum_t) heap){return array_delete(&heap);}
+void HEAP_METHOD(delete) (T heap){
+    int len = array_length(heap);
+    if (HEAP_DESTRUCTOR()) for (int i = 0; i < len; i++) HEAP_DESTRUCTOR(heap[i]);
 
-void METHOD(T, heap_datum_t, print) (TYPE(T, heap_datum_t) heap, void (*printer) (heap_datum_t)){
+    return array_delete(&heap);
+}
+
+void HEAP_METHOD(print) (T heap){
     int len = array_length(heap);
 
     if (array_is_empty(heap)) {printf("{}\n"); return;} // Case empty
-    if (1 == len) {printf("{"); printer(heap[0]); printf("}\n"); return;} // Case of 1 element
+    if (1 == len) {printf("{"); HEAP_PRINTER(heap[0]); printf("}\n"); return;} // Case of 1 element
 
-    printf("{"); printer(heap[0]); // Case of multiple elements
-    for (int i = 1; i < len; i++) {printf(", "); printer(heap[i]);}
+    printf("{"); HEAP_PRINTER(heap[0]); // Case of multiple elements
+    for (int i = 1; i < len; i++) {printf(", "); HEAP_PRINTER(heap[i]);}
     printf("}\n");
 }
-
-
-
-
-
-
-
-
-#endif

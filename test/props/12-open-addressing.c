@@ -17,7 +17,7 @@
 #define KEY_PRINTER(val) printf("%d", (val))
 #define VALUE_PRINTER(val) printf("%d", (val))
 
-#include <libellul/type/map.h>
+//#include <libellul/type/map.h>
 
 // static void linear_NULL(void) {
 //   int_int_linear_hashtable_t hashtable = NULL;

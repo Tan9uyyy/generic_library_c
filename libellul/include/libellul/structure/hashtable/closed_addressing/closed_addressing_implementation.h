@@ -147,7 +147,7 @@ T_MAP_INTERFACE void MAP_METHOD(print)(T hashtable) {
   }
   printf("Hashtable with %zu elements:\n", hashtable->count);
   for (size_t i = 0; i < hashtable->length; i++) {
-    printf("Bucket %d: ", i);
+    printf("Bucket %ld: ", i);
     LIST_METHOD(print)(hashtable->buckets[i]);
   }
 }

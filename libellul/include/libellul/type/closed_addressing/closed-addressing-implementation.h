@@ -63,8 +63,11 @@ T_MAP_INTERFACE int MAP_METHOD(remove)(T *hashtable, T_MAP_KEY key) {
   COUPLE_TYPE couple_exemple;
   couple_exemple.key = key;
   int hash_code = HASH(key)%((*hashtable)->length);
+  if(LIST_METHOD(contains)((*hashtable)->buckets[hash_code], couple_exemple) >= 0) {
+    /* la clé existe, on diminue la taille de la hashtable */
+    (*hashtable)->count--;
+  }
   (*hashtable)->buckets[hash_code] = LIST_METHOD(remove)(couple_exemple, (*hashtable)->buckets[hash_code]);
-  (*hashtable)->count--;
   return 0;
 }
 
@@ -79,32 +82,42 @@ T_MAP_INTERFACE int MAP_METHOD(put)(T *hashtable, T_MAP_KEY key, T_MAP_VALUE val
   #if !defined(T_SET_ELEMENT)
   new_couple.value = value;
   #endif
-  /* on vérifie le load factor avant d'ajouter */
-  float current_load_factor = (float)(*hashtable)->count / (float)(*hashtable)->length;
-  if (current_load_factor < LOAD_FACTOR) {
-    int hash_code = HASH(key)%((*hashtable)->length);
-    (*hashtable)->buckets[hash_code] = LIST_METHOD(push)(new_couple, (*hashtable)->buckets[hash_code]);
-  } else {
-    /* on doit redimensionner la table */
-    T new_hashtable = MAP_METHOD(new__)((*hashtable)->length * 2);
-    /* on réinsère tous les anciens éléments */
-    COUPLE_TYPE old_couple;
-    for (size_t i = 0; i < (*hashtable)->length; i++) {
-      T_L old_list = (*hashtable)->buckets[i];
-      size_t old_list_length = LIST_METHOD(length)(old_list);
-      for (size_t j = 0; j < old_list_length; j++) {
-        LIST_METHOD(pop)(&old_couple, old_list);
-        MAP_METHOD(put)(&new_hashtable, old_couple.key, old_couple.value);
+  int hash_code = HASH(key)%((*hashtable)->length);
+  /* on vérifie si la clé existe déjà avant d'ajouter */
+  int contains = LIST_METHOD(contains)((*hashtable)->buckets[hash_code], new_couple);
+  if (contains<0) {
+    /* on vérifie le load factor avant d'ajouter */
+    float current_load_factor = (float)(*hashtable)->count / (float)(*hashtable)->length;
+    if (current_load_factor >= LOAD_FACTOR) {
+      /* on doit redimensionner la table */
+      T new_hashtable = MAP_METHOD(new__)((*hashtable)->length * 2);
+      /* on réinsère tous les anciens éléments */
+      COUPLE_TYPE old_couple;
+      for (size_t i = 0; i < (*hashtable)->length; i++) {
+        T_L old_list = (*hashtable)->buckets[i];
+        size_t old_list_length = LIST_METHOD(length)(old_list);
+        for (size_t j = 0; j < old_list_length; j++) {
+          LIST_METHOD(pop)(&old_couple, old_list);
+          MAP_METHOD(put)(&new_hashtable, old_couple.key, old_couple.value);
+        }
       }
+      MAP_METHOD(delete)(hashtable);
+      *hashtable = new_hashtable;
+      hash_code = HASH(key)%((*hashtable)->length);
     }
-    MAP_METHOD(delete)(hashtable);
-    *hashtable = new_hashtable;
     /* on ajoute le nouveau couple */
-    int hash_code = HASH(key)%((*hashtable)->length);
-    (*hashtable)->buckets[hash_code] = LIST_METHOD(push)(new_couple, (*hashtable)->buckets[hash_code]);
+    (*hashtable)->buckets[hash_code] = DEQUE_METHOD(push_front)(new_couple, (*hashtable)->buckets[hash_code]);
+    (*hashtable)->count++;
+    return 0;
   }
-  (*hashtable)->count++;
-  return 0;
+  else {
+    /* la clé existe déjà, on met à jour la valeur */
+    #if !defined(T_SET_ELEMENT)
+    LIST_METHOD(remove)(new_couple, (*hashtable)->buckets[hash_code]);
+    (*hashtable)->buckets[hash_code] = DEQUE_METHOD(push_front)(new_couple, (*hashtable)->buckets[hash_code]);
+    #endif
+    return 0;
+  }
 }
 
 /* Récupère la valeur associée à la clé key dans la hashmap */
@@ -120,6 +133,11 @@ T_MAP_INTERFACE int MAP_METHOD(get)(T hashtable, T_MAP_KEY key, T_MAP_VALUE *val
   saved_couple = LIST_METHOD(get)(hashtable->buckets[hash_code], index);
 #if !defined(T_SET_ELEMENT)
   *value = saved_couple.value;
+#endif
+#ifdef T_IMPL_HASHTABLE_CLOSED_ADDRESSING_MOVE_TO_FRONT
+  /* on déplace le couple au début de la liste */
+  hashtable->buckets[hash_code] = LIST_METHOD(remove)(saved_couple, hashtable->buckets[hash_code]);
+  hashtable->buckets[hash_code] = QUEUE_METHOD(push_front)(saved_couple, hashtable->buckets[hash_code]);
 #endif
   return 0;
 }

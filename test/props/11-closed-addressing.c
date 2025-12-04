@@ -9,9 +9,7 @@
 #define HASHTABLE_SIZE 13 
 #define HASH(key) (key)
 #define VALUE_DESTRUCTOR(val) NULL
-#define DESTRUCTOR_IS_NULL // macro flag pour indiquer que le destructeur est
-                           // NULL (ça me simplifie pour les if parce que
-                           // sinonje comprends rien)
+#define DESTRUCTOR_IS_NULL // macro flag pour indiquer que le destructeur est NULL (ça me simplifie pour les if parce que sinonje comprends rien)
 #define KEY_COMPARATOR(val1, val2) ((val1) == (val2))
 #define KEY_PRINTER(val) printf("%d", (val))
 #define VALUE_PRINTER(val) printf("%d", (val))
@@ -19,7 +17,6 @@
 #include <libellul/type/map.h>
 
 static void closed_addressing_NULL(void) {
-  int value = 42;
   int_int_closed_addressing_hashtable_t hashtable = NULL;
 
   test_suite("NULL as an hashtable");
@@ -74,10 +71,23 @@ void int_int_closed_addressing_hashtable_stack(size_t n) {
                 "Can push to hashtable");
   }
 
+  test_suite("Get des valeurs dans la hashtable");
+
+  for(size_t i = 0; i < n-10; i++) {
+    int retrieved_value = -1;
+    int res = int_int_closed_addressing_hashtable_get(hashtable, key[i], &retrieved_value);
+    int_int_couple get_couple = (int_int_couple){.key=key[i], .value=retrieved_value};
+    PRINTER(get_couple);
+    test_assert(0 == res, "Can get from hashtable");
+  }
+  printf("\n");
+  test_assert( -1 == int_int_closed_addressing_hashtable_get(hashtable, -999, NULL),
+               "Getting a non-existing key returns -1");
+
   test_suite("Pop des valeurs de la hashtable");
 
   int popped;
-  for (size_t i = 0; i < n; i++) {
+  for (size_t i = 0; (!int_int_closed_addressing_hashtable_is_empty(hashtable)) || (i < n); i++) {
     popped = -1;
     popped = int_int_closed_addressing_hashtable_remove(&hashtable, key[i]);
     int_int_closed_addressing_hashtable_print(hashtable);

@@ -1,5 +1,3 @@
-#include <libellul/type/array.h>
-
 /* retourne une hashmap en adressage fermé vide de taille hashtable_size*/
 T_MAP_INTERFACE T MAP_METHOD(new__)(int hashtable_size) {
   T hashtable = (T) malloc(sizeof(*hashtable));

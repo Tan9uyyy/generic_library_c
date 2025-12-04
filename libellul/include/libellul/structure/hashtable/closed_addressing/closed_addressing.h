@@ -10,37 +10,9 @@
 
 #if defined(T_MAP_EXPORT_DEFS) || !defined(T_MAP_EXPORT_CODE)
 
-#include "../../interface.h"
-
-/* on vérifie que tout ce qu'on a besoin est bien défini */
-#ifndef HASH
-#error "Undefined hash function!"
-#endif
-#ifndef KEY_COMPARATOR
-#error "Undefined key_comparator function!"
-#endif
-#ifndef VALUE_DESTRUCTOR
-#error "Undefined key_destructor function!"
-#endif
-#ifndef KEY_PRINTER
-#error "Undefined key_printer function!"
-#endif
-#ifndef VALUE_PRINTER
-#error "Undefined key_printer function!"
-#endif
-
 /* On défini le load factor */
+#ifndef LOAD_FACTOR
 #define LOAD_FACTOR 0.75
-
-/* On définit le type de la hashtable en fonction du type des clés et des
- * valeurs */
-#ifdef map_datum_t
-#undef map_datum_t
-#endif
-#if !defined(T_SET_ELEMENT)
-#define map_datum_t GEN_SYM(T_MAP_KEY, T_MAP_VALUE)
-#else
-#define map_datum_t T_MAP_KEY
 #endif
 
 /* On définit le nom du type couple de manière unique via GEN_SYM
@@ -68,7 +40,6 @@ typedef struct COUPLE_TYPE {
 
 #undef list_datum_t
 #define list_datum_t COUPLE_TYPE
-// #include <libellul/type/list/list-implementation.h>
 #include <libellul/type/list.h>
 #ifdef T_L
 #undef T_L
@@ -94,9 +65,7 @@ typedef struct T {
 /* Code templating for the actual implementation starts here */
 
 #include <libellul/memory.h>
-#include <libellul/type/array.h>
-
-#include <libellul/type/closed_addressing/closed-addressing-implementation.h>
+#include <libellul/structure/hashtable/closed_addressing/closed_addressing_implementation.h>
 
 #endif
 

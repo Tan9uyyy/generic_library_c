@@ -1,44 +1,45 @@
 #include <libellul.h>
 
-// #define T_IMPL_HASHTABLE
-// #define T_IMPL_HASHTABLE_OPEN_ADDRESSING
-// #define T_MAP_TAG int_int_open_addressing_hashtable
-// #define T_MAP_KEY int
-// #define T_MAP_VALUE int
+#define T_IMPL_HASHTABLE
+#define T_IMPL_HASHTABLE_LINEAR
+#define TOMBSTONE -1
+#define T_MAP_TAG int_int_linear_hashtable
+#define T_MAP_KEY int
+#define T_MAP_VALUE int
 
-// #define HASHTABLE_SIZE 13 
-// #define HASH(key) (key)
-// #define VALUE_DESTRUCTOR(val) NULL
-// #define DESTRUCTOR_IS_NULL // macro flag pour indiquer que le destructeur est
-//                            // NULL (ça me simplifie pour les if parce que
-//                            // sinonje comprends rien)
-// #define KEY_COMPARATOR(val1, val2) ((val1) == (val2))
-// #define KEY_PRINTER(val) printf("%d", (val))
-// #define VALUE_PRINTER(val) printf("%d", (val))
+#define HASHTABLE_SIZE 13 
+#define HASH(key) (key)
+#define VALUE_DESTRUCTOR(val) NULL
+#define DESTRUCTOR_IS_NULL // macro flag pour indiquer que le destructeur est
+                           // NULL (ça me simplifie pour les if parce que
+                           // sinonje comprends rien)
+#define KEY_COMPARATOR(val1, val2) ((val1) == (val2))
+#define KEY_PRINTER(val) printf("%d", (val))
+#define VALUE_PRINTER(val) printf("%d", (val))
 
-// #include <libellul/type/map.h>
+#include <libellul/type/map.h>
 
-// static void open_addressing_NULL(void) {
-//   int_int_open_addressing_hashtable_t hashtable = NULL;
+// static void linear_NULL(void) {
+//   int_int_linear_hashtable_t hashtable = NULL;
 
 //   test_suite("NULL as an hashtable");
 
-//   test_assert(0 == int_int_open_addressing_hashtable_length(NULL),
+//   test_assert(0 == int_int_linear_hashtable_length(NULL),
 //               "NULL is an hashtable of length zero");
-//   test_assert(int_int_open_addressing_hashtable_is_empty(NULL),
+//   test_assert(int_int_linear_hashtable_is_empty(NULL),
 //               "NULL is an the empty hashtable");
 
-//   int_int_open_addressing_hashtable_delete(NULL);
+//   int_int_linear_hashtable_delete(NULL);
 //   test_assert(1, "Can delete NULL as an hashtable");
 
 //   test_suite("NULL variable as an hashtable");
 
-//   test_assert(0 == int_int_open_addressing_hashtable_length(hashtable),
+//   test_assert(0 == int_int_linear_hashtable_length(hashtable),
 //               "A NULL hashtable has length zero");
-//   test_assert(int_int_open_addressing_hashtable_is_empty(hashtable),
+//   test_assert(int_int_linear_hashtable_is_empty(hashtable),
 //               "A NULL hashtable is empty");
 
-//   int_int_open_addressing_hashtable_delete(&hashtable);
+//   int_int_linear_hashtable_delete(&hashtable);
 //   test_assert(NULL == hashtable, "Can delete a NULL hashtable");
 // }
 
@@ -52,24 +53,24 @@
 //   return vec;
 // }
 
-// void int_int_open_addressing_hashtable_stack(size_t n) {
+// void int_int_linear_hashtable_stack(size_t n) {
 //   int *key = rand_ints(n);
 //   int *value = rand_ints(n);
 
 //   test_suite("Créer une nouvelle hashtable vide");
 
-//   int_int_open_addressing_hashtable_t hashtable = int_int_open_addressing_hashtable_new();
-//   int_int_open_addressing_hashtable_print(hashtable);
+//   int_int_linear_hashtable_t hashtable = int_int_linear_hashtable_new();
+//   int_int_linear_hashtable_print(hashtable);
 
-//   test_assert(int_int_open_addressing_hashtable_is_empty(hashtable),
+//   test_assert(int_int_linear_hashtable_is_empty(hashtable),
 //               "A new hashtable is empty");
 
 //   test_suite("Put des valeurs dans la hashtable");
 
 //   for (size_t i = 0; i < n; i++) {
-//     int_int_open_addressing_hashtable_put(&hashtable, key[i], value[i]);
-//     int_int_open_addressing_hashtable_print(hashtable);
-//     test_assert(int_int_open_addressing_hashtable_contains(hashtable, key[i]),
+//     int_int_linear_hashtable_put(&hashtable, key[i], value[i]);
+//     int_int_linear_hashtable_print(hashtable);
+//     test_assert(int_int_linear_hashtable_contains(hashtable, key[i]),
 //                 "Can push to hashtable");
 //   }
 
@@ -78,21 +79,21 @@
 //   int popped;
 //   for (size_t i = 0; i < n; i++) {
 //     popped = -1;
-//     popped = int_int_open_addressing_hashtable_remove(&hashtable, key[i]);
-//     int_int_open_addressing_hashtable_print(hashtable);
+//     popped = int_int_linear_hashtable_remove(&hashtable, key[i]);
+//     int_int_linear_hashtable_print(hashtable);
 //     test_assert(0 == popped, "Can pop from hashtable");
 //   }
 
 //   test_suite("Une hashtable complètement popée est vide");
 
-//   test_assert(int_int_open_addressing_hashtable_is_empty(hashtable),
+//   test_assert(int_int_linear_hashtable_is_empty(hashtable),
 //               "Empty, non-NULL hashtable at the end");
 
 
 //   test_suite("Suppression de la hashtable");
 
-//   int_int_open_addressing_hashtable_delete(&hashtable);
-//   int_int_open_addressing_hashtable_print(hashtable);
+//   int_int_linear_hashtable_delete(&hashtable);
+//   int_int_linear_hashtable_print(hashtable);
 //   test_assert(NULL == hashtable, "hashtable is NULL after delete");
 
 //   free(key);
@@ -107,8 +108,8 @@ int main(int argc, char *argv[]) {
 //              "12-open-addressing.c "
 //              "=========================================================");
 
-//   open_addressing_NULL();
-//   int_int_open_addressing_hashtable_stack(13);
+//   linear_NULL();
+//   int_int_linear_hashtable_stack(13);
 
   exit(EXIT_SUCCESS);
 }

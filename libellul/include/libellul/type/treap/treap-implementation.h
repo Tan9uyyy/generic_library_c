@@ -2,6 +2,9 @@
 #include <assert.h>
 #include <stdio.h>
 
+#define MIN_INT -2147483648
+#define MAX_INT 2147483647
+
 T TREAP_METHOD(new) (void){return NULL;}
 
 int TREAP_METHOD(is_empty) (T treap){return B_TREE_METHOD(is_empty)(treap);}
@@ -36,13 +39,13 @@ T TREAP_METHOD(rec_push) (T treap, treap_datum_t value, int priority){
 T TREAP_METHOD(push) (T treap, treap_datum_t value){return TREAP_METHOD(rec_push) (treap, value, TREAP_PRIORITY_FUNC(value));}
 
 treap_datum_t TREAP_METHOD(min) (T treap){
-    if (TREAP_METHOD(is_empty)(treap)) return NULL;
+    if (TREAP_METHOD(is_empty)(treap)) return MIN_INT;
     if (TREAP_METHOD(is_empty)(treap->rs)) return treap->value.value;
     return TREAP_METHOD(min)(treap->rs);
 }
 
 treap_datum_t TREAP_METHOD(max) (T treap){
-    if (TREAP_METHOD(is_empty)(treap)) return NULL;
+    if (TREAP_METHOD(is_empty)(treap)) return MAX_INT;
     if (TREAP_METHOD(is_empty)(treap->ls)) return treap->value.value;
     return TREAP_METHOD(max)(treap->ls);
 }

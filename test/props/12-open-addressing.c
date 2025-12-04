@@ -102,7 +102,7 @@
 
 int main(int argc, char *argv[]) {
 
-//   unit_test(argc, argv);
+  unit_test(argc, argv);
 
 //   test_suite("\n\n\n ================================================ TEST "
 //              "12-open-addressing.c "

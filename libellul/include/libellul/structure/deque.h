@@ -29,6 +29,8 @@ typedef struct {
 #include <libellul/type/stack/interface.h>
 #elif defined( T_LIST_IMPL_DEQUE )
 #include <libellul/type/list/list-export-def.h>
+#elif defined(T_PQ_IMPL_DEQUE)
+#include <libellul/type/priority-queue/interface.h>
 #else
 #error "Deque must implemente a abstract data type!"
 #endif
@@ -49,6 +51,8 @@ typedef struct {
 #include <libellul/type/stack/stack-implementation.h>
 #elif defined( T_LIST_IMPL_DEQUE )
 #include <libellul/type/list/list-implementation.h>
+#elif defined( T_PQ_IMPL_DEQUE )
+#include <libellul/type/priority-queue/priority-queue-implementation.h>
 #else
 #error "Deque must implemente a abstract data type!"
 #endif

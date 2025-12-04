@@ -1,82 +1,52 @@
-/*
-#include <stdlib.h>
-#include <assert.h>
-#include <stdio.h>
 
-#ifndef pq_datum_t
-    #error "Undefined datum type !"
-#endif
 
-#include "priority-queue-export-def.h"
+T PQ_METHOD(new)(void){return DEQUE_METHOD(new)();}
 
-#define deque_datum_t pq_datum
-#include "../deque/deque-implementation.h"
-#undef deque_datum_t
+int PQ_METHOD(is_empty)(T pq){return DEQUE_METHOD(is_empty)(pq);}
 
-#ifdef T
-#undef T
-#endif
-#define T pq
+int PQ_METHOD(length)(T pq){return DEQUE_METHOD(length)(pq);}
 
-typedef TYPE(deque, pq_datum) TYPE(T, pq_datum_t);
+pq_datum_t PQ_METHOD(peek)(T pq){return DEQUE_METHOD(first)(pq).value;}
 
-void printer_pq_datum(pq_datum node, void (*printer)(pq_datum_t)){
-    printf("(%d, ", node.priority);
-    printer(node.value);
-    printf(")");
-}
+T PQ_METHOD(push)(pq_datum_t value, int priority, T pq){
+    pq_couple elem = { .value = value, .priority = priority };
 
-TYPE(T, pq_datum_t) METHOD(T, pq_datum_t, new)(void){return METHOD(deque, pq_datum, new)();}
+    if (PQ_METHOD(is_empty)(pq)){return DEQUE_METHOD(push_front)(elem, pq);}
 
-int METHOD(T, pq_datum_t, is_empty)(TYPE(T, pq_datum_t) pq){return METHOD(deque, pq_datum, is_empty)(pq);}
-
-int METHOD(T, pq_datum_t, length)(TYPE(T, pq_datum_t) pq){return METHOD(deque, pq_datum, length)(pq);}
-
-pq_datum_t METHOD(T, pq_datum_t, peek)(TYPE(T, pq_datum_t) pq){return METHOD(deque, pq_datum, first)(pq).value;}
-
-TYPE(T, pq_datum_t) METHOD(T, pq_datum_t, push)(pq_datum_t value, int priority, TYPE(T, pq_datum_t) pq){
-    pq_datum elem = { .value = value, .priority = priority };
-
-    if (METHOD(T, pq_datum_t, is_empty)(pq)){return METHOD(deque, pq_datum, push_front)(elem, pq);}
-
-    if (METHOD(deque, pq_datum, first)(pq).priority < priority){return METHOD(deque, pq_datum, push_front)(elem, pq);}
-    if (METHOD(deque, pq_datum, last)(pq).priority > priority){return METHOD(deque, pq_datum, push_back)(elem, pq);}
+    if (DEQUE_METHOD(first)(pq).priority < priority){return DEQUE_METHOD(push_front)(elem, pq);}
+    if (DEQUE_METHOD(last)(pq).priority > priority){return DEQUE_METHOD(push_back)(elem, pq);}
 
     int count = 0;
-    while(METHOD(deque, pq_datum, first)(pq).priority > priority){pq = METHOD(deque, pq_datum, rotate)(1, pq); count++;}
-    pq = METHOD(deque, pq_datum, push_front)(elem, pq);
-    pq = METHOD(deque, pq_datum, rotate)(-count, pq);
+    while(DEQUE_METHOD(first)(pq).priority > priority){pq = DEQUE_METHOD(rotate)(1, pq); count++;}
+    pq = DEQUE_METHOD(push_front)(elem, pq);
+    pq = DEQUE_METHOD(rotate)(-count, pq);
 
     return pq;
 }
 
-TYPE(T, pq_datum_t) METHOD(T, pq_datum_t, pop)(pq_datum_t *value, TYPE(T, pq_datum_t) pq, void (*destructor)(pq_datum_t)){
-    assert(!METHOD(T, pq_datum_t, is_empty)(pq) && "Pq is empty !");
-    if (destructor) destructor(pq->head->datum.value);
+T PQ_METHOD(pop)(pq_datum_t *value, T pq){
+    assert(!PQ_METHOD(is_empty)(pq) && "Pq is empty !");
+    if (PQ_DESTRUCTOR()) PQ_DESTRUCTOR(pq->head->datum.value);
 
     // Only one element
-    if (1 == METHOD(T, pq_datum_t, length)(pq)) {
-        *value = METHOD(T, pq_datum_t, peek)(pq);
-        if (destructor) destructor(pq->head->datum.value);
+    if (1 == PQ_METHOD(length)(pq)) {
+        *value = PQ_METHOD(peek)(pq);
+        if (PQ_DESTRUCTOR()) PQ_DESTRUCTOR(pq->head->datum.value);
 
-        //free(&pq->head->datum);
         free(pq->head);
-        pq->head = NULL;
-        pq->queue = NULL;
         pq->length--;
 
         return pq;
     }
 
     // Multiple elements
-    TYPE(link, pq_datum) *new_head = pq->head->next;
-    *value = METHOD(T, pq_datum_t, peek)(pq);
-    if (destructor) destructor(pq->head->datum.value);
+    struct node_pq_couple_t *new_head = pq->head->next;
+    *value = PQ_METHOD(peek)(pq);
+    if (PQ_DESTRUCTOR()) PQ_DESTRUCTOR(pq->head->datum.value);
 
     new_head->prev = pq->queue;
     pq->queue->next = new_head;
 
-    //free(&pq->head->datum);
     free(pq->head);
     pq->head = new_head;
     pq->length--;
@@ -84,25 +54,25 @@ TYPE(T, pq_datum_t) METHOD(T, pq_datum_t, pop)(pq_datum_t *value, TYPE(T, pq_dat
     return pq;
 }
 
-TYPE(T, pq_datum_t) METHOD(T, pq_datum_t, delete)(TYPE(T, pq_datum_t) pq, void (*destructor) (pq_datum_t)){
+T PQ_METHOD(delete)(T pq){
     pq_datum_t storage;
-    while (!METHOD(T, pq_datum_t, is_empty)(pq)) {pq = METHOD(T, pq_datum_t, pop)(&storage, pq, destructor);}
+    while (!PQ_METHOD(is_empty)(pq)) {pq = PQ_METHOD(pop)(&storage, pq);}
     
     return pq;
 }
 
-void METHOD(T, pq_datum_t, print)(TYPE(T, pq_datum_t) pq, void (*printer) (pq_datum_t)){
+void PQ_METHOD(print)(T pq){
     // Case Empty
-    if (METHOD(T, pq_datum_t, is_empty)(pq)) {
+    if (PQ_METHOD(is_empty)(pq)) {
         printf("{}\n"); 
 
         return;
     }
 
     // Case 1 element
-    if (1 == METHOD(T, pq_datum_t, length)(pq)) { 
+    if (1 == PQ_METHOD(length)(pq)) { 
         printf("{");
-        printer_pq_datum(pq->head->datum, printer);
+        PRINTER(pq->head->datum);
         printf("}\n");
 
         return;
@@ -110,12 +80,12 @@ void METHOD(T, pq_datum_t, print)(TYPE(T, pq_datum_t) pq, void (*printer) (pq_da
 
     // Case multiple elements
     printf("{");
-    printer_pq_datum(pq->head->datum, printer);
+    PRINTER(pq->head->datum);
 
-    TYPE(link, pq_datum) *iterator = pq->head->next;
+    struct node_pq_couple_t *iterator = pq->head->next;
     while(iterator != pq->head) {
         printf(", ");
-        printer_pq_datum(iterator->datum, printer);
+        PRINTER(iterator->datum);
         iterator = iterator->next;
     }
 
@@ -126,4 +96,3 @@ void METHOD(T, pq_datum_t, print)(TYPE(T, pq_datum_t) pq, void (*printer) (pq_da
 
 
 #undef T
-*/

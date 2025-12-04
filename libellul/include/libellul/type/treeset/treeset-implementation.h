@@ -26,8 +26,8 @@ T TREESET_METHOD(reu_copy)(T treeset1, T res){
     if (TREESET_METHOD(is_empty)(treeset1)) return res;
     res = TREESET_METHOD(add)(res, treeset1->value.value);
 
-    TREESET_METHOD(reu_copy)(treeset1->ls, res);
-    TREESET_METHOD(reu_copy)(treeset1->rs, res);
+    res = TREESET_METHOD(reu_copy)(treeset1->ls, res);
+    res = TREESET_METHOD(reu_copy)(treeset1->rs, res);
 
     return res;
 }
@@ -36,8 +36,8 @@ T TREESET_METHOD(inter_copy)(T treeset1, T treeset2, T res){
     if (TREESET_METHOD(is_empty)(treeset1)) return res;
     if (TREESET_METHOD(contains)(treeset2, treeset1->value.value)) res = TREESET_METHOD(add)(res, treeset1->value.value);
 
-    TREESET_METHOD(inter_copy)(treeset1->ls, treeset2, res);
-    TREESET_METHOD(inter_copy)(treeset1->rs, treeset2, res);
+    res = TREESET_METHOD(inter_copy)(treeset1->ls, treeset2, res);
+    res = TREESET_METHOD(inter_copy)(treeset1->rs, treeset2, res);
 
     return res;
 }

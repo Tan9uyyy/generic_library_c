@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <stdio.h>
 
-T_TREAP_INTERFACE T TREAP_METHOD(new) (void){return NULL;}
+T TREAP_METHOD(new) (void){return NULL;}
 
 int TREAP_METHOD(is_empty) (T treap){return B_TREE_METHOD(is_empty)(treap);}
 

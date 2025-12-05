@@ -33,7 +33,7 @@ T_MAP_INTERFACE void MAP_METHOD(delete)(T *hashtable) {
     return;
   }
   for (int i = (*hashtable)->length - 1; i >= 0; i -= 1) {
-    (*hashtable)->buckets[i] = LIST_METHOD(delete)(((*hashtable)->buckets)[i]);
+    LIST_METHOD(delete)(((*hashtable)->buckets)[i]);
   }
   free((*hashtable)->buckets);
   free(*hashtable);

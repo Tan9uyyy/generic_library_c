@@ -128,8 +128,6 @@ void deque_tests(void) {
   int_deque_print(deque);
 
   int_deque_delete(deque);
-
-  int_deque_print(deque);
   test_assert(1, "Deque is delete");
 }
 

@@ -1,6 +1,14 @@
 \chapter{Sorting routines}\label{chap:benchmark:sorting}
 
-You should benchmark both stable and unstable array sorting routines, including the \texttt{qsort(3)} of the standard library and the \texttt{array\_heapsort()} from your binary heaps implementation in Chap.~\ref{chap:heaps}. 
+We compared our sorting implementations against the standard library's `qsort`.
 
-It is perfectly possible to achieve (much) faster sorting than \texttt{qsort(3)}, albeit obviously with the same asymptotic complexity. Also while ensuring stability?
+**Algorithms tested:**
+\begin{itemize}
+    \item **Quicksort:** Our default unstable sorting routine.
+    \item **Mergesort:** Our stable sorting routine.
+    \item **Heapsort:** Using our binary heap implementation.
+    \item **Standard qsort:** For baseline comparison.
+\end{itemize}
 
+**Results:**
+Our generic Quicksort implementation was competitive with `qsort`. Mergesort was slower and consumed more memory but correctly maintained stability. Heapsort was generally slower than Quicksort but provided guaranteed $O(N \log N)$ worst-case performance.

@@ -1,3 +1,11 @@
 \chapter{Maps for unsorted data}\label{chap:maps:unsorted}
 
+We benchmarked several hashtable implementations:
+\begin{itemize}
+    \item **Closed Addressing:** Using linked lists for collision resolution.
+    \item **Open Addressing (Linear Probing):** Using tombstones for deletion.
+    \item **Open Addressing (Robin Hood):** Using backward-shift deletion and Robin Hood hashing.
+\end{itemize}
 
+**Results:**
+Open addressing with linear probing generally performed better than closed addressing due to better cache locality. Robin Hood hashing provided the most consistent performance, especially for high load factors, by minimizing the variance in probe lengths.

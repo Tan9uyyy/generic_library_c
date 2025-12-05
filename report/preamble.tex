@@ -8,12 +8,20 @@
 \usepackage{float}
 \usepackage{amsmath}
 \usepackage{graphicx}
-\usepackage[colorinlistoftodos]{todonotes}
+
 \usepackage{url}
 \usepackage{array}
 \usepackage{tabularx}
 \usepackage{setspace}
-\usepackage{abstract}
+% \usepackage{abstract} % Missing package
+\renewenvironment{abstract}{%
+  \begin{center}%
+    {\bfseries \abstractname\vspace{-.5em}\vspace{0pt}}%
+  \end{center}%
+  \quotation
+}{%
+  \endquotation
+}
 \usepackage[T1]{fontenc}
 \usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
 \usepackage{subfig}
@@ -21,7 +29,7 @@
 \usepackage{hyperref}
 
 \usepackage{xcolor}
-\usepackage{csquotes}
+
 \usepackage{fancybox}
 
 \newfloat{code}{htbp}{lop}

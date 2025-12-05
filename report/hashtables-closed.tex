@@ -1,12 +1,18 @@
 \chapter{Hashtables: Closed addressing}\label{chap:hashtables:closed}
 
-Everyone loves closed addressing hashtables because they are so simple: collisions are handled by using a linear container to store key/value pairs, generally a list. Use this opportunity to reuse your lists and make sure you are able to preserve insertion order. 
-
-To the best of our knowledge, the only significant variant for closed addressing is called Move-to-Front. The underlying, realistic hypothesis in practice is that the same key is tested several times in a row. Upon each successful lookup of a key, it is moved to the front of the collision list it belongs to. The next time the same key is looked up, it will be much closer to the start of the list and faster query times are expected. 
-
-Remove these paragraphs when you are done!
+Closed addressing (also known as chaining) handles collisions by storing all elements that hash to the same bucket in a secondary data structure, typically a linked list.
 
 \section{Design rationale}
 
+Our implementation uses a dynamic array of buckets, where each bucket is a pointer to the head of a linked list. We reuse the generic list implementation described in Chapter~\ref{chap:linear}.
+
+Advantages of this approach include:
+\begin{itemize}
+    \item \textbf{Simplicity:} The logic for handling collisions is straightforward.
+    \item \textbf{Graceful degradation:} Performance degrades linearly with the load factor, even if it exceeds 1.0.
+    \item \textbf{Deletion:} Deleting an element is as simple as removing it from the linked list.
+\end{itemize}
+
 \section{Example variant: Move-to-Front}
 
+To improve performance for temporal locality (where recently accessed elements are likely to be accessed again), we implemented a Move-to-Front heuristic. Upon a successful \texttt{get} operation, the found element is moved to the front of its collision list. This reduces the search time for subsequent lookups of the same key.

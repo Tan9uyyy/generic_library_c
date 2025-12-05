@@ -1,18 +1,19 @@
 \chapter{Array sorting}\label{chap:sorting}
 
-Let us start with one lesson learned the hard way: one \textit{very} important feature of a sorting routine is whether it is \textit{stable} or not. Imagine you have a C structure that describes people by their age and name, and you have two different people who are the same age. A stable sorting routine by age will never permute the two during sorting, whereas an unstable sorting routine \textit{may} swap \texttt{Mary} and \texttt{John} from the unsorted, initial array.
-
-This is akin to keeping track of insertion order for maps: it turns out that a \textit{lot} of algorithms \textit{implicitly} assume stable over unstable sorting. Now for the painful part: the C standard libraries of GNU and FreeBSD have different behaviors regarding the stability of their \texttt{qsort(3)} routines\dots Tracking down bugs related to system portability can be a nightmare. 
-
-Regarding genericity and execution speed, one may certainly want to take advantage of inlining the calls to the comparison callback (refer to the technique we used in Code~\ref{code:map:example} for specifying the inlined hashing function of a templated hashtable). Code templating should be used to produce a sorting routine tailored to a specific, inlined comparison callback. It also allows for selecting a sorting variant straightforwardly, just like we did for maps in Code~\ref{code:map:example} with the \texttt{MAP\_IMPL} symbol---so let's have a \texttt{SORT\_IMPL} here!
-
-Therefore, a reasonable implementation choice is to have a \textit{stable sorting routine by default}, and to allow for explicitly unstable sorting by setting such a specific variant with an optional \texttt{\#define SORT\_IMPL} instead. Yet another effort towards satisfying the Principle of Least Surprise. 
-
-Now you may dive into MergeSort, QuickSort and friends.
-
-Remove these paragraphs when you are done!
+Sorting is a fundamental operation in computer science. We implemented generic sorting routines for our dynamic arrays.
 
 \section{Design rationale}
 
+We focused on providing a generic sorting interface that works with any data type, using a user-provided comparison function.
+
+We implemented Quicksort as the default sorting algorithm due to its excellent average-case performance ($O(N \log N)$) and in-place nature. For stability (preserving the relative order of equal elements), we also provide Mergesort, which requires additional memory ($O(N)$) but guarantees stability.
+
 \section{Array sorting interface}
 
+The interface provides:
+\begin{itemize}
+    \item \texttt{array\_sort}: Sorts the array using the default algorithm (Quicksort).
+    \item \texttt{array\_stable\_sort}: Sorts the array using a stable algorithm (Mergesort).
+\end{itemize}
+
+Both functions take a pointer to the array and a comparison function pointer.

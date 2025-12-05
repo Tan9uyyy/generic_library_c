@@ -1,14 +1,19 @@
 \chapter{Binary search}\label{chap:binary:search}
 
-Binary search works on any data structure that stores sorted entries. The canonical example uses an array for the data structure. Maintaining ordered entries upon insertion/deletion is critical to fast logarithmic searches. These data structures naturally allow duplicates: when using a sorted array to implement a map, your code will have to forbid duplicates explicitly.
-
-Additional variations on the binary search allow for socalled range queries, a feature shared with some other sorted data structures to extract data from an arbitrary interval only. So the interface really is just one (or two) additional functions for sorted arrays.
-
-Historically, the Java implementation of the binary search has had a bug (an index overflow) that went unnoticed for more than 15 years. Make sure your code works correctly!
-
-Remove these paragraphs when your are done!
+Binary search is an efficient algorithm for finding an element in a sorted array. It works by repeatedly dividing the search interval in half.
 
 \section{Design rationale}
 
+We implemented binary search for sorted dynamic arrays. The implementation assumes the array is sorted according to a user-provided comparison function.
+
+To support range queries and insertion of new elements at the correct position, our binary search function returns the index where the element is found, or the index where it should be inserted if it is not present (often encoded as a negative value or a specific struct).
+
 \section{Binary search interface}
 
+The interface provides:
+\begin{itemize}
+    \item \texttt{bsearch}: Searches for a key in a sorted array.
+    \item \texttt{lower\_bound}: Finds the first element that does not compare less than the key.
+    \item \texttt{upper\_bound}: Finds the first element that compares greater than the key.
+\end{itemize}
+These primitives allow for efficient implementation of set operations and map lookups on sorted arrays.

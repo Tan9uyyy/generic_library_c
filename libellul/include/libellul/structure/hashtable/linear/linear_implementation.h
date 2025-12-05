@@ -90,7 +90,8 @@ T_MAP_INTERFACE int MAP_METHOD(remove)(T *hashtable, T_MAP_KEY key) {
 #if !defined(T_SET_ELEMENT)
       (*hashtable)->value[index] = (*hashtable)->value[next_index];
 #endif
-      (*hashtable)->occupied[index] = (index - ideal_pos + size) % size; /* mark as occupied */
+      (*hashtable)->occupied[index] =
+          (index - ideal_pos + size) % size; /* mark as occupied */
       index = next_index;
     }
     next_index = (next_index + 1) % size;
@@ -103,27 +104,83 @@ T_MAP_INTERFACE int MAP_METHOD(remove)(T *hashtable, T_MAP_KEY key) {
 }
 
 #if defined(T_SET_ELEMENT)
-T_MAP_INTERFACE int MAP_METHOD(insert)(T *set, T_SET_ELEMENT element) {}
+T_MAP_INTERFACE int MAP_METHOD(insert)(T *set, T_SET_ELEMENT element) {
+  if (!set || !*set)
+    return -1;
+  T hashtable = *set;
+  size_t size = array_size(hashtable->bucket);
+
+  /* Check load factor */
+  float current_length = (float)hashtable->length;
+#if (!defined(T_IMPL_HASHTABLE_LINEAR_NO_TOMBSTONES) &&                        \
+     !defined(T_IMPL_HASHTABLE_ROBIN_HOOD))
+  current_length += (float)hashtable->tombstones;
+#endif
+  if (current_length / (float)size >= LOAD_FACTOR) {
+    /* Resize logic similar to put */
+    T new_hashtable = MAP_METHOD(new__)(size * ARRAY_ALLOC_GEOM);
+    /* Reinsert */
+    for (size_t i = 0; i < size; i++) {
+      if (hashtable->occupied[i] >= 0) {
+        MAP_METHOD(insert)(&new_hashtable, hashtable->bucket[i]);
+      }
+    }
+    MAP_METHOD(delete)(set);
+    *set = new_hashtable;
+    hashtable = *set;
+    size = array_size(hashtable->bucket);
+  }
+
+  int hash_code = HASH(element) % size;
+  int dist = 0;
+  while (hashtable->occupied[hash_code] != -1) {
+    if (hashtable->occupied[hash_code] >= 0 &&
+        KEY_COMPARATOR(hashtable->bucket[hash_code], element)) {
+      return hash_code; /* Already exists */
+    }
+    /* Robin Hood logic if needed */
+#if defined(T_IMPL_HASHTABLE_ROBIN_HOOD)
+    if (hashtable->occupied[hash_code] < dist) {
+      T_SET_ELEMENT temp = hashtable->bucket[hash_code];
+      hashtable->bucket[hash_code] = element;
+      element = temp;
+      int temp_dist = hashtable->occupied[hash_code];
+      hashtable->occupied[hash_code] = dist;
+      dist = temp_dist;
+    }
+#endif
+    hash_code = (hash_code + 1) % size;
+    dist++;
+  }
+
+  hashtable->bucket[hash_code] = element;
+  hashtable->occupied[hash_code] = dist;
+  hashtable->length++;
+  return hash_code;
+}
 #else
 
 /* Rajoute le couple key,value dans la map et renvoie son index */
-T_MAP_INTERFACE int MAP_METHOD(put)(T *hashtable, T_MAP_KEY key, T_MAP_VALUE value) {
+T_MAP_INTERFACE int MAP_METHOD(put)(T *hashtable, T_MAP_KEY key,
+                                    T_MAP_VALUE value) {
   if (!hashtable || !*hashtable) {
     return -1;
   }
   size_t size = array_size((*hashtable)->bucket);
   /* Check load factor and resize if necessary */
   float current_length = (float)(*hashtable)->length;
-#if (!defined(T_IMPL_HASHTABLE_LINEAR_NO_TOMBSTONES) && !defined(T_IMPL_HASHTABLE_ROBIN_HOOD))
+#if (!defined(T_IMPL_HASHTABLE_LINEAR_NO_TOMBSTONES) &&                        \
+     !defined(T_IMPL_HASHTABLE_ROBIN_HOOD))
   current_length += (float)(*hashtable)->tombstones;
 #endif
-  float current_load_factor = current_length / (float) size;
+  float current_load_factor = current_length / (float)size;
   if (current_load_factor >= LOAD_FACTOR) {
     T new_hashtable = MAP_METHOD(new__)(size * ARRAY_ALLOC_GEOM);
     /* Reinsert all existing elements */
     for (size_t i = 0; i < size; i++) {
       if ((*hashtable)->occupied[i] >= 0) {
-        MAP_METHOD(put)(&new_hashtable, (*hashtable)->bucket[i], (*hashtable)->value[i]);
+        MAP_METHOD(put)(&new_hashtable, (*hashtable)->bucket[i],
+                        (*hashtable)->value[i]);
       }
     }
     /* Delete old hashtable */
@@ -135,8 +192,9 @@ T_MAP_INTERFACE int MAP_METHOD(put)(T *hashtable, T_MAP_KEY key, T_MAP_VALUE val
   int hash_code = HASH(key) % size;
   int dist = 0;
   while (((*hashtable)->occupied)[hash_code] != -1) {
-    if ((*hashtable)->occupied[hash_code] >= 0 && KEY_COMPARATOR((*hashtable)->bucket[hash_code], key)) {
-    /* Key already exists, update value */
+    if ((*hashtable)->occupied[hash_code] >= 0 &&
+        KEY_COMPARATOR((*hashtable)->bucket[hash_code], key)) {
+      /* Key already exists, update value */
 #if !defined(T_SET_ELEMENT)
       (*hashtable)->value[hash_code] = value;
 #endif
@@ -171,7 +229,8 @@ T_MAP_INTERFACE int MAP_METHOD(put)(T *hashtable, T_MAP_KEY key, T_MAP_VALUE val
   return hash_code;
 }
 
-T_MAP_INTERFACE int MAP_METHOD(get)(T hashtable, T_MAP_KEY key, T_MAP_VALUE *value) {
+T_MAP_INTERFACE int MAP_METHOD(get)(T hashtable, T_MAP_KEY key,
+                                    T_MAP_VALUE *value) {
   if (!hashtable) {
     return 0;
   }

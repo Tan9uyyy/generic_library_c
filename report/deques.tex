@@ -1,18 +1,20 @@
 \chapter{Deques}\label{chap:deques}
 
-A deque (double-ended queue~\cite{wp:deque}) is a linear data structure that supports $O(1)$ time insertion/removal at both ends, making specialization trivial to produce lists, stacks and queues in one shot. 
-
-So far, you likely used singly-linked lists and you derived stacks. You implemented queues with circular linked-lists. A dequeue is basically a doubly-linked circular list: in addition to the usual \texttt{next} pointer, we add \texttt{prev} and both ways are arranged circularly.
-
-One trick worth mentioning that produces shorter and slightly more efficient code is using a socalled \textit{sentinel} node~\cite{drysdale:CS10}: one that is guaranteed to always be present. In turn, storing relevant deque metadata (number of elements, \textit{etc.}) in a header makes for a pretty good place to automatically have one sentinel node there.
-
-Typically, a dequeue will be the address of a said header and any element may be made a member of any number of such linear structures by virtue of using intrusive data structures for genericity.
-
-Remark that deques do not lend themselves so well to elegant recursive functions (compared to your good old singly-linked lists). The typical use case for mandatory singly-linked lists and their recursive treatment is when implementing functional languages of the \textsc{lisp} family, which is considered too much of a specific use case in this course so we can live with deques. 
-
-Remove these paragraphs when you are done!
+A deque (double-ended queue) is a linear data structure that supports insertion and removal at both ends in $O(1)$ time. It serves as a fundamental building block for other linear data structures like lists, stacks, and queues.
 
 \section{Design rationale}
 
+We implemented the deque as a doubly-linked circular list with a sentinel node. The sentinel node simplifies the implementation by eliminating edge cases (such as empty lists) and avoiding the need for null checks during insertion and removal operations.
+
+The deque implementation uses intrusive data structures for genericity. This means that the list links (`next` and `prev` pointers) are embedded directly within the user's data structure. This approach avoids dynamic memory allocation for list nodes and allows an element to belong to multiple lists simultaneously (by having multiple link fields).
+
+The deque header contains the sentinel node and metadata about the deque, such as its size.
+
 \section{Deque interface}\label{deques:interface}
 
+The interface provides macros and functions for initializing deques, pushing/popping elements at both ends, and iterating over the elements.
+
+\begin{code}
+  \lstinputlisting[style=C,linerange={10-30}]{libellul/include/libellul/type/deque.h}
+  \caption{Interface for deques.}
+\end{code}

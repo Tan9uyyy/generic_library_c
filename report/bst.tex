@@ -1,22 +1,27 @@
 \chapter{Binary search trees}\label{chap:binary:search:trees}
 
-Binary search trees store lower (\textit{resp.} higher) keys than the root in the left (\textit{resp.} right) subtree. Searches therefore are expected to occur with logarithmic time complexity and implementation is pretty straightforward. These structures natively allow duplicate entries so be careful when using them for implementing maps.
-
-The main issue with binary search trees is to keep them as balanced as possible so that searches keep as logarithmic as possible (even in the case of worst-case, degenerate entries). One (complicated) method known as Red-Black trees will ensure balanced trees at all times with hard worst-case time guarantees.
-
-One slightly less complicated and even more beautiful structure is called Splay trees. In addition to removals, Splay trees also get modified during lookups, thereby implementing a form of Move-to-Front optimization like in Chap.~\ref{chap:hashtables:closed}. Since the root of a Splay tree actually \textit{moves} during searches, you definitely need a header for your tree data structures to enforce our coding rules---they are more tedious to get right than the treaps below.
-
-A treap builds a heap structure on top of a binary search tree (hence the portemanteau in the name). This is called a Cartesian tree~\cite{ACP:treaps} and it uses hashing to implement randomized, balanced search trees (the hash provides the required source of randomness). It is obviously a beautiful data structure, yet certainly it cannot be the first you implement---more likely the second!
-
-One other great variant that must be mentioned is called B-trees, which minimize the amount of data to be moved around during insertions/removals: this is particularly well suited for large, offline databases (on disk, like for implementing a filesystem!) B-trees are arguably the trickiest of the four to get to work and, given their focus on out-of-core databases, the need for generic B-trees is quite unlikely.
-
-Remove these paragraphs when you're done!
+Binary Search Trees (BSTs) are a fundamental data structure for storing sorted data. They allow for efficient insertion, deletion, and lookup operations.
 
 \section{Design rationale}
 
+Our BST implementation uses a standard node-based structure where each node contains a key, a value (for maps), and pointers to left and right children.
+
+To ensure performance, we aim to keep the tree balanced. While a basic BST does not guarantee balance (leading to $O(N)$ worst-case performance), variants like Splay trees or Treaps provide better guarantees.
+
 \section{Binary search tree interface}
+
+The interface provides standard operations:
+\begin{itemize}
+    \item \texttt{insert}: Insert a key-value pair.
+    \item \texttt{search}: Find a value by key.
+    \item \texttt{delete}: Remove a key-value pair.
+    \item \texttt{min/max}: Find the minimum or maximum key.
+\end{itemize}
 
 \section{Example variant: Treaps}
 
+Treaps (Tree Heaps) are a randomized binary search tree. Each node is assigned a random priority. The tree maintains the BST property on keys and the Heap property on priorities. This structure tends to be balanced with high probability, offering $O(\log N)$ expected time complexity for all operations.
+
 \section{Example variant: Splay trees}
 
+Splay trees are a self-adjusting binary search tree. When a node is accessed, it is "splayed" (moved) to the root using a series of tree rotations. This property ensures that recently accessed elements are near the root, making them quick to access again. This is particularly useful for applications with temporal locality.

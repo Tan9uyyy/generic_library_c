@@ -18,38 +18,41 @@
 
 #include <libellul/type/prologue.h>
 
-
-#if !defined( T_PQ_EXPORT_DEFS ) && !defined( T_PQ_EXPORT_CODE )
+#if !defined(T_PQ_EXPORT_DEFS) && !defined(T_PQ_EXPORT_CODE)
 #define T_PQ_INTERFACE static inline
 #else
 #define T_PQ_INTERFACE extern
 #endif
 
 #ifndef T
-#define T                      GEN_SYM( T_PQ_TAG, t )
+#define T GEN_SYM(T_PQ_TAG, t)
 #define T_FLAG
 #endif
-#define PQ_METHOD( name )     GEN_SYM( T_PQ_TAG, name )
+#define PQ_METHOD(name) GEN_SYM(T_PQ_TAG, name)
 
 #define T_PQ_IMPL_DEQUE
 
 typedef struct pq_couple {
-    pq_datum_t value;
-    int priority;
+  pq_datum_t value;
+  int priority;
 } pq_couple;
 
 #define deque_datum_t pq_couple
 #define T_DEQUE_TAG GEN_SYM(deque_datum_t, deque)
-#define DEQUE_METHOD( name )     GEN_SYM( T_DEQUE_TAG, name )
+#define DEQUE_METHOD(name) GEN_SYM(T_DEQUE_TAG, name)
 
 #define DESTRUCTOR(val) NULL
 #define COMPARATOR(val1, val2) (val1.value - val2.value)
-#define PRINTER(val) (printf("(%d, %d)", val.priority, val.value))
+#ifndef PQ_PRINTER
+#error "Undefined PQ_PRINTER function!"
+#endif
+#define PRINTER(val)                                                           \
+  (printf("(%d, ", val.priority), PQ_PRINTER(val.value), printf(")"))
 
 #include <libellul/structure/deque.h>
 
-#define T_INTERFACE   T_TREESET_INTERFACE
-#if defined( T_PQ_EXPORT_DEFS )
+#define T_INTERFACE T_TREESET_INTERFACE
+#if defined(T_PQ_EXPORT_DEFS)
 #define T_EXPORT_DEFS
 #endif
 

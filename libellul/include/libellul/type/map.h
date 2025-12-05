@@ -85,22 +85,100 @@ T_MAP_INTERFACE T MAP_METHOD(symdiff)(T set1, T set2);
 
 #if !defined(T_MAP_EXPORT_DEFS)
 /* A 'set' is built on top of the 'map' interface */
-T_MAP_INTERFACE T MAP_METHOD(union)(T set1, T set2) {}
+T_MAP_INTERFACE T MAP_METHOD(union)(T set1, T set2) {
+  T new_set = MAP_METHOD(new)();
 
-T_MAP_INTERFACE T MAP_METHOD(inter)(T set1, T set2) {}
+  MAP_METHOD(iterator_t) it = MAP_METHOD(iterator_new)(set1);
+  // printf("Union: iterator 1 created\n");
+  while (MAP_METHOD(iterator_has_next)(it)) {
+    T_MAP_KEY key = MAP_METHOD(iterator_next)(it);
+    MAP_METHOD(insert)(&new_set, key);
+  }
+  MAP_METHOD(iterator_delete)(&it);
 
-T_MAP_INTERFACE T MAP_METHOD(diff)(T set1, T set2) {}
+  it = MAP_METHOD(iterator_new)(set2);
+  while (MAP_METHOD(iterator_has_next)(it)) {
+    T_MAP_KEY key = MAP_METHOD(iterator_next)(it);
+    MAP_METHOD(insert)(&new_set, key);
+  }
+  MAP_METHOD(iterator_delete)(&it);
 
-T_MAP_INTERFACE T MAP_METHOD(symdiff)(T set1, T set2) {}
+  return new_set;
+}
+
+T_MAP_INTERFACE T MAP_METHOD(inter)(T set1, T set2) {
+  T new_set = MAP_METHOD(new)();
+
+  MAP_METHOD(iterator_t) it = MAP_METHOD(iterator_new)(set1);
+  while (MAP_METHOD(iterator_has_next)(it)) {
+    T_MAP_KEY key = MAP_METHOD(iterator_next)(it);
+    if (MAP_METHOD(contains)(set2, key)) {
+      MAP_METHOD(insert)(&new_set, key);
+    }
+  }
+  MAP_METHOD(iterator_delete)(&it);
+
+  return new_set;
+}
+
+T_MAP_INTERFACE T MAP_METHOD(diff)(T set1, T set2) {
+  T new_set = MAP_METHOD(new)();
+
+  MAP_METHOD(iterator_t) it = MAP_METHOD(iterator_new)(set1);
+  while (MAP_METHOD(iterator_has_next)(it)) {
+    T_MAP_KEY key = MAP_METHOD(iterator_next)(it);
+    if (!MAP_METHOD(contains)(set2, key)) {
+      MAP_METHOD(insert)(&new_set, key);
+    }
+  }
+  MAP_METHOD(iterator_delete)(&it);
+
+  return new_set;
+}
+
+T_MAP_INTERFACE T MAP_METHOD(symdiff)(T set1, T set2) {
+  T new_set = MAP_METHOD(new)();
+
+  MAP_METHOD(iterator_t) it = MAP_METHOD(iterator_new)(set1);
+  while (MAP_METHOD(iterator_has_next)(it)) {
+    T_MAP_KEY key = MAP_METHOD(iterator_next)(it);
+    if (!MAP_METHOD(contains)(set2, key)) {
+      MAP_METHOD(insert)(&new_set, key);
+    }
+  }
+  MAP_METHOD(iterator_delete)(&it);
+
+  it = MAP_METHOD(iterator_new)(set2);
+  while (MAP_METHOD(iterator_has_next)(it)) {
+    T_MAP_KEY key = MAP_METHOD(iterator_next)(it);
+    if (!MAP_METHOD(contains)(set1, key)) {
+      MAP_METHOD(insert)(&new_set, key);
+    }
+  }
+  MAP_METHOD(iterator_delete)(&it);
+
+  return new_set;
+}
 
 T_MAP_INTERFACE int MAP_METHOD(compare)(void *_set1, void *_set2) {
   T *set1 = _set1;
   T *set2 = _set2;
 
-  /* TODO: Use iterator to check every key of set2 in set1 or declare early -1
-   */
+  if (MAP_METHOD(length)(*set1) != MAP_METHOD(length)(*set2)) {
+    return 1;
+  }
 
-  return MAP_METHOD(length)(*set1) == MAP_METHOD(length)(*set2) ? 0 : 1;
+  MAP_METHOD(iterator_t) it = MAP_METHOD(iterator_new)(*set1);
+  while (MAP_METHOD(iterator_has_next)(it)) {
+    T_MAP_KEY key = MAP_METHOD(iterator_next)(it);
+    if (!MAP_METHOD(contains)(*set2, key)) {
+      MAP_METHOD(iterator_delete)(&it);
+      return 1;
+    }
+  }
+  MAP_METHOD(iterator_delete)(&it);
+
+  return 0;
 }
 
 #endif /* End of 'set' implementation */

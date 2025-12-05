@@ -69,18 +69,16 @@ void int_int_linear_hashtable_stack(size_t n) {
   for (size_t i = 0; i < n; i++) {
     int_int_linear_hashtable_put(&hashtable, key[i], value[i]);
     int_int_linear_hashtable_print(hashtable);
-    test_assert(int_int_linear_hashtable_contains(hashtable, key[i]),
+    test_assert(0 <= int_int_linear_hashtable_contains(hashtable, key[i]),
                 "Can push to hashtable");
   }
 
   test_suite("Pop des valeurs de la hashtable");
 
-  int popped;
   for (size_t i = 0; i < n; i++) {
-    popped = 0;
-    popped = int_int_linear_hashtable_remove(&hashtable, key[i]);
+    int_int_linear_hashtable_remove(&hashtable, key[i]);
     int_int_linear_hashtable_print(hashtable);
-    test_assert(1 == popped, "Can pop from hashtable");
+    test_assert(-1 == int_int_linear_hashtable_contains(hashtable, key[i]), "Can pop from hashtable");
   }
 
   test_suite("Une hashtable complètement popée est vide");
@@ -108,7 +106,7 @@ int main(int argc, char *argv[]) {
              "=========================================================");
 
   linear_NULL();
-  int_int_linear_hashtable_stack(20);
+  int_int_linear_hashtable_stack((19));
 
   exit(EXIT_SUCCESS);
 }

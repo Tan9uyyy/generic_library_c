@@ -89,12 +89,10 @@ void int_int_closed_addressing_hashtable_stack(size_t n) {
 
   test_suite("Pop des valeurs de la hashtable");
 
-  int popped;
   for (size_t i = 0; (!int_int_closed_addressing_hashtable_is_empty(hashtable)) || (i < n); i++) {
-    popped = -1;
-    popped = int_int_closed_addressing_hashtable_remove(&hashtable, key[i]);
+    int_int_closed_addressing_hashtable_remove(&hashtable, key[i]);
     int_int_closed_addressing_hashtable_print(hashtable);
-    test_assert(0 == popped, "Can pop from hashtable");
+    test_assert(0 == int_int_closed_addressing_hashtable_contains(hashtable, key[i]), "Can pop from hashtable");
   }
 
   test_suite("Une hashtable complètement popée est vide");

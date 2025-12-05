@@ -41,11 +41,27 @@ T DEQUE_METHOD(rotate)(int nb_rot, T deque) {
 
 T DEQUE_METHOD(push_back)(deque_datum_t value, T deque) {array_push(&deque, value); return deque;}
 
-T DEQUE_METHOD(push_front)(deque_datum_t value, T deque) {DEQUE_METHOD(push_back)(value, deque); return DEQUE_METHOD(rotate)(-1, deque);}
+T DEQUE_METHOD(push_front)(deque_datum_t value, T deque) {
+    array_push(&deque, value); 
+    int len = DEQUE_METHOD(length)(deque);
+
+    memmove(&deque[1],&deque[0],(len - 1) * sizeof(deque_datum_t));
+    deque[0] = value;
+    
+    return deque;
+}
 
 T DEQUE_METHOD(pop_back)(deque_datum_t *value, T deque) {array_pop(&deque, value); return deque;}
 
-T DEQUE_METHOD(pop_front)(deque_datum_t *value, T deque) {DEQUE_METHOD(rotate)(1, deque); return DEQUE_METHOD(pop_back)(value, deque);}
+T DEQUE_METHOD(pop_front)(deque_datum_t *value, T deque) {
+    int len = DEQUE_METHOD(length)(deque); deque_datum_t storage;
+    *value = deque[0];
+
+    memmove(&deque[0],&deque[1],(len - 1) * sizeof(deque_datum_t));
+    array_pop(&deque, &storage);
+    
+    return deque;
+}
 
 int DEQUE_METHOD(contains)(T deque, deque_datum_t value) {
     int len = DEQUE_METHOD(length)(deque);

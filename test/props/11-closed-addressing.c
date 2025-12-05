@@ -4,7 +4,7 @@
 /* choix de l'implémentation : soit
 * T_IMPL_HASHTABLE_CLOSED_ADDRESSING pour l'implémentation normale 
 * T_IMPL_HASHTABLE_CLOSED_ADDRESSING_MOVE_TO_FRONT pour l'implé move_to_front */
-#define T_IMPL_HASHTABLE_CLOSED_ADDRESSING
+#define T_IMPL_HASHTABLE_CLOSED_ADDRESSING_MOVE_TO_FRONT
 #define T_MAP_TAG int_int_closed_addressing_hashtable
 #define T_MAP_KEY int
 #define T_MAP_VALUE int

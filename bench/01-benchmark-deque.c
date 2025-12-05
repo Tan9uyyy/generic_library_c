@@ -244,7 +244,7 @@ int main () {
   printf( " log2(N)   \t,  ondeque_push_front      \t,  ondeque_array_push_front      \t,  ondeque_push_back     \t, ondeque_array_push_back   \t" );
   printf( " ondeque_pop_front      \t,  ondeque_array_pop_front      \t,  ondeque_pop_back     \t, ondeque_array_pop_back   \t\n" );
 
-  for ( size_t log2_N = LOG2_N_MIN ; log2_N < LOG2_N_MAX+1 ; log2_N++ ) {
+  for ( size_t log2_N = LOG2_N_MIN ; log2_N < LOG2_N_MIN-1 ; log2_N++ ) {
     fprintf( stderr, "N = %zu\r", (size_t)1 << log2_N ); /* User output on stderr */
 
     printf( "%10zu\t, ", log2_N ); /* CSV on standard output */

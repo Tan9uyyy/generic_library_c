@@ -12,6 +12,6 @@ T_STACK_INTERFACE T             STACK_METHOD(push) (stack_datum_t value, T stack
 /* Retire le premier élément de la stack, le stocke dans value et retourne la nouvelle stack */
 T_STACK_INTERFACE T             STACK_METHOD(pop) (stack_datum_t *value, T stack);
 /* Supprime la stack proprement en utilisant le destructeur sur chaque élément */
-T_STACK_INTERFACE T             STACK_METHOD(delete) (T stack);
+T_STACK_INTERFACE void          STACK_METHOD(delete) (T stack);
 /* Affiche la stack en utilisant la fonction printer pour chaque élément */
 T_STACK_INTERFACE void          STACK_METHOD(print) (T stack);

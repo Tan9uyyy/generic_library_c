@@ -68,12 +68,11 @@ T DEQUE_METHOD(remove)(deque_datum_t value, T deque) {
     return deque;
 }
 
-T DEQUE_METHOD(delete)(T deque){
+void DEQUE_METHOD(delete)(T deque){
     int len = DEQUE_METHOD(length)(deque);
     if (DESTRUCTOR()) for (int i = 0; i < len; i++) DESTRUCTOR(deque[i]);
 
     array_delete(&deque); 
-    return (T)NULL;
 }
 
 void DEQUE_METHOD(print)(T deque){

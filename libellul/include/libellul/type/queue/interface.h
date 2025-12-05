@@ -12,6 +12,6 @@ T_QUEUE_INTERFACE T             QUEUE_METHOD(push) (queue_datum_t value, T queue
 /* Retire le premier élément de la queue, le stocke dans value et retourne la nouvelle queue */
 T_QUEUE_INTERFACE T             QUEUE_METHOD(pop) (queue_datum_t *value, T queue);
 /* Supprime la queue proprement en utilisant le destructeur sur chaque élément */
-T_QUEUE_INTERFACE T             QUEUE_METHOD(delete) (T queue);
+T_QUEUE_INTERFACE void          QUEUE_METHOD(delete) (T queue);
 /* Affiche la queue en utilisant la fonction printer pour chaque élément */
 T_QUEUE_INTERFACE void          QUEUE_METHOD(print) (T queue);

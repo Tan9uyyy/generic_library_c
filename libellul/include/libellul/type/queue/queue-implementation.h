@@ -16,8 +16,8 @@ T_QUEUE_INTERFACE T QUEUE_METHOD(pop) (queue_datum_t *value, T queue) {
     return DEQUE_METHOD(pop_front) (value, queue);
 }
 
-T_QUEUE_INTERFACE T QUEUE_METHOD(delete) (T queue){
-    return DEQUE_METHOD(delete) (queue);
+T_QUEUE_INTERFACE void QUEUE_METHOD(delete) (T queue){
+    DEQUE_METHOD(delete) (queue);
 }
 
 T_QUEUE_INTERFACE void QUEUE_METHOD(print) (T queue){

@@ -266,14 +266,13 @@ T    DEQUE_METHOD(remove)(deque_datum_t value, T deque) {
  * If the datum needs to be freed you need to declare a DESTRUCTOR in macro to
  * dodge leaks... like in the matrix
  */
-T DEQUE_METHOD(delete)(T deque) {
-  if(!deque){ return NULL; }
+void DEQUE_METHOD(delete)(T deque) {
+  if(!deque){ return; }
   for (int i = deque->length - 1; i >= 0; i -= 1) {
     deque_datum_t storage;
     deque = DEQUE_METHOD(pop_back)(&storage, deque);
   }
   free(deque);
-  return NULL;
 }
 
 /*

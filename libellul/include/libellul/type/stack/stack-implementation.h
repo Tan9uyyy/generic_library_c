@@ -16,8 +16,8 @@ T_STACK_INTERFACE T STACK_METHOD(pop) (stack_datum_t *value, T stack) {
     return DEQUE_METHOD(pop_front) (value, stack);
 }
 
-T_STACK_INTERFACE T STACK_METHOD(delete) (T stack){
-    return DEQUE_METHOD(delete) (stack);
+T_STACK_INTERFACE void STACK_METHOD(delete) (T stack){
+    DEQUE_METHOD(delete) (stack);
 }
 
 T_STACK_INTERFACE void STACK_METHOD(print) (T stack){

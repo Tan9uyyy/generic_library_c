@@ -23,8 +23,6 @@ void pq_NULL(void){
 
     int_pq_delete(pq);
     test_assert(1, "can delete NULL as a priority queue");
-
-    free(pq);
 }
 
 void pq_tests(void){
@@ -82,11 +80,9 @@ void pq_tests(void){
     test_suite("Delete pq");
 
     for (int i = 0; i < 6; i++){int_pq_push(values[i], priorities[i], pq);}
-    pq = int_pq_delete(pq);
+    int_pq_delete(pq);
 
-    test_assert(int_pq_is_empty(pq), "Deleted pq is empty");
-    
-    free(pq);
+    test_assert(1, "Deleted pq");
 } 
 
 

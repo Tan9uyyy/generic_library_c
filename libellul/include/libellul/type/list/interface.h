@@ -18,6 +18,6 @@ T_LIST_INTERFACE int            LIST_METHOD(contains) (T list, list_datum_t valu
 /* Retire l'élément obj de la list et retourne la nouvelle list */
 T_LIST_INTERFACE T              LIST_METHOD(remove) (list_datum_t value, T list);
 /* Supprime la list proprement en utilisant le destructeur sur chaque élément */
-T_LIST_INTERFACE T              LIST_METHOD(delete) (T list);
+T_LIST_INTERFACE void           LIST_METHOD(delete) (T list);
 /* Affiche la list en utilisant la fonction printer pour chaque élément */
-void                            LIST_METHOD(print) (T list);
+T_LIST_INTERFACE void           LIST_METHOD(print) (T list);

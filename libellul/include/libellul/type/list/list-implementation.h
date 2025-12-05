@@ -34,9 +34,8 @@ T LIST_METHOD(remove)(list_datum_t value, T list) {
   return DEQUE_METHOD(remove)(value, list);
 }
 
-T
-LIST_METHOD(delete)(T list) {
-  return DEQUE_METHOD(delete)(list);
+void LIST_METHOD(delete)(T list) {
+  DEQUE_METHOD(delete)(list);
 }
 
 int LIST_METHOD(contains)(T list, list_datum_t value) {

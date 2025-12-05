@@ -31,6 +31,6 @@ int             DEQUE_METHOD(contains)(T deque, deque_datum_t value);
 /* retire l'élément obj de la deque et retourne la nouvelle deque */
 T               DEQUE_METHOD(remove)(deque_datum_t value, T deque);
 /* supprime la deque proprement en utilisant le destructeur sur chaque élément */
-T               DEQUE_METHOD(delete)(T deque);
+void            DEQUE_METHOD(delete)(T deque);
 /* affiche la deque en utilisant la fonction printer pour chaque élément */
 void            DEQUE_METHOD(print)(T deque);

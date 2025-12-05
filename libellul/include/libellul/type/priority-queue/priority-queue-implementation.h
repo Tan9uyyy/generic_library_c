@@ -54,11 +54,11 @@ T PQ_METHOD(pop)(pq_datum_t *value, T pq){
     return pq;
 }
 
-T PQ_METHOD(delete)(T pq){
+void PQ_METHOD(delete)(T pq){
     pq_datum_t storage;
     while (!PQ_METHOD(is_empty)(pq)) {pq = PQ_METHOD(pop)(&storage, pq);}
     
-    return pq;
+    free(pq);
 }
 
 void PQ_METHOD(print)(T pq){

@@ -8,12 +8,11 @@ We implemented a binary heap using a dynamic array. This implicit representation
 
 \section{Binary heap interface}
 
-The interface provides:
-\begin{itemize}
-    \item \texttt{push}: Insert an element ($O(\log N)$).
-    \item \texttt{pop}: Remove the minimum/maximum element ($O(\log N)$).
-    \item \texttt{peek}: View the minimum/maximum element ($O(1)$).
-\end{itemize}
+\begin{code}
+  \lstinputlisting[style=C,linerange={3-12}]{libellul/include/libellul/type/heap/interface.h}
+  \caption{The generic heap interface.}
+  \label{code:heap:interface}
+\end{code}
 
 \section{Priority queue interface}
 

@@ -15,4 +15,10 @@ Key design decisions include:
 
 \section{Hashtable interface}
 
-The hashtable interface conforms to the general map interface described in Chapter~\ref{chap:maps}. It provides specific implementations for \texttt{put}, \texttt{get}, \texttt{remove}, etc., based on the chosen collision resolution strategy.
+The hashtable interface conforms to the general map interface described in Chapter~\ref{chap:maps}. However, the underlying structure is exposed for those interested in the implementation details.
+
+\begin{code}
+  \lstinputlisting[style=C,linerange={17-27}]{libellul/include/libellul/structure/hashtable/linear/linear.h}
+  \caption{The linear hashtable structure.}
+  \label{code:hashtable:struct}
+\end{code}

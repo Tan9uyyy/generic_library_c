@@ -97,6 +97,9 @@ void test_set_operations(void) {
 
 int main(int argc, char *argv[]) {
   unit_test(argc, argv);
+  test_suite(
+    "\n\n\n ================================================ TEST 14-set.c "
+    "=========================================================");
   test_set_operations();
   exit(EXIT_SUCCESS);
 }

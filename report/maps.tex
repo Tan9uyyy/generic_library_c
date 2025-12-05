@@ -4,27 +4,20 @@ Maps are associative containers that store key-value pairs. Sets are a special c
 
 \section{Map interface}
 
-Our map interface is designed to be generic and flexible. It supports arbitrary key and value types through code templating (macros). The user defines the key type, value type, hash function, and equality function before including the map implementation header.
+Our map interface is designed to be generic and flexible. It supports arbitrary key and value types through code templating (macros).
 
-The core operations are:
-\begin{itemize}
-    \item \texttt{put}: Insert or update a key-value pair.
-    \item \texttt{get}: Retrieve the value associated with a key.
-    \item \texttt{contains}: Check if a key exists in the map.
-    \item \texttt{remove}: Remove a key-value pair.
-    \item \texttt{size}: Get the number of elements in the map.
-\end{itemize}
+\begin{code}
+  \lstinputlisting[style=C,linerange={3-36}]{libellul/include/libellul/type/map/interface.h}
+  \caption{The generic map interface.}
+  \label{code:map:interface}
+\end{code}
 
 \section{Set interface}
 
 Sets are implemented as a wrapper around maps. A set of type $T$ is essentially a map where the key type is $T$ and the value type is \texttt{void} (or a dummy type).
 
-The set interface provides standard set operations:
-\begin{itemize}
-    \item \texttt{add}: Insert an element into the set.
-    \item \texttt{contains}: Check if an element is in the set.
-    \item \texttt{remove}: Remove an element from the set.
-    \item \texttt{union}: Compute the union of two sets.
-    \item \texttt{intersection}: Compute the intersection of two sets.
-    \item \texttt{difference}: Compute the difference of two sets.
-\end{itemize}
+\begin{code}
+  \lstinputlisting[style=C,linerange={81-84}]{libellul/include/libellul/type/map.h}
+  \caption{The generic set interface.}
+  \label{code:set:interface}
+\end{code}

@@ -10,13 +10,13 @@ To ensure performance, we aim to keep the tree balanced. While a basic BST does 
 
 \section{Binary search tree interface}
 
-The interface provides standard operations:
-\begin{itemize}
-    \item \texttt{insert}: Insert a key-value pair.
-    \item \texttt{search}: Find a value by key.
-    \item \texttt{delete}: Remove a key-value pair.
-    \item \texttt{min/max}: Find the minimum or maximum key.
-\end{itemize}
+The interface provides standard operations, as demonstrated by the Treap interface below:
+
+\begin{code}
+  \lstinputlisting[style=C,linerange={3-12}]{libellul/include/libellul/type/treap/interface.h}
+  \caption{The generic treap interface.}
+  \label{code:treap:interface}
+\end{code}
 
 \section{Example variant: Treaps}
 

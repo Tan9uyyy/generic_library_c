@@ -4,19 +4,33 @@ This chapter describes the implementation of lists, stacks, and queues, which ar
 
 \section{List interface}\label{lists:interface}
 
-Our list implementation is a direct wrapper around the deque implementation. Since a deque supports all list operations (insertion/removal at both ends, iteration), we simply expose the deque functionality with list-specific terminology. This avoids code duplication and ensures consistency.
+Lists are implemented as a wrapper around the deque implementation.
+
+\begin{code}
+  \lstinputlisting[style=C,linerange={3-23}]{libellul/include/libellul/type/list/interface.h}
+  \caption{The generic list interface.}
+  \label{code:list:interface}
+\end{code}
 
 \section{Stack interface}\label{stacks:interface}
 
 Stacks (LIFO - Last In, First Out) are implemented by specializing either dynamic arrays or deques. The user can choose the underlying implementation based on their specific needs (e.g., cache locality of arrays vs. pointer stability of deques).
 
-The stack interface provides standard operations: \texttt{push}, \texttt{pop}, \texttt{top}, and \texttt{is\_empty}.
+\begin{code}
+  \lstinputlisting[style=C,linerange={3-17}]{libellul/include/libellul/type/stack/interface.h}
+  \caption{The generic stack interface.}
+  \label{code:stack:interface}
+\end{code}
 
 \section{Queue interface}\label{queues:interface}
 
 Queues (FIFO - First In, First Out) are also implemented by specializing deques. While dynamic arrays could be used, removing elements from the front of an array is inefficient ($O(N)$) unless a circular buffer approach is used. Deques naturally support $O(1)$ insertion at the back and removal from the front, making them an ideal choice for queues.
 
-The queue interface provides standard operations: \texttt{enqueue} (push back), \texttt{dequeue} (pop front), \texttt{front}, and \texttt{is\_empty}.
+\begin{code}
+  \lstinputlisting[style=C,linerange={3-17}]{libellul/include/libellul/type/queue/interface.h}
+  \caption{The generic queue interface.}
+  \label{code:queue:interface}
+\end{code}
 
 \section{Benchmark}
 

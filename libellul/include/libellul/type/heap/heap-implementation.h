@@ -32,11 +32,11 @@ int HEAP_METHOD(contains_rec)(T heap, heap_datum_t value, int index, int len) {
   if (0 == HEAP_COMPARATOR(heap[index], value))
     return 1; // If root is equal we return true
 
-  if (LEFT_SON(index) > len)
+  if (LEFT_SON(index) >= len)
     return 0; // If root has no son we stop
   int output = HEAP_METHOD(contains_rec)(heap, value, LEFT_SON(index), len);
 
-  if (RIGHT_SON(index) > len)
+  if (RIGHT_SON(index) >= len)
     return output; // If root has no right son we return the result on the left
                    // sub tree
   output |= HEAP_METHOD(contains_rec)(heap, value, RIGHT_SON(index), len);

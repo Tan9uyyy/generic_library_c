@@ -8,6 +8,7 @@
 
 #define T_MAP_TAG T_SET_TAG
 #define T_MAP_KEY T_SET_ELEMENT
+#define map_datum_t T_SET_ELEMENT
 
 #include <libellul/type/map.h>
 

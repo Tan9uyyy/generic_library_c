@@ -20,40 +20,35 @@
 #ifndef HASH
 #error "Undefined hash function!"
 #endif
+#ifndef T_MAP_KEY
+#error "Undefined T_MAP_KEY"
+#endif
 #ifndef KEY_COMPARATOR
 #error "Undefined key_comparator function!"
-#endif
-#ifndef VALUE_DESTRUCTOR
-#error "Undefined key_destructor function!"
 #endif
 #ifndef KEY_PRINTER
 #error "Undefined key_printer function!"
 #endif
-#ifndef VALUE_PRINTER
-#error "Undefined key_printer function!"
+#ifndef T_SET_ELEMENT
+  #ifndef T_MAP_VALUE
+  #error "Undefined T_MAP_VALUE"
+  #endif
+  #ifndef VALUE_DESTRUCTOR
+  #error "Undefined key_destructor function!"
+  #endif
+  #ifndef VALUE_PRINTER
+  #error "Undefined key_printer function!"
+  #endif
 #endif
 
-#if !defined(T_MAP_KEY)
-#error "Undefined T_MAP_KEY"
-#endif
-
-#if !defined(T_MAP_VALUE) && !defined(T_SET_ELEMENT)
-#error "Undefined T_MAP_VALUE"
-#endif
-
-#if (!defined(T_MAP_TAG) && !defined(T_SET_ELEMENT))
+#ifndef T_MAP_TAG
 #define T_MAP_TAG GEN_SYM(T_MAP_KEY, GEN_SYM(T_MAP_VALUE, map))
 #endif
 
 /* On définit le type de la map en fonction du type des clés et des
  * valeurs */
-#ifdef map_datum_t
-#undef map_datum_t
-#endif
-#if !defined(T_SET_ELEMENT)
+#ifndef map_datum_t
 #define map_datum_t GEN_SYM(T_MAP_KEY, T_MAP_VALUE)
-#else
-#define map_datum_t T_MAP_KEY
 #endif
 
 #if !defined(T_MAP_EXPORT_DEFS) && !defined(T_MAP_EXPORT_CODE)

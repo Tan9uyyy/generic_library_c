@@ -16,7 +16,7 @@
 
 typedef struct T {
   size_t       length; /* le nombre de couple qu'il y a dans la table */
-#if !defined ( T_IMPL_HASHTABLE_LINEAR_NO_TOMBSTONES )
+#if defined ( T_IMPL_HASHTABLE_LINEAR )
   size_t tombstones; /* le nombre de tombstones dans la table */
 #endif
   T_MAP_KEY   *bucket;
@@ -44,4 +44,7 @@ typedef struct T {
 #endif
 #ifdef T_IMPL_HASHTABLE_LINEAR_NO_TOMBSTONES
 #undef T_IMPL_HASHTABLE_LINEAR_NO_TOMBSTONES
+#endif
+#ifdef T_IMPL_HASHTABLE_ROBIN_HOOD
+#undef T_IMPL_HASHTABLE_ROBIN_HOOD
 #endif

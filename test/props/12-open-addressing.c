@@ -1,7 +1,7 @@
 #include <libellul.h>
 
 #define T_IMPL_HASHTABLE
-#define T_IMPL_HASHTABLE_LINEAR_NO_TOMBSTONES
+#define T_IMPL_HASHTABLE_ROBIN_HOOD
 #define T_MAP_TAG int_int_linear_hashtable
 #define T_MAP_KEY int
 #define T_MAP_VALUE int

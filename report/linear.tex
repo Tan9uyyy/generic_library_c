@@ -40,6 +40,24 @@ We benchmarked the performance of stacks implemented with dynamic arrays versus 
 
 Dynamic arrays generally offer better cache locality and less memory overhead per element compared to deques (which require two pointers per element). However, dynamic arrays incur occasional resizing costs. Deques provide consistent $O(1)$ performance for operations but have higher memory overhead and poorer cache locality due to non-contiguous memory allocation.
 
+\begin{figure}[H]
+    \centering
+    \subfloat[Stack Push]{\includegraphics[width=0.45\textwidth]{stack_push.png}}
+    \hfill
+    \subfloat[Stack Pop]{\includegraphics[width=0.45\textwidth]{stack_pop.png}}
+    \caption{Stack performance: Linked Stack vs. Array Deque.}
+    \label{fig:stack:bench}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \subfloat[Queue Push]{\includegraphics[width=0.45\textwidth]{queue_push.png}}
+    \hfill
+    \subfloat[Queue Pop]{\includegraphics[width=0.45\textwidth]{queue_pop.png}}
+    \caption{Queue performance: Linked Queue vs. Array Deque.}
+    \label{fig:queue:bench}
+\end{figure}
+
 \subsection{Observations and conclusions}
 
 For most use cases where the maximum size is not known in advance and performance is critical, dynamic arrays are often preferred due to cache efficiency. However, if pointer stability is required (i.e., addresses of elements must not change), deques are the better choice.

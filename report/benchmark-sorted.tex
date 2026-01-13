@@ -9,3 +9,12 @@ We benchmarked different binary search tree variants:
 
 **Results:**
 Standard BSTs performed well for random data but degraded to $O(N)$ for sorted input. Treaps offered consistent $O(\log N)$ performance regardless of input order. Splay trees excelled in scenarios with high temporal locality but had higher overhead for random access patterns.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[Set Put]{\includegraphics[width=0.45\textwidth]{set_put.png}}
+    \hfill
+    \subfloat[Set Contains]{\includegraphics[width=0.45\textwidth]{set_contains.png}}
+    \caption{Set performance: Treeset vs. Hashtable.}
+    \label{fig:set:bench}
+\end{figure}

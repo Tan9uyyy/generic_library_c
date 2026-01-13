@@ -21,3 +21,16 @@ The priority queue is implemented as a wrapper around the binary heap. It allows
 \section{Example variant: Rank-pairing heaps}
 
 While binary heaps are excellent for general use, other variants like rank-pairing heaps offer better theoretical bounds for certain operations (like decrease-key or merge). However, due to the complexity and overhead of pointer-based structures, the binary heap often performs better in practice for simple priority queue needs.
+
+\section{Benchmark}
+
+We compared our binary heap-based priority queue against a linked-list based implementation.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[PQ Push]{\includegraphics[width=0.45\textwidth]{pq_push.png}}
+    \hfill
+    \subfloat[PQ Pop]{\includegraphics[width=0.45\textwidth]{pq_pop.png}}
+    \caption{Priority Queue performance: Linked PQ vs. Heap.}
+    \label{fig:pq:bench}
+\end{figure}

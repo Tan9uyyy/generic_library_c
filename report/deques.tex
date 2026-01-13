@@ -19,3 +19,20 @@ The interface provides macros and functions for initializing deques, pushing/pop
   \caption{The generic deque interface.}
   \label{code:deque:interface}
 \end{code}
+
+\section{Benchmark}
+
+We benchmarked the performance of our deque implementation (linked list based) against a dynamic array implementation.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[\texttt{push\_front}]{\includegraphics[width=0.45\textwidth]{deque_push_front.png}}
+    \hfill
+    \subfloat[\texttt{push\_back}]{\includegraphics[width=0.45\textwidth]{deque_push_back.png}}
+    \\
+    \subfloat[\texttt{pop\_front}]{\includegraphics[width=0.45\textwidth]{deque_pop_front.png}}
+    \hfill
+    \subfloat[\texttt{pop\_back}]{\includegraphics[width=0.45\textwidth]{deque_pop_back.png}}
+    \caption{Performance comparison of Linked Deque vs. Array Deque.}
+    \label{fig:deque:bench}
+\end{figure}

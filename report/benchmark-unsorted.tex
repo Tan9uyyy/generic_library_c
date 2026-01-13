@@ -9,3 +9,10 @@ We benchmarked several hashtable implementations:
 
 **Results:**
 Open addressing with linear probing generally performed better than closed addressing due to better cache locality. Robin Hood hashing provided the most consistent performance, especially for high load factors, by minimizing the variance in probe lengths.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{hashtable_put.png}
+    \caption{Hashtable insertion performance: Closed vs. Linear addressing.}
+    \label{fig:hashtable:bench}
+\end{figure}
